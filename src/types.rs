@@ -41,6 +41,9 @@ pub enum UserState {
     /// Blocked from logging in via LDAP.
     #[serde(rename = "ldap_blocked")]
     LdapBlocked,
+    /// The user is deactivated until the next login.
+    #[serde(rename = "deactivated")]
+    Deactivated,
 }
 
 /// Basic user information.
