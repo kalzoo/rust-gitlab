@@ -14,6 +14,7 @@ use graphql_client::{GraphQLQuery, QueryBody, Response};
 use http::{HeaderMap, Response as HttpResponse};
 use itertools::Itertools;
 use log::{debug, error, info};
+#[cfg(feature = "blocking")]
 use reqwest::blocking::Client;
 use reqwest::Client as AsyncClient;
 use serde::de::DeserializeOwned;
@@ -67,15 +68,11 @@ pub enum GitlabError {
 
 impl GitlabError {
     fn http(status: reqwest::StatusCode) -> Self {
-        GitlabError::Http {
-            status,
-        }
+        GitlabError::Http { status }
     }
 
     fn graphql(message: Vec<graphql_client::Error>) -> Self {
-        GitlabError::GraphQL {
-            message,
-        }
+        GitlabError::GraphQL { message }
     }
 
     fn no_response() -> Self {
@@ -107,6 +104,7 @@ enum ClientCert {
 /// A representation of the Gitlab API for a single user.
 ///
 /// Separate users should use separate instances of this.
+#[cfg(feature = "blocking")]
 #[derive(Clone)]
 pub struct Gitlab {
     /// The client to use for API calls.
@@ -119,6 +117,7 @@ pub struct Gitlab {
     auth: Auth,
 }
 
+#[cfg(feature = "blocking")]
 impl Debug for Gitlab {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Gitlab")
@@ -136,6 +135,7 @@ enum CertPolicy {
     Insecure,
 }
 
+#[cfg(feature = "blocking")]
 impl Gitlab {
     /// Create a new Gitlab API representation.
     ///
@@ -220,24 +220,20 @@ impl Gitlab {
         let graphql_url = Url::parse(&format!("{}://{}/api/graphql", protocol, host))?;
 
         let client = match cert_validation {
-            CertPolicy::Insecure => {
-                Client::builder()
-                    .danger_accept_invalid_certs(true)
-                    .build()?
-            },
-            CertPolicy::Default => {
-                match identity {
-                    ClientCert::None => Client::new(),
-                    #[cfg(feature = "client_der")]
-                    ClientCert::Der(der, password) => {
-                        let id = TlsIdentity::from_pkcs12_der(&der, &password)?;
-                        Client::builder().identity(id).build()?
-                    },
-                    #[cfg(feature = "client_pem")]
-                    ClientCert::Pem(pem) => {
-                        let id = TlsIdentity::from_pem(&pem)?;
-                        Client::builder().identity(id).build()?
-                    },
+            CertPolicy::Insecure => Client::builder()
+                .danger_accept_invalid_certs(true)
+                .build()?,
+            CertPolicy::Default => match identity {
+                ClientCert::None => Client::new(),
+                #[cfg(feature = "client_der")]
+                ClientCert::Der(der, password) => {
+                    let id = TlsIdentity::from_pkcs12_der(&der, &password)?;
+                    Client::builder().identity(id).build()?
+                }
+                #[cfg(feature = "client_pem")]
+                ClientCert::Pem(pem) => {
+                    let id = TlsIdentity::from_pem(&pem)?;
+                    Client::builder().identity(id).build()?
                 }
             },
         };
@@ -326,6 +322,7 @@ pub enum RestError {
     },
 }
 
+#[cfg(feature = "blocking")]
 impl api::RestClient for Gitlab {
     type Error = RestError;
 
@@ -335,6 +332,7 @@ impl api::RestClient for Gitlab {
     }
 }
 
+#[cfg(feature = "blocking")]
 impl api::Client for Gitlab {
     fn rest(
         &self,
@@ -433,6 +431,7 @@ impl GitlabBuilder {
         self
     }
 
+    #[cfg(feature = "blocking")]
     pub fn build(&self) -> GitlabResult<Gitlab> {
         Gitlab::new_impl(
             self.protocol,
@@ -497,22 +496,25 @@ impl api::AsyncClient for AsyncGitlab {
         body: Vec<u8>,
     ) -> Result<HttpResponse<Bytes>, api::ApiError<Self::Error>> {
         use futures_util::TryFutureExt;
-        let call = || {
-            async {
-                self.auth.set_header(request.headers_mut().unwrap())?;
-                let http_request = request.body(body)?;
-                let request = http_request.try_into()?;
-                let rsp = self.client.execute(request).await?;
+        let call = || async {
+            self.auth.set_header(request.headers_mut().unwrap())?;
+            let http_request = request.body(body)?;
+            let request = http_request.try_into()?;
+            let rsp = self.client.execute(request).await?;
 
-                let mut http_rsp = HttpResponse::builder()
-                    .status(rsp.status())
-                    .version(rsp.version());
-                let headers = http_rsp.headers_mut().unwrap();
-                for (key, value) in rsp.headers() {
-                    headers.insert(key, value.clone());
-                }
-                Ok(http_rsp.body(rsp.bytes().await?)?)
+            #[cfg(target_arch = "wasm32")]
+            let mut http_rsp = HttpResponse::builder().status(rsp.status());
+
+            #[cfg(not(target_arch = "wasm32"))]
+            let mut http_rsp = HttpResponse::builder()
+                .status(rsp.status())
+                .version(rsp.version());
+
+            let headers = http_rsp.headers_mut().unwrap();
+            for (key, value) in rsp.headers() {
+                headers.insert(key, value.clone());
             }
+            Ok(http_rsp.body(rsp.bytes().await?)?)
         };
         call().map_err(api::ApiError::client).await
     }
@@ -532,23 +534,24 @@ impl AsyncGitlab {
 
         let client = match cert_validation {
             CertPolicy::Insecure => {
-                AsyncClient::builder()
-                    .danger_accept_invalid_certs(true)
-                    .build()?
-            },
-            CertPolicy::Default => {
-                match identity {
-                    ClientCert::None => AsyncClient::new(),
-                    #[cfg(feature = "client_der")]
-                    ClientCert::Der(der, password) => {
-                        let id = TlsIdentity::from_pkcs12_der(&der, &password)?;
-                        AsyncClient::builder().identity(id).build()?
-                    },
-                    #[cfg(feature = "client_pem")]
-                    ClientCert::Pem(pem) => {
-                        let id = TlsIdentity::from_pem(&pem)?;
-                        AsyncClient::builder().identity(id).build()?
-                    },
+                let builder = AsyncClient::builder();
+
+                #[cfg(not(target_arch = "wasm32"))]
+                let builder = builder.danger_accept_invalid_certs(true);
+
+                builder.build()?
+            }
+            CertPolicy::Default => match identity {
+                ClientCert::None => AsyncClient::new(),
+                #[cfg(feature = "client_der")]
+                ClientCert::Der(der, password) => {
+                    let id = TlsIdentity::from_pkcs12_der(&der, &password)?;
+                    AsyncClient::builder().identity(id).build()?
+                }
+                #[cfg(feature = "client_pem")]
+                ClientCert::Pem(pem) => {
+                    let id = TlsIdentity::from_pem(&pem)?;
+                    AsyncClient::builder().identity(id).build()?
                 }
             },
         };
