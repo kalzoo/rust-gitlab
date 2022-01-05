@@ -25,6 +25,10 @@ pub struct GroupMembers<'a> {
     /// A search string to filter members by.
     #[builder(setter(name = "_user_ids"), default, private)]
     user_ids: HashSet<u64>,
+
+    /// Whether to include members from subgroups
+    #[builder(default)]
+    include_subgroups: bool
 }
 
 impl<'a> GroupMembers<'a> {
@@ -59,7 +63,11 @@ impl<'a> Endpoint for GroupMembers<'a> {
     }
 
     fn endpoint(&self) -> Cow<'static, str> {
-        format!("groups/{}/members", self.group).into()
+        if self.include_subgroups {
+            format!("groups/{}/members/all", self.group).into()
+        } else {
+            format!("groups/{}/members", self.group).into()
+        }
     }
 
     fn parameters(&self) -> QueryParams {
