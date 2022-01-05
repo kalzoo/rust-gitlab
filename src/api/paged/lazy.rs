@@ -265,7 +265,7 @@ where
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<'a, E, T, C> AsyncQuery<Vec<T>, C> for LazilyPagedState<'a, E>
 where
     E: Endpoint + Pageable + Sync,

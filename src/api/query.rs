@@ -26,7 +26,7 @@ where
 }
 
 /// A trait which represents an asynchronous query which may be made to a GitLab client.
-#[async_trait]
+#[async_trait(?Send)]
 pub trait AsyncQuery<T, C>
 where
     C: AsyncClient,

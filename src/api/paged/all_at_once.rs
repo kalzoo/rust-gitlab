@@ -42,7 +42,7 @@ where
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<E, T, C> AsyncQuery<Vec<T>, C> for Paged<E>
 where
     E: Endpoint + Sync,

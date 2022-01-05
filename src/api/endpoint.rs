@@ -66,7 +66,7 @@ where
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<E, T, C> AsyncQuery<T, C> for E
 where
     E: Endpoint + Sync,

@@ -54,7 +54,7 @@ where
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<E, C> AsyncQuery<Vec<u8>, C> for Raw<E>
 where
     E: Endpoint + Sync,

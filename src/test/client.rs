@@ -204,7 +204,7 @@ impl Client for SingleTestClient {
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl AsyncClient for SingleTestClient {
     async fn rest_async(
         &self,
@@ -379,7 +379,7 @@ where
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<T> AsyncClient for PagedTestClient<T>
 where
     T: Serialize + Send + Sync,

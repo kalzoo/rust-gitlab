@@ -478,7 +478,7 @@ impl Debug for AsyncGitlab {
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl api::RestClient for AsyncGitlab {
     type Error = RestError;
 
@@ -488,7 +488,7 @@ impl api::RestClient for AsyncGitlab {
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl api::AsyncClient for AsyncGitlab {
     async fn rest_async(
         &self,

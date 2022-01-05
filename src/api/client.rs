@@ -36,7 +36,7 @@ pub trait Client: RestClient {
 }
 
 /// A trait representing an asynchronous client which can communicate with a GitLab instance.
-#[async_trait]
+#[async_trait(?Send)]
 pub trait AsyncClient: RestClient {
     /// Send a REST query asynchronously.
     async fn rest_async(
