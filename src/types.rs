@@ -1355,6 +1355,8 @@ pub struct Issue {
     pub discussion_locked: Option<bool>,
     /// The URL of the issue.
     pub web_url: String,
+    /// The weight of the issue.
+    pub weight: Option<u64>,
 
     /// Links to related API URLs provided by GitLab in response to
     /// direct issue lookup.  We do not expose this because our
@@ -1400,6 +1402,7 @@ impl Issue {
             confidential: false,
             discussion_locked: None,
             web_url: "".into(),
+            weight: None,
             _links: None,
         }
     }
