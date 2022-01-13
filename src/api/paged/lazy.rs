@@ -4,6 +4,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use std::num::NonZeroU64;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
@@ -89,6 +90,16 @@ impl Page {
         *self = next_page;
     }
 
+    /// Returns true if setting the page number was successful
+    fn set_page(&mut self, page_num: NonZeroU64) -> bool {
+        if let Self::Number(ref mut page) = self {
+            *page = page_num.into();
+            true
+        } else {
+            false
+        }
+    }
+
     fn apply_to(&self, pairs: &mut url::form_urlencoded::Serializer<url::UrlQuery>) {
         match self {
             Self::Number(page) => {
@@ -155,6 +166,14 @@ impl<'a, E> LazilyPagedState<'a, E> {
             page_state.next_page = Page::Done;
         } else {
             page_state.next_page.next_page(next_url);
+        }
+    }
+
+    /// Jumps to the [`page_num`] page, if possible.
+    fn set_page(&self, page_num: NonZeroU64) {
+        let mut page_state = self.page_state.write().expect("poisoned next_page");
+        if page_state.next_page.set_page(page_num) {
+            page_state.total_results = 0;
         }
     }
 }
@@ -310,6 +329,15 @@ where
             current_page: Vec::new(),
         }
     }
+
+    /// Invalidates the [`Page`] that is in memory and sets the page to fetch from to `page_number`.
+    ///
+    /// Note that page numbers are 1-indexed.
+    pub fn set_page_number(mut self, page_number: NonZeroU64) -> Self {
+        self.current_page.clear();
+        self.state.set_page(page_number);
+        self
+    }
 }
 
 impl<'a, E, C, T> Iterator for LazilyPagedIter<'a, E, C, T>
@@ -368,6 +396,8 @@ where
 
 #[cfg(test)]
 mod tests {
+    use std::num::NonZeroU64;
+
     use futures_util::TryStreamExt;
     use http::StatusCode;
     use serde::{Deserialize, Serialize};
@@ -738,6 +768,68 @@ mod tests {
         assert_eq!(res.len(), 25);
         for (i, value) in res.iter().enumerate() {
             assert_eq!(value.value, i as u8);
+        }
+    }
+
+    #[test]
+    fn test_pagination_set_page() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("paged_dummy")
+            .paginated(true)
+            .build()
+            .unwrap();
+        let client = PagedTestClient::new_raw(
+            endpoint,
+            (0..=255).map(|value| {
+                DummyResult {
+                    value,
+                }
+            }),
+        );
+        let query = Dummy {
+            with_keyset: false,
+        };
+
+        let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
+            .iter(&client)
+            .set_page_number(NonZeroU64::new(4).unwrap())
+            .collect::<Result<Vec<_>, _>>()
+            .unwrap();
+        assert_eq!(res.len(), 25);
+        for (i, value) in res.iter().enumerate() {
+            assert_eq!(value.value, (i + 75) as u8);
+        }
+    }
+
+    #[tokio::test]
+    async fn test_pagination_set_page_async() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("paged_dummy")
+            .paginated(true)
+            .build()
+            .unwrap();
+        let client = PagedTestClient::new_raw(
+            endpoint,
+            (0..=255).map(|value| {
+                DummyResult {
+                    value,
+                }
+            }),
+        );
+        let query = Dummy {
+            with_keyset: false,
+        };
+
+        let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
+            .iter(&client)
+            .set_page_number(NonZeroU64::new(4).unwrap())
+            .into_async()
+            .try_collect()
+            .await
+            .unwrap();
+        assert_eq!(res.len(), 25);
+        for (i, value) in res.iter().enumerate() {
+            assert_eq!(value.value, (i + 75) as u8);
         }
     }
 
