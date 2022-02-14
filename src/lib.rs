@@ -23,9 +23,16 @@ pub mod webhooks;
 pub mod api;
 #[cfg(feature = "client_api")]
 mod auth;
+#[cfg(feature = "client_api")]
+mod extensions;
 
 #[cfg(feature = "client_api")]
 pub use crate::auth::AuthError;
+#[cfg(feature = "client_api")]
+pub use crate::extensions::{
+    query_async_raw_with_response, query_async_with_response, AsyncQueryRawWithResponseReturnValue,
+    AsyncQueryWithResponseReturnValue,
+};
 #[cfg(feature = "blocking")]
 pub use crate::gitlab::Gitlab;
 #[cfg(feature = "client_api")]
