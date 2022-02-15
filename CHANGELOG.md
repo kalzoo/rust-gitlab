@@ -7,6 +7,20 @@
     - Sharing and unsharing groups
     - Listing shared projects in a group
     - Sharing and unsharing projects
+  * New fields on `types::Hook`:
+    - `push_events_branch_filter`
+    - `issues_events`
+    - `confidential_issues_events`
+    - `merge_requests_events`
+    - `note_events`
+    - `confidential_note_events`
+    - `repository_update_events`
+    - `job_events`
+    - `pipeline_events`
+    - `wiki_page_events`
+  * New fields on `types::Project`:
+    - `build_git_strategy`
+    - `ci_default_git_depth`
 
 # v0.1500.0
 
