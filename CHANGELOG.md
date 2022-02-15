@@ -46,6 +46,34 @@
 
   * No changes needed for GitLab 14.10.
 
+-------
+# v0.1409.1 (unreleased)
+
+## Additions
+  * The `api::projects::repository::branches::Branches` endpoint is now pageable.
+  * Entend type `webhooks::MergeRequestHook` with changes entry
+  * The `api::projects::protected_branches::ProtectedBranches` endpoint is now pageable.
+  * Extend UserState enum with Deactivated
+  * Extend Hook type with fields:
+    - push_events_branch_filter
+    - issues_events
+    - confidential_issues_events
+    - merge_requests_events
+    - note_events
+    - confidential_note_events
+    - job_events
+    - pipeline_events
+    - wiki_page_events
+    - repository_update_events
+  * Extend Project type with fields:
+    - build_git_strategy
+    - ci_default_git_depth
+  * Move api endpoint `api::projects::merge_requests::pipelines` to `api::projects::merge_requests::pipelines::pipelines`
+  * Add api endpoint `api::projects::merge_requests::pipelines::create`
+  * Fix parameters for editing projects:
+    - printing_merge_request_link_enabled
+-------
+
 # v0.1409.0
 
   * No changes needed for GitLab 14.9.
