@@ -1,5 +1,10 @@
 # v0.1500.1 (unreleased)
 
+## Changes
+
+  * `api::projects::merge_requests::MergeRequestPipelines` and associated
+    structures have been moved to `api::projects::merge_requests::pipelines`.
+
 ## Fixes
 
   * `api::projects::edit::EditProject` fixes a typo from

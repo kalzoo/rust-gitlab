@@ -91,7 +91,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/awards.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/create.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/resource_label_events` `projects/merge_requests/resource_label_events.rs`
-  * `GET    /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines/pipelines.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/changes` `projects/merge_requests/changes.rs`
   * `GET    /projects/:project/merge_trains` `projects/merge_trains.rs`
   * `POST   /projects/:project/milestones` `projects/milestones/create.rs`
