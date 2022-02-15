@@ -19,6 +19,7 @@
     - Sharing and unsharing groups
     - Listing shared projects in a group
     - Sharing and unsharing projects
+    - Creating a pipeline on a merge request
   * New fields on `types::Hook`:
     - `push_events_branch_filter`
     - `issues_events`

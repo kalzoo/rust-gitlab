@@ -8,7 +8,12 @@
 //!
 //! These endpoints are used for handling merge request pipelines.
 
+mod create;
 mod pipelines;
+
+pub use self::create::CreateMergeRequestPipelines;
+pub use self::create::CreateMergeRequestPipelinesBuilder;
+pub use self::create::CreateMergeRequestPipelinesBuilderError;
 
 pub use self::pipelines::MergeRequestPipelines;
 pub use self::pipelines::MergeRequestPipelinesBuilder;
