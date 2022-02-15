@@ -1,5 +1,11 @@
 # v0.1500.1 (unreleased)
 
+## Fixes
+
+  * `api::projects::edit::EditProject` fixes a typo from
+    `printing_merge_requests_link_enabled` to
+    `printing_merge_request_link_enabled`
+
 ## Additions
 
   * `types::UserState::Deactivated` has been added.
