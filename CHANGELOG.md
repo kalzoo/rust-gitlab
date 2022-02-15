@@ -21,6 +21,9 @@
   * New fields on `types::Project`:
     - `build_git_strategy`
     - `ci_default_git_depth`
+  * New fields on `webhooks::MergeRequestHook`:
+    - `changes`
+  * New `webhooks::MergeRequestChanges` structure
 
 # v0.1500.0
 
