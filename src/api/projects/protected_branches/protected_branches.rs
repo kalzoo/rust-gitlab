@@ -49,6 +49,8 @@ impl<'a> Endpoint for ProtectedBranches<'a> {
     }
 }
 
+impl<'a> Pageable for ProtectedBranches<'a> {}
+
 #[cfg(test)]
 mod tests {
     use crate::api::projects::protected_branches::{

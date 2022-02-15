@@ -5,6 +5,7 @@
   * `api::projects::edit::EditProject` fixes a typo from
     `printing_merge_requests_link_enabled` to
     `printing_merge_request_link_enabled`
+  * `api::projects::protected_branches::ProtectedBranches` is now paginated.
 
 ## Additions
 
