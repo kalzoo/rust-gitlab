@@ -9,8 +9,14 @@
 //! These endpoints are used for querying group projects.
 
 mod projects;
+mod shared;
 
 pub use self::projects::GroupProjects;
 pub use self::projects::GroupProjectsBuilder;
 pub use self::projects::GroupProjectsBuilderError;
 pub use self::projects::GroupProjectsOrderBy;
+
+pub use self::shared::SharedGroupProjects;
+pub use self::shared::SharedGroupProjectsBuilder;
+pub use self::shared::SharedGroupProjectsBuilderError;
+pub use self::shared::SharedGroupProjectsOrderBy;

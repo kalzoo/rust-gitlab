@@ -18,7 +18,9 @@ pub mod issues;
 pub mod members;
 pub mod milestones;
 pub mod projects;
+mod share;
 pub mod subgroups;
+mod unshare;
 
 pub use create::BranchProtection;
 pub use create::CreateGroup;
@@ -40,3 +42,11 @@ pub use groups::GroupOrderBy;
 pub use groups::Groups;
 pub use groups::GroupsBuilder;
 pub use groups::GroupsBuilderError;
+
+pub use share::ShareGroup;
+pub use share::ShareGroupBuilder;
+pub use share::ShareGroupBuilderError;
+
+pub use unshare::UnshareGroup;
+pub use unshare::UnshareGroupBuilder;
+pub use unshare::UnshareGroupBuilderError;
