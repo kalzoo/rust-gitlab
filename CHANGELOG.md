@@ -1,3 +1,7 @@
+# v0.1409.0
+
+  * No changes needed for GitLab 14.9.
+
 # v0.1408.0
 
 ## Additions
