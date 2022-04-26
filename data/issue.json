@@ -56,6 +56,7 @@
     "short": "#6"
   },
   "service_desk_reply_to": null,
+  "severity": "UNKNOWN",
   "state": "closed",
   "subscribed": true,
   "task_completion_status": {
