@@ -40,6 +40,8 @@
   "id": 855,
   "import_error": null,
   "import_status": "none",
+  "import_type": null,
+  "import_url": "",
   "issues_access_level": "enabled",
   "issues_enabled": true,
   "jobs_enabled": true,
