@@ -1,3 +1,7 @@
+# v0.1500.0
+
+  * No changes needed for GitLab 15.0.
+
 # v0.1410.0
 
   * No changes needed for GitLab 14.10.
