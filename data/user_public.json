@@ -16,6 +16,7 @@
   "id": 11,
   "identities": [],
   "is_admin": true,
+  "is_followed": false,
   "job_title": "",
   "last_activity_on": "2022-01-06",
   "last_sign_in_at": "2021-12-21T08:22:01.657-05:00",

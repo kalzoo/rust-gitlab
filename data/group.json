@@ -18,6 +18,7 @@
   "projects": [
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/6975/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/6975/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/6975/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/6975/labels",
@@ -40,6 +41,7 @@
       "ci_default_git_depth": 50,
       "ci_forward_deployment_enabled": true,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_expiration_policy": {
         "cadence": "1d",
         "enabled": false,
@@ -57,6 +59,7 @@
       "description": "Request ghostflow-director deployment updates",
       "emails_disabled": false,
       "empty_repo": true,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/ghostflow-deployments.git",
@@ -125,6 +128,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/6955/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/6955/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/6955/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/6955/labels",
@@ -149,6 +153,7 @@
       "ci_default_git_depth": 50,
       "ci_forward_deployment_enabled": true,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_expiration_policy": {
         "cadence": "1d",
         "enabled": false,
@@ -167,11 +172,14 @@
       "description": "Repository for rebuilding various bits of software used across our CI machines.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 2,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/ci-utilities.git",
       "id": 6955,
       "import_status": "none",
+      "import_type": null,
+      "import_url": null,
       "issues_access_level": "enabled",
       "issues_enabled": true,
       "jobs_enabled": true,
@@ -233,6 +241,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/6666/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/6666/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/6666/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/6666/labels",
@@ -257,6 +266,7 @@
       "ci_default_git_depth": 50,
       "ci_forward_deployment_enabled": true,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_expiration_policy": {
         "cadence": "1d",
         "enabled": false,
@@ -275,6 +285,7 @@
       "description": "Utilities for interacting with CDash for project maintainers.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 1,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/cdash-utils.git",
@@ -343,6 +354,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/4883/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/4883/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/4883/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/4883/labels",
@@ -352,7 +364,7 @@
         "self": "https://gitlab.kitware.com/api/v4/projects/4883"
       },
       "allow_merge_on_skipped_pipeline": null,
-      "analytics_access_level": "enabled",
+      "analytics_access_level": "disabled",
       "archived": false,
       "auto_cancel_pending_pipelines": "enabled",
       "auto_devops_deploy_strategy": "continuous",
@@ -367,6 +379,7 @@
       "ci_default_git_depth": 50,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/ci-base-images",
@@ -376,6 +389,7 @@
       "description": "Base images for CI that can't be released publicly.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/ci-base-images.git",
@@ -407,9 +421,9 @@
       },
       "only_allow_merge_if_all_discussions_are_resolved": false,
       "only_allow_merge_if_pipeline_succeeds": false,
-      "open_issues_count": 11,
-      "operations_access_level": "enabled",
-      "packages_enabled": null,
+      "open_issues_count": 22,
+      "operations_access_level": "disabled",
+      "packages_enabled": false,
       "pages_access_level": "private",
       "path": "ci-base-images",
       "path_with_namespace": "utils/ci-base-images",
@@ -423,7 +437,7 @@
       "resolve_outdated_diff_discussions": false,
       "restrict_user_defined_variables": false,
       "runner_token_expiration_interval": null,
-      "security_and_compliance_access_level": "private",
+      "security_and_compliance_access_level": "disabled",
       "service_desk_address": "gitlab-incoming+utils-ci-base-images-4883-issue-@kitware.com",
       "service_desk_enabled": true,
       "shared_runners_enabled": false,
@@ -444,6 +458,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/4702/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/4702/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/4702/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/4702/labels",
@@ -468,6 +483,7 @@
       "ci_default_git_depth": 50,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/scriptconfig",
@@ -477,6 +493,7 @@
       "description": "",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/scriptconfig.git",
@@ -545,6 +562,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/3277/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/3277/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/3277/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/3277/labels",
@@ -569,6 +587,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/token-at-a-distance",
@@ -578,6 +597,7 @@
       "description": "",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 1,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/token-at-a-distance.git",
@@ -646,6 +666,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1950/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1950/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1950/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1950/labels",
@@ -668,6 +689,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/git-workflow",
@@ -676,6 +698,7 @@
       "description": "Git workflow documentation for Kitware projects",
       "emails_disabled": false,
       "empty_repo": true,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/git-workflow.git",
@@ -744,6 +767,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1914/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1914/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1914/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1914/labels",
@@ -768,6 +792,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/git-import-third-party",
@@ -777,6 +802,7 @@
       "description": "Tools for managing imported third party projects.",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 5,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/git-import-third-party.git",
@@ -845,6 +871,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1913/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1913/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1913/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1913/labels",
@@ -869,6 +896,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/git-hook-chain",
@@ -878,6 +906,7 @@
       "description": "Chain between multiple Git hooks easily",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/git-hook-chain.git",
@@ -946,6 +975,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1544/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1544/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1544/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1544/labels",
@@ -970,6 +1000,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/gitlab-utils",
@@ -979,6 +1010,7 @@
       "description": "Utility scripts for Gitlab interaction and management.",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/gitlab-utils.git",
@@ -1047,6 +1079,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1528/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1528/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1528/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1528/labels",
@@ -1071,6 +1104,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/tech-lunches",
@@ -1080,6 +1114,7 @@
       "description": "Tech lunch presentations",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/tech-lunches.git",
@@ -1148,6 +1183,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1470/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1470/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1470/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1470/labels",
@@ -1172,6 +1208,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-yaml-merge-keys",
@@ -1181,6 +1218,7 @@
       "description": "Rust library for resolving merge keys in YAML documents.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-yaml-merge-keys.git",
@@ -1249,6 +1287,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1373/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1373/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1373/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1373/labels",
@@ -1273,6 +1312,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/source-formatters",
@@ -1282,6 +1322,7 @@
       "description": "Formatting scripts for use with the ghostflow formatting check and reformat action.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/source-formatters.git",
@@ -1350,6 +1391,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1177/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1177/events",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1177/labels",
         "members": "https://gitlab.kitware.com/api/v4/projects/1177/members",
@@ -1373,6 +1415,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/kwsys",
@@ -1382,6 +1425,7 @@
       "description": "Kitware System Library",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 82,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/kwsys.git",
@@ -1448,6 +1492,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1036/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1036/events",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1036/labels",
         "members": "https://gitlab.kitware.com/api/v4/projects/1036/members",
@@ -1470,6 +1515,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/test-repo",
@@ -1479,6 +1525,7 @@
       "description": "Repository used for testing as a submodule.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/test-repo.git",
@@ -1545,6 +1592,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/1026/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/1026/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/1026/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/1026/labels",
@@ -1569,6 +1617,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/webhook-listen",
@@ -1578,6 +1627,7 @@
       "description": "Listen for webhook events and drop them into a directory for further processing.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/webhook-listen.git",
@@ -1646,6 +1696,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/972/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/972/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/972/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/972/labels",
@@ -1670,6 +1721,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/ghostflow-director",
@@ -1679,6 +1731,7 @@
       "description": "A robot which watches git repositories and performs actions to enforce a workflow on them.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 4,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/ghostflow-director.git",
@@ -1747,6 +1800,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/969/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/969/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/969/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/969/labels",
@@ -1771,6 +1825,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/kwiml",
@@ -1780,6 +1835,7 @@
       "description": "The Kitware Information Macro Library",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 8,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/kwiml.git",
@@ -1848,6 +1904,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/925/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/925/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/925/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/925/labels",
@@ -1872,6 +1929,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/mantis-to-gitlab",
@@ -1881,6 +1939,7 @@
       "description": "A script to import Mantis issues (from CSV) into GitLab.",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 0,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/mantis-to-gitlab.git",
@@ -1949,6 +2008,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/918/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/918/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/918/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/918/labels",
@@ -1973,6 +2033,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-ghostflow",
@@ -1982,6 +2043,7 @@
       "description": "Routines which implement various parts of \"ghostflow\", or the git-hosted workflow.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-ghostflow.git",
@@ -2050,6 +2112,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/878/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/878/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/878/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/878/labels",
@@ -2074,6 +2137,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-git-checks",
@@ -2083,6 +2147,7 @@
       "description": "Checks to run against a topic in git to enforce coding standards.\r\n",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 5,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-git-checks.git",
@@ -2151,6 +2216,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/870/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/870/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/870/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/870/labels",
@@ -2175,6 +2241,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-git-topic-stage",
@@ -2184,6 +2251,7 @@
       "description": "Logic for managing a topic stage on top of a base branch in git.\r\n",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-git-topic-stage.git",
@@ -2252,6 +2320,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/869/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/869/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/869/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/869/labels",
@@ -2276,6 +2345,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-json-job-dispatch",
@@ -2285,6 +2355,7 @@
       "description": "Dispatch jobs described by JSON files and sort them according to their status.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-json-job-dispatch.git",
@@ -2353,6 +2424,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/863/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/863/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/863/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/863/labels",
@@ -2377,6 +2449,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "enabled",
       "container_registry_enabled": true,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-git-workarea",
@@ -2386,6 +2459,7 @@
       "description": "Simple routines to work with git repositories and set up minimal workareas with them.\r\n",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-git-workarea.git",
@@ -2454,6 +2528,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/855/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/855/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/855/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/855/labels",
@@ -2478,6 +2553,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": true,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/rust-gitlab",
@@ -2487,6 +2563,7 @@
       "description": "Rust library for communicating with a Gitlab instance.",
       "emails_disabled": false,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 52,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/rust-gitlab.git",
@@ -2555,6 +2632,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/662/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/662/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/662/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/662/labels",
@@ -2579,6 +2657,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/gitrobot",
@@ -2588,6 +2667,7 @@
       "description": "",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 3,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/gitrobot.git",
@@ -2656,6 +2736,7 @@
     },
     {
       "_links": {
+        "cluster_agents": "https://gitlab.kitware.com/api/v4/projects/631/cluster_agents",
         "events": "https://gitlab.kitware.com/api/v4/projects/631/events",
         "issues": "https://gitlab.kitware.com/api/v4/projects/631/issues",
         "labels": "https://gitlab.kitware.com/api/v4/projects/631/labels",
@@ -2680,6 +2761,7 @@
       "ci_default_git_depth": null,
       "ci_forward_deployment_enabled": null,
       "ci_job_token_scope_enabled": false,
+      "ci_separated_caches": true,
       "container_registry_access_level": "disabled",
       "container_registry_enabled": false,
       "container_registry_image_prefix": "gitlab.kitware.com:4567/utils/gitsetup",
@@ -2689,6 +2771,7 @@
       "description": "",
       "emails_disabled": null,
       "empty_repo": false,
+      "enforce_auth_checks_on_uploads": true,
       "forking_access_level": "enabled",
       "forks_count": 7,
       "http_url_to_repo": "https://gitlab.kitware.com/utils/gitsetup.git",
