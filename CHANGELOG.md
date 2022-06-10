@@ -3,6 +3,10 @@
 ## Additions
 
   * `types::UserState::Deactivated` has been added.
+  * New endpoints for:
+    - Sharing and unsharing groups
+    - Listing shared projects in a group
+    - Sharing and unsharing projects
 
 # v0.1500.0
 

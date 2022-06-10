@@ -29,6 +29,8 @@ pub mod protected_branches;
 pub mod protected_tags;
 pub mod releases;
 pub mod repository;
+mod share;
+mod unshare;
 pub mod variables;
 
 pub use self::create::AutoDevOpsDeployStrategy;
@@ -59,3 +61,11 @@ pub use self::projects::ProjectOrderBy;
 pub use self::projects::Projects;
 pub use self::projects::ProjectsBuilder;
 pub use self::projects::ProjectsBuilderError;
+
+pub use self::share::ShareProject;
+pub use self::share::ShareProjectBuilder;
+pub use self::share::ShareProjectBuilderError;
+
+pub use self::unshare::UnshareProject;
+pub use self::unshare::UnshareProjectBuilder;
+pub use self::unshare::UnshareProjectBuilderError;

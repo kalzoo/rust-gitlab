@@ -19,6 +19,9 @@ These API endpoints have been implemented.
   * `PUT    /groups/:group/members/:id` `groups/members/edit.rs`
   * `POST   /groups/:group/milestones` `groups/milestones/create.rs`
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
+  * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
+  * `POST   /groups/:group/share` `groups/share.rs`
+  * `DELETE /groups/:group/share/:id` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
   * `GET    /projects` `projects/projects.rs`
   * `POST   /projects` `projects/projects/create.rs`
@@ -126,6 +129,8 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/repository/tags/:tag` `projects/repository/tags/tag.rs`
   * `POST   /projects/:project/repository/tags` `projects/repository/tags/create.rs`
   * `GET    /projects/:project/repository/tree` `projects/repository/tree.rs`
+  * `POST   /projects/:project/share` `projects/share.rs`
+  * `DELETE /projects/:project/share/:group` `projects/unshare.rs`
   * `GET    /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
     Arguably, this should be `POST /projects/:project/repository/commits/:sha/statuses`.
     https://gitlab.com/gitlab-org/gitlab/-/issues/217412
@@ -199,14 +204,11 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/milestones/:milestone/issues` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-issues-assigned-to-a-single-milestone
   * `GET    /groups/:group/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
   * `POST   /groups/:group/projects/:id` https://gitlab.kitware.com/help/api/groups.md#transfer-project-to-group
-  * `GET    /groups/:group/projects/shared` https://gitlab.kitware.com/help/api/groups.md#list-a-groups-shared-projects
   * `GET    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#get-group-push-rules
   * `POST   /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#add-group-push-rule
   * `PUT    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#edit-group-push-rule
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
-  * `POST   /groups/:group/share` https://gitlab.kitware.com/help/api/groups.md#create-a-link-to-share-a-group-with-another-group
-  * `DELETE /groups/:group/share/:id` https://gitlab.kitware.com/help/api/groups.md#delete-link-sharing-group-with-another-group
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
   * `POST   /projects/:project/archive` https://gitlab.kitware.com/help/api/projects.md#archive-a-project
   * `GET    /projects/:project/commits/:sha/discussions` https://gitlab.kitware.com/help/api/discussions.md#list-project-commit-discussion-items
@@ -353,8 +355,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/repository/contributors` https://gitlab.kitware.com/help/api/repositories.md#contributors
   * `GET    /projects/:project/repository/merge_base` https://gitlab.kitware.com/help/api/repositories.md#merge-base
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
-  * `POST   /projects/:project/share` https://gitlab.kitware.com/help/api/projects.md#share-project-with-group
-  * `DELETE /projects/:project/share/:group` https://gitlab.kitware.com/help/api/projects.md#delete-a-shared-project-link-within-a-group
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
   * `GET    /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
   * `POST   /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
