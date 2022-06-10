@@ -129,6 +129,8 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/repository/tags/:tag` `projects/repository/tags/tag.rs`
   * `POST   /projects/:project/repository/tags` `projects/repository/tags/create.rs`
   * `GET    /projects/:project/repository/tree` `projects/repository/tree.rs`
+  * `POST   /projects/:project/share` `projects/share.rs`
+  * `DELETE /projects/:project/share/:group` `projects/unshare.rs`
   * `GET    /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
     Arguably, this should be `POST /projects/:project/repository/commits/:sha/statuses`.
     https://gitlab.com/gitlab-org/gitlab/-/issues/217412
@@ -353,8 +355,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/repository/contributors` https://gitlab.kitware.com/help/api/repositories.md#contributors
   * `GET    /projects/:project/repository/merge_base` https://gitlab.kitware.com/help/api/repositories.md#merge-base
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
-  * `POST   /projects/:project/share` https://gitlab.kitware.com/help/api/projects.md#share-project-with-group
-  * `DELETE /projects/:project/share/:group` https://gitlab.kitware.com/help/api/projects.md#delete-a-shared-project-link-within-a-group
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
   * `GET    /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
   * `POST   /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
