@@ -1,3 +1,9 @@
+# v0.1500.1 (unreleased)
+
+## Additions
+
+  * `types::UserState::Deactivated` has been added.
+
 # v0.1500.0
 
   * No changes needed for GitLab 15.0.
