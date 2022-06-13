@@ -375,6 +375,75 @@ impl From<ProjectHook> for Hook {
     }
 }
 
+/// A web hook to notify of events in groups.
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct GroupHook {
+    /// The ID of the hook.
+    pub id: HookId,
+    /// The URL to contact.
+    pub url: String,
+    /// When the hook was created.
+    pub created_at: DateTime<Utc>,
+    /// The project associated with the hook.
+    pub project_id: ProjectId,
+    /// Whether the hook is contacted for push events.
+    pub push_events: bool,
+    /// Filter branches for which the hook is contacted for push events.
+    pub push_events_branch_filter: Option<String>,
+    /// Whether the hook is contacted for tag push events.
+    pub tag_push_events: bool,
+    /// Whether the hook is contacted for issue events.
+    pub issues_events: bool,
+    /// Whether the hook is contacted for confidential issue events.
+    pub confidential_issues_events: Option<bool>,
+    /// Whether the hook is contacted for merge request events.
+    pub merge_requests_events: bool,
+    /// Whether the hook is contacted for note events.
+    pub note_events: bool,
+    /// Whether the hook is contacted for confidential note events.
+    pub confidential_note_events: Option<bool>,
+    /// Whether the hook is contacted for repository update events.
+    pub repository_update_events: bool,
+    /// Whether the communication with the hook is verified using TLS certificates.
+    pub enable_ssl_verification: bool,
+    /// Whether the hook is contacted for job events.
+    pub job_events: bool,
+    /// Whether the hook is contacted for pipeline events.
+    pub pipeline_events: bool,
+    /// Whether the hook is contacted for wiki page events.
+    pub wiki_page_events: bool,
+    /// Whether the hook is contacted for deployment events.
+    pub deployment_events: bool,
+    /// Whether the hook is contacted for releases events.
+    pub releases_events: bool,
+    /// Whether the hook is contacted for subgroup events.
+    pub subgroup_events: bool,
+    /// Secret token to validate received payloads
+    pub token: Option<String>,
+}
+
+impl From<GroupHook> for Hook {
+    fn from(hook: GroupHook) -> Self {
+        Hook {
+            id: hook.id,
+            url: hook.url,
+            created_at: hook.created_at,
+            push_events: hook.push_events,
+            push_events_branch_filter: hook.push_events_branch_filter,
+            tag_push_events: hook.tag_push_events,
+            issues_events: hook.issues_events,
+            confidential_issues_events: hook.confidential_issues_events,
+            merge_requests_events: hook.merge_requests_events,
+            note_events: hook.note_events,
+            confidential_note_events: hook.confidential_note_events,
+            repository_update_events: hook.repository_update_events,
+            job_events: hook.job_events,
+            pipeline_events: hook.pipeline_events,
+            wiki_page_events: hook.wiki_page_events,
+            enable_ssl_verification: hook.enable_ssl_verification,
+        }
+    }
+}
 /// Reponse of a project variable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ProjectVariable {

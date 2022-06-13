@@ -1,3 +1,11 @@
+# Unreleased
+
+## Additions
+
+  * `types::GroupHook` has been added.
+  * New endpoints for:
+    - Creating, getting, editing, listing and deleting group hooks.
+
 # v0.1502.0
 
 ## Changes
