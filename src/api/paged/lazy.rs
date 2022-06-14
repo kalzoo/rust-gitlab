@@ -357,6 +357,13 @@ where
 
         self.current_page.pop().map(Ok)
     }
+
+    /// Converts a "normal iterator" into an async iterator
+    pub fn into_async(self) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a {
+        futures_util::stream::unfold(self, |mut iter| {
+            async move { iter.next_async().await.map(|item| (item, iter)) }
+        })
+    }
 }
 
 #[cfg(test)]
