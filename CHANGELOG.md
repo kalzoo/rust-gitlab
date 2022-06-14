@@ -31,6 +31,9 @@
     - `job_events`
     - `pipeline_events`
     - `wiki_page_events`
+  * New fields on `types::ProjectHook`:
+    - `deployment_events`
+    - `releases_events`
   * New fields on `types::Project`:
     - `build_git_strategy`
     - `ci_default_git_depth`
