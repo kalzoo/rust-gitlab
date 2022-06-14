@@ -419,6 +419,23 @@ pub struct MergeRequestHook {
     /// The assignee of the merge request.
     pub assignee: Option<UserHookAttrs>,
     repository: Value,
+
+    /// Details about the changes on the MR
+    pub changes: Option<MergeRequestChanges>,
+}
+
+/// MR Changes
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MergeRequestChanges {
+    pub updated_at: Option<MergeRequestChange<String>>,
+    pub merge_status: Option<MergeRequestChange<String>>,
+    pub merge_commit_sha: Option<MergeRequestChange<Option<String>>>,
+}
+/// A MR change
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MergeRequestChange<T> {
+    pub previous: T,
+    pub current: T,
 }
 
 /// The type of a snippet.

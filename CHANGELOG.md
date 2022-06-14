@@ -1,5 +1,17 @@
 # v0.1500.1 (unreleased)
 
+## Changes
+
+  * `api::projects::merge_requests::MergeRequestPipelines` and associated
+    structures have been moved to `api::projects::merge_requests::pipelines`.
+
+## Fixes
+
+  * `api::projects::edit::EditProject` fixes a typo from
+    `printing_merge_requests_link_enabled` to
+    `printing_merge_request_link_enabled`
+  * `api::projects::protected_branches::ProtectedBranches` is now paginated.
+
 ## Additions
 
   * `types::UserState::Deactivated` has been added.
@@ -7,6 +19,24 @@
     - Sharing and unsharing groups
     - Listing shared projects in a group
     - Sharing and unsharing projects
+    - Creating a pipeline on a merge request
+  * New fields on `types::Hook`:
+    - `push_events_branch_filter`
+    - `issues_events`
+    - `confidential_issues_events`
+    - `merge_requests_events`
+    - `note_events`
+    - `confidential_note_events`
+    - `repository_update_events`
+    - `job_events`
+    - `pipeline_events`
+    - `wiki_page_events`
+  * New fields on `types::Project`:
+    - `build_git_strategy`
+    - `ci_default_git_depth`
+  * New fields on `webhooks::MergeRequestHook`:
+    - `changes`
+  * New `webhooks::MergeRequestChanges` structure
 
 # v0.1500.0
 
@@ -15,6 +45,34 @@
 # v0.1410.0
 
   * No changes needed for GitLab 14.10.
+
+-------
+# v0.1409.1 (unreleased)
+
+## Additions
+  * The `api::projects::repository::branches::Branches` endpoint is now pageable.
+  * Entend type `webhooks::MergeRequestHook` with changes entry
+  * The `api::projects::protected_branches::ProtectedBranches` endpoint is now pageable.
+  * Extend UserState enum with Deactivated
+  * Extend Hook type with fields:
+    - push_events_branch_filter
+    - issues_events
+    - confidential_issues_events
+    - merge_requests_events
+    - note_events
+    - confidential_note_events
+    - job_events
+    - pipeline_events
+    - wiki_page_events
+    - repository_update_events
+  * Extend Project type with fields:
+    - build_git_strategy
+    - ci_default_git_depth
+  * Move api endpoint `api::projects::merge_requests::pipelines` to `api::projects::merge_requests::pipelines::pipelines`
+  * Add api endpoint `api::projects::merge_requests::pipelines::create`
+  * Fix parameters for editing projects:
+    - printing_merge_request_link_enabled
+-------
 
 # v0.1409.0
 

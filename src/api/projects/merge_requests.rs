@@ -22,7 +22,7 @@ mod merge;
 mod merge_request;
 mod merge_requests;
 pub mod notes;
-mod pipelines;
+pub mod pipelines;
 mod rebase;
 mod resource_label_events;
 mod unapprove;
@@ -56,8 +56,11 @@ pub use self::commits::MergeRequestCommits;
 pub use self::commits::MergeRequestCommitsBuilder;
 pub use self::commits::MergeRequestCommitsBuilderError;
 
+#[deprecated(note = "use `pipelines::MergeRequestPipelines` instead")]
 pub use self::pipelines::MergeRequestPipelines;
+#[deprecated(note = "use `pipelines::MergeRequestPipelinesBuilder` instead")]
 pub use self::pipelines::MergeRequestPipelinesBuilder;
+#[deprecated(note = "use `pipelines::MergeRequestPipelinesBuilderError` instead")]
 pub use self::pipelines::MergeRequestPipelinesBuilderError;
 
 pub use self::changes::MergeRequestChanges;

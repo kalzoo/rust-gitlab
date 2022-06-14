@@ -149,7 +149,7 @@ pub struct EditProject<'a> {
     remove_source_branch_after_merge: Option<bool>,
     /// Whether to enable print merge request links if branch/commits are pushed by console
     #[builder(default)]
-    printing_merge_requests_link_enabled: Option<bool>,
+    printing_merge_request_link_enabled: Option<bool>,
     /// Whether `git-lfs` support should be enabled or not.
     ///
     /// See the [git-lfs](https://git-lfs.github.com/) website for more information.
@@ -306,6 +306,14 @@ impl<'a> EditProjectBuilder<'a> {
             .extend(iter.map(Into::into));
         self
     }
+
+    /// Whether to enable print merge request links if branch/commits are pushed by console
+    ///
+    /// This was a typo previously; use `printing_merge_request_link_enabled` instead.
+    #[deprecated(note = "use `printing_merge_request_link_enabled` instead")]
+    pub fn printing_merge_requests_link_enabled(&mut self, enable: bool) -> &mut Self {
+        self.printing_merge_request_link_enabled(enable)
+    }
 }
 
 impl<'a> Endpoint for EditProject<'a> {
@@ -400,8 +408,8 @@ impl<'a> Endpoint for EditProject<'a> {
                 self.remove_source_branch_after_merge,
             )
             .push_opt(
-                "printing_merge_requests_link_enabled",
-                self.printing_merge_requests_link_enabled,
+                "printing_merge_request_link_enabled",
+                self.printing_merge_request_link_enabled,
             )
             .push_opt("lfs_enabled", self.lfs_enabled)
             .push_opt("request_access_enabled", self.request_access_enabled)
@@ -1397,6 +1405,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .remove_source_branch_after_merge(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_printing_merge_request_link_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("printing_merge_request_link_enabled=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .printing_merge_request_link_enabled(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

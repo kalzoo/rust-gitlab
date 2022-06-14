@@ -281,8 +281,28 @@ pub struct Hook {
     pub created_at: DateTime<Utc>,
     /// Whether the hook is contacted for push events.
     pub push_events: bool,
+    /// Filter branches for which the hook is contacted for push events.
+    pub push_events_branch_filter: Option<String>,
     /// Whether the hook is contacted for tag push events.
     pub tag_push_events: bool,
+    /// Whether the hook is contacted for issue events.
+    pub issues_events: bool,
+    /// Whether the hook is contacted for confidential issue events.
+    pub confidential_issues_events: Option<bool>,
+    /// Whether the hook is contacted for merge request events.
+    pub merge_requests_events: bool,
+    /// Whether the hook is contacted for note events.
+    pub note_events: bool,
+    /// Whether the hook is contacted for confidential note events.
+    pub confidential_note_events: Option<bool>,
+    /// Whether the hook is contacted for repository update events.
+    pub repository_update_events: bool,
+    /// Whether the hook is contacted for job events.
+    pub job_events: bool,
+    /// Whether the hook is contacted for pipeline events.
+    pub pipeline_events: bool,
+    /// Whether the hook is contacted for wiki page events.
+    pub wiki_page_events: bool,
     /// Whether the communication with the hook is verified using TLS certificates.
     pub enable_ssl_verification: bool,
 }
@@ -337,6 +357,16 @@ impl From<ProjectHook> for Hook {
             push_events: hook.push_events,
             tag_push_events: hook.tag_push_events,
             enable_ssl_verification: hook.enable_ssl_verification,
+            push_events_branch_filter: hook.push_events_branch_filter,
+            issues_events: hook.issues_events,
+            confidential_issues_events: hook.confidential_issues_events,
+            merge_requests_events: hook.merge_requests_events,
+            note_events: hook.note_events,
+            confidential_note_events: hook.confidential_note_events,
+            job_events: hook.job_events,
+            pipeline_events: hook.pipeline_events,
+            wiki_page_events: hook.wiki_page_events,
+            repository_update_events: hook.repository_update_events,
         }
     }
 }
@@ -568,6 +598,10 @@ pub struct Project {
     pub avatar_url: Option<String>,
     /// The path to CI config file.
     pub ci_config_path: Option<String>,
+    /// The default Git strategy for CI jobs of the project.
+    pub build_git_strategy: Option<String>,
+    /// The default number of revisions to fetch in CI jobs.
+    pub ci_default_git_depth: Option<u64>,
     /// Description of error if project failed to import.
     pub import_error: Option<String>,
     /// The number of stars for the project.
