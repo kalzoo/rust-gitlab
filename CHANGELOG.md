@@ -1,4 +1,4 @@
-# v0.1500.1 (unreleased)
+# v0.1501.0
 
 ## Changes
 
