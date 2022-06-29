@@ -1,6 +1,7 @@
 {
   "_links": {
     "award_emoji": "https://gitlab.kitware.com/api/v4/projects/855/issues/6/award_emoji",
+    "closed_as_duplicate_of": null,
     "notes": "https://gitlab.kitware.com/api/v4/projects/855/issues/6/notes",
     "project": "https://gitlab.kitware.com/api/v4/projects/855",
     "self": "https://gitlab.kitware.com/api/v4/projects/855/issues/6"

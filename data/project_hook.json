@@ -1,8 +1,10 @@
 {
+  "alert_status": "executable",
   "confidential_issues_events": true,
   "confidential_note_events": true,
   "created_at": "2016-12-16T11:37:24.589-05:00",
   "deployment_events": false,
+  "disabled_until": null,
   "enable_ssl_verification": true,
   "id": 1262,
   "issues_events": true,
