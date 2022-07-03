@@ -24,7 +24,7 @@ impl DeployKeys {
     }
 }
 
-impl<'a> Endpoint for DeployKeys {
+impl Endpoint for DeployKeys {
     fn method(&self) -> Method {
         Method::GET
     }
@@ -42,7 +42,7 @@ impl<'a> Endpoint for DeployKeys {
     }
 }
 
-impl<'a> Pageable for DeployKeys {}
+impl Pageable for DeployKeys {}
 
 #[cfg(test)]
 mod tests {
