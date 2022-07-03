@@ -1,3 +1,9 @@
+# v0.1501.1 (unreleased)
+
+## Changes
+
+  * `graphql_client` has been updated to 0.11.
+
 # v0.1501.0
 
 ## Changes
