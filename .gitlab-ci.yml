@@ -94,15 +94,7 @@ clippy-features:build:
         # Potential segfault in localtime_r invocations
         # https://rustsec.org/advisories/RUSTSEC-2020-0159
         # https://github.com/chronotope/chrono/issues/499
-        #
-        # failure is unmaintained
-        # https://rustsec.org/advisories/RUSTSEC-2020-0036
-        # https://github.com/graphql-rust/graphql-client/pull/396
-        #
-        # failure: Type confusion if __private_get_type_id__ is overridden
-        # https://rustsec.org/advisories/RUSTSEC-2019-0036
-        # https://github.com/graphql-rust/graphql-client/pull/396
-        CARGO_AUDIT_ARGS: --ignore RUSTSEC-2020-0159 --ignore RUSTSEC-2020-0036 --ignore RUSTSEC-2019-0036
+        CARGO_AUDIT_ARGS: --ignore RUSTSEC-2020-0159
 
 # audit-mindeps:build:
 #     extends:
