@@ -46,22 +46,16 @@ cache-newest:prep:
         - .cargo_fetch_artifacts
         - .run_automatically
 
-# The `mindeps` builds are not working due, `void` needing an update from
-# `unreachable`. Once released, other crates in the dependency chain will needs
-# updates to propagate the support.
-#
-# https://github.com/reem/rust-unreachable/pull/15
-#
-# cache-mindeps:prep:
-#     extends:
-#         - .rust_nightly
-#         - .cargo_fetch_job
-#         - .cargo_build_tags
-#         - .cargo_fetch_artifacts
-#         - .run_automatically
-#     variables:
-#         GENERATE_LOCKFILE_ARGS: "-Z minimal-versions"
-#         CARGO_UPDATE_POLICY: mindeps
+cache-mindeps:prep:
+    extends:
+        - .rust_nightly
+        - .cargo_fetch_job
+        - .cargo_build_tags
+        - .cargo_fetch_artifacts
+        - .run_automatically
+    variables:
+        GENERATE_LOCKFILE_ARGS: "-Z minimal-versions"
+        CARGO_UPDATE_POLICY: mindeps
 
 clippy:build:
     extends:
@@ -96,19 +90,19 @@ clippy-features:build:
         # https://github.com/chronotope/chrono/issues/499
         CARGO_AUDIT_ARGS: --ignore RUSTSEC-2020-0159
 
-# audit-mindeps:build:
-#     extends:
-#         - .rust_minimum
-#         - .cargo_audit_job
-#         - .cargo_build_tags
-#         - .run_automatically
-#         - .cargo_audit_ignore
-#     dependencies:
-#         - cache-mindeps:prep
-#     needs:
-#         - cache-mindeps:prep
-#     variables:
-#         CARGO_UPDATE_POLICY: mindeps
+audit-mindeps:build:
+    extends:
+        - .rust_minimum
+        - .cargo_audit_job
+        - .cargo_build_tags
+        - .run_automatically
+        - .cargo_audit_ignore
+    dependencies:
+        - cache-mindeps:prep
+    needs:
+        - cache-mindeps:prep
+    variables:
+        CARGO_UPDATE_POLICY: mindeps
 
 audit-newest:build:
     extends:
@@ -200,31 +194,31 @@ nightly:test:
     needs:
         - nightly:build
 
-# mindeps:build:
-#     extends:
-#         - .rust_minimum
-#         - .cargo_no_features
-#         - .cargo_build_job
-#         - .cargo_build_tags
-#         - .cargo_build_artifacts
-#         - .run_automatically
-#     dependencies:
-#         - cache-mindeps:prep
-#     needs:
-#         - cache-mindeps:prep
+mindeps:build:
+    extends:
+        - .rust_minimum
+        - .cargo_no_features
+        - .cargo_build_job
+        - .cargo_build_tags
+        - .cargo_build_artifacts
+        - .run_automatically
+    dependencies:
+        - cache-mindeps:prep
+    needs:
+      - cache-mindeps:prep
 
-# mindeps:test:
-#     extends:
-#         - .rust_minimum
-#         - .cargo_no_features
-#         - .cargo_test_job
-#         - .cargo_build_tags
-#         - .cargo_test_artifacts
-#         - .run_automatically
-#     dependencies:
-#         - mindeps:build
-#     needs:
-#         - mindeps:build
+mindeps:test:
+    extends:
+        - .rust_minimum
+        - .cargo_no_features
+        - .cargo_test_job
+        - .cargo_build_tags
+        - .cargo_test_artifacts
+        - .run_automatically
+    dependencies:
+        - mindeps:build
+    needs:
+        - mindeps:build
 
 minimum-features:build:
     extends:
@@ -329,28 +323,28 @@ nightly-features:test:
     needs:
         - nightly-features:build
 
-# mindeps-features:build:
-#     extends:
-#         - .rust_minimum
-#         - .cargo_all_features
-#         - .cargo_build_job
-#         - .cargo_build_tags
-#         - .cargo_build_artifacts
-#         - .run_automatically
-#     dependencies:
-#         - cache-mindeps:prep
-#     needs:
-#         - cache-mindeps:prep
+mindeps-features:build:
+    extends:
+        - .rust_minimum
+        - .cargo_all_features
+        - .cargo_build_job
+        - .cargo_build_tags
+        - .cargo_build_artifacts
+        - .run_automatically
+    dependencies:
+        - cache-mindeps:prep
+    needs:
+        - cache-mindeps:prep
 
-# mindeps-features:test:
-#     extends:
-#         - .rust_minimum
-#         - .cargo_all_features
-#         - .cargo_test_job
-#         - .cargo_build_tags
-#         - .cargo_test_artifacts
-#         - .run_automatically
-#     dependencies:
-#         - mindeps-features:build
-#     needs:
-#         - mindeps-features:build
+mindeps-features:test:
+    extends:
+        - .rust_minimum
+        - .cargo_all_features
+        - .cargo_test_job
+        - .cargo_build_tags
+        - .cargo_test_artifacts
+        - .run_automatically
+    dependencies:
+        - mindeps-features:build
+    needs:
+        - mindeps-features:build
