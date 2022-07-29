@@ -18,7 +18,7 @@ pub struct RemoveGroupMember<'a> {
     group: NameOrId<'a>,
     /// The user to remove from the group.
     user: u64,
-    /// unassign from any issues or merge requests inside a given group.
+    /// Unassign from any issues or merge requests inside a given group.
     #[builder(default)]
     unassign_issuables: Option<bool>,
 }

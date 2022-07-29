@@ -174,7 +174,7 @@ pub struct EditProject<'a> {
     #[builder(default)]
     build_timeout: Option<u64>,
     /// Whether to automatically cancel pipelines when branches are updated when using a previous
-    /// version of th branch.
+    /// version of the branch.
     #[builder(setter(into), default)]
     auto_cancel_pending_pipelines: Option<EnableState>,
     /// The default regular expression to use for build coverage extraction.

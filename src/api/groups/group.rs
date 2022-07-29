@@ -17,7 +17,7 @@ pub struct Group<'a> {
     #[builder(setter(into))]
     group: NameOrId<'a>,
 
-    /// Include custom attributes in th response.
+    /// Include custom attributes in the response.
     #[builder(default)]
     with_custom_attributes: Option<bool>,
     /// Include project information.

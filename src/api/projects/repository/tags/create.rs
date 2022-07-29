@@ -22,7 +22,7 @@ pub struct CreateTag<'a> {
     /// The ref to create the tag from.
     #[builder(setter(into))]
     ref_: Cow<'a, str>,
-    /// Message creates an annotated tag if present
+    /// Creates an annotated tag, if present.
     #[builder(setter(into), default)]
     message: Option<Cow<'a, str>>,
 }

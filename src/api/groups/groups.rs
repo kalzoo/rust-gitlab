@@ -78,7 +78,7 @@ pub struct Groups<'a> {
     /// Include project statistics in the results.
     #[builder(default)]
     statistics: Option<bool>,
-    /// Include custom attributes in th response.
+    /// Include custom attributes in the response.
     #[builder(default)]
     with_custom_attributes: Option<bool>,
 
