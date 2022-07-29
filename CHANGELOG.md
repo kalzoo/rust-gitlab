@@ -5,6 +5,7 @@
   * `types::GroupHook` has been added.
   * New endpoints for:
     - Creating, getting, editing, listing and deleting group hooks.
+  * Support for `Push` branch protections when creating groups.
 
 # v0.1502.0
 
