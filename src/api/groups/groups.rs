@@ -21,6 +21,8 @@ pub enum GroupOrderBy {
     Path,
     /// Order by the group ID.
     Id,
+    /// Order by similarity (only relevant for searches).
+    Similarity,
 }
 
 impl Default for GroupOrderBy {
@@ -36,6 +38,7 @@ impl GroupOrderBy {
             GroupOrderBy::Name => "name",
             GroupOrderBy::Path => "path",
             GroupOrderBy::Id => "id",
+            GroupOrderBy::Similarity => "similarity",
         }
     }
 }
@@ -173,6 +176,7 @@ mod tests {
             (GroupOrderBy::Name, "name"),
             (GroupOrderBy::Path, "path"),
             (GroupOrderBy::Id, "id"),
+            (GroupOrderBy::Similarity, "similarity"),
         ];
 
         for (i, s) in items {

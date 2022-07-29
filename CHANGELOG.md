@@ -6,6 +6,7 @@
   * New endpoints for:
     - Creating, getting, editing, listing and deleting group hooks.
   * Support for `Push` branch protections when creating groups.
+  * Support for sorting group project search results by `Similarity`.
 
 # v0.1502.0
 
