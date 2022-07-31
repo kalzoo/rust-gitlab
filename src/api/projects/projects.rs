@@ -28,6 +28,8 @@ pub enum ProjectOrderBy {
     UpdatedAt,
     /// Order by the last activity date of the project.
     LastActivityAt,
+    /// Order by similarity (only relevant for searches).
+    Similarity,
     /// Order by repository size.
     RepositorySize,
     /// Order by storage size.
@@ -58,6 +60,7 @@ impl ProjectOrderBy {
             ProjectOrderBy::CreatedAt => "created_at",
             ProjectOrderBy::UpdatedAt => "updated_at",
             ProjectOrderBy::LastActivityAt => "last_activity_at",
+            ProjectOrderBy::Similarity => "similarity",
             ProjectOrderBy::RepositorySize => "repository_size",
             ProjectOrderBy::StorageSize => "storage_size",
             ProjectOrderBy::PackagesSize => "packages_size",
@@ -283,6 +286,7 @@ mod tests {
             (ProjectOrderBy::CreatedAt, "created_at"),
             (ProjectOrderBy::UpdatedAt, "updated_at"),
             (ProjectOrderBy::LastActivityAt, "last_activity_at"),
+            (ProjectOrderBy::Similarity, "similarity"),
             (ProjectOrderBy::RepositorySize, "repository_size"),
             (ProjectOrderBy::StorageSize, "storage_size"),
             (ProjectOrderBy::PackagesSize, "packages_size"),
