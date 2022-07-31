@@ -66,6 +66,10 @@ pub enum PipelineStatus {
     Manual,
     /// Pipelines which have been scheduled.
     Scheduled,
+    /// Pipelines which are being prepared.
+    Preparing,
+    /// Pipelines waiting for a resource.
+    WaitingForResource,
 }
 
 impl PipelineStatus {
@@ -81,6 +85,8 @@ impl PipelineStatus {
             PipelineStatus::Created => "created",
             PipelineStatus::Manual => "manual",
             PipelineStatus::Scheduled => "scheduled",
+            PipelineStatus::Preparing => "preparing",
+            PipelineStatus::WaitingForResource => "waiting_for_resource",
         }
     }
 }
@@ -252,6 +258,8 @@ mod tests {
             (PipelineStatus::Created, "created"),
             (PipelineStatus::Manual, "manual"),
             (PipelineStatus::Scheduled, "scheduled"),
+            (PipelineStatus::Preparing, "preparing"),
+            (PipelineStatus::WaitingForResource, "waiting_for_resource"),
         ];
 
         for (i, s) in items {
