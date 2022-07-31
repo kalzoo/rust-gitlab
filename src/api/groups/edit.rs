@@ -12,6 +12,34 @@ use crate::api::groups::{
     BranchProtection, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
     SubgroupCreationAccessLevel,
 };
+use crate::api::ParamValue;
+
+/// Access levels for creating a project within a group.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SharedRunnersSetting {
+    /// All projects and subgroups can use shared runners.
+    Enabled,
+    /// Shared runners are not allowed, but subgroups can enable.
+    DisabledWithOverride,
+    /// Shared runners are not allowed for this group and all subgroups.
+    DisableAndUnoverridable,
+}
+
+impl SharedRunnersSetting {
+    fn as_str(self) -> &'static str {
+        match self {
+            SharedRunnersSetting::Enabled => "enabled",
+            SharedRunnersSetting::DisabledWithOverride => "disabled_with_override",
+            SharedRunnersSetting::DisableAndUnoverridable => "disabled_and_unoverridable",
+        }
+    }
+}
+
+impl ParamValue<'static> for SharedRunnersSetting {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
 
 /// Edit an existing group.
 #[derive(Debug, Builder)]
@@ -72,6 +100,9 @@ pub struct EditGroup<'a> {
     /// The default branch protection for projects within the group.
     #[builder(default)]
     default_branch_protection: Option<BranchProtection>,
+    /// Shared runner settings for the group.
+    #[builder(default)]
+    shared_runners_setting: Option<SharedRunnersSetting>,
     /// Pipeline quota (in minutes) for the group on shared runners.
     #[builder(setter(into), default)]
     shared_runners_minutes_limit: Option<SharedRunnersMinutesLimit>,
@@ -119,6 +150,7 @@ impl<'a> Endpoint for EditGroup<'a> {
             .push_opt("request_access_enabled", self.request_access_enabled)
             .push_opt("parent_id", self.parent_id)
             .push_opt("default_branch_protection", self.default_branch_protection)
+            .push_opt("shared_runners_setting", self.shared_runners_setting)
             .push_opt(
                 "shared_runners_minutes_limit",
                 self.shared_runners_minutes_limit,
@@ -139,10 +171,29 @@ mod tests {
     use crate::api::common::VisibilityLevel;
     use crate::api::groups::{
         BranchProtection, EditGroup, EditGroupBuilderError, GroupProjectCreationAccessLevel,
-        SharedRunnersMinutesLimit, SubgroupCreationAccessLevel,
+        SharedRunnersMinutesLimit, SharedRunnersSetting, SubgroupCreationAccessLevel,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
+
+    #[test]
+    fn shared_runners_setting_as_str() {
+        let items = &[
+            (SharedRunnersSetting::Enabled, "enabled"),
+            (
+                SharedRunnersSetting::DisabledWithOverride,
+                "disabled_with_override",
+            ),
+            (
+                SharedRunnersSetting::DisableAndUnoverridable,
+                "disabled_and_unoverridable",
+            ),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
 
     #[test]
     fn project_is_necessary() {
@@ -449,6 +500,25 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .default_branch_protection(BranchProtection::Full)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_shared_runners_setting() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("shared_runners_setting=disabled_with_override")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .shared_runners_setting(SharedRunnersSetting::DisabledWithOverride)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

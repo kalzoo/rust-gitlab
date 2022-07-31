@@ -34,6 +34,7 @@ pub use create::SubgroupCreationAccessLevel;
 pub use edit::EditGroup;
 pub use edit::EditGroupBuilder;
 pub use edit::EditGroupBuilderError;
+pub use edit::SharedRunnersSetting;
 
 pub use group::Group;
 pub use group::GroupBuilder;
