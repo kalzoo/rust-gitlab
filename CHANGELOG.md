@@ -14,6 +14,10 @@
     `api::issues::IssueOrderBy::Weight`. The old name seems to come from a
     misreading of the documentation's list of supported fields. Its field name
     has also been fixed to `weight` instead of `weight_fields`.
+  * `api::projects::{CreateProject, EditProject}::container_registry_enabled`
+    is deprecated in favor of `container_registry_access_level`.
+  * `api::projects::{CreateProject, EditProject}::{tag, tags}` are deprecated
+    in favor of `topic` and `topics`.
 
 ## Breaking changes
 

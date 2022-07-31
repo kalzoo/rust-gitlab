@@ -560,6 +560,7 @@ pub struct CreateProject<'a> {
     resolve_outdated_diff_discussions: Option<bool>,
     /// Whether the container registry is enabled or not.
     #[builder(default)]
+    #[deprecated(note = "use `container_registry_access_level` instead")]
     container_registry_enabled: Option<bool>,
     /// The expiration policy for containers.
     #[builder(default)]
@@ -751,6 +752,7 @@ impl<'a> CreateProjectBuilder<'a> {
     }
 
     /// Add a tag.
+    #[deprecated(note = "use `topic` instead")]
     pub fn tag<T>(&mut self, tag: T) -> &mut Self
     where
         T: Into<Cow<'a, str>>,
@@ -762,6 +764,7 @@ impl<'a> CreateProjectBuilder<'a> {
     }
 
     /// Add multiple tags.
+    #[deprecated(note = "use `topics` instead")]
     pub fn tags<I, T>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = T>,
@@ -869,10 +872,6 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "resolve_outdated_diff_discussions",
                 self.resolve_outdated_diff_discussions,
             )
-            .push_opt(
-                "container_registry_enabled",
-                self.container_registry_enabled,
-            )
             .push_opt("shared_runners_enabled", self.shared_runners_enabled)
             .push_opt("visibility", self.visibility)
             .push_opt("import_url", self.import_url.as_ref())
@@ -951,7 +950,11 @@ impl<'a> Endpoint for CreateProject<'a> {
                 .push_opt("merge_requests_enabled", self.merge_requests_enabled)
                 .push_opt("jobs_enabled", self.jobs_enabled)
                 .push_opt("wiki_enabled", self.wiki_enabled)
-                .push_opt("snippets_enabled", self.snippets_enabled);
+                .push_opt("snippets_enabled", self.snippets_enabled)
+                .push_opt(
+                    "container_registry_enabled",
+                    self.container_registry_enabled,
+                );
         }
 
         params.into_body()
@@ -1607,6 +1610,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_container_registry_enabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -2150,6 +2154,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tag_list() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
