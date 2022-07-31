@@ -17,6 +17,7 @@ mod remove;
 pub use self::add::AddProjectMember;
 pub use self::add::AddProjectMemberBuilder;
 pub use self::add::AddProjectMemberBuilderError;
+pub use self::add::ProjectInviteTasksToBeDone;
 
 pub use self::edit::EditProjectMember;
 pub use self::edit::EditProjectMemberBuilder;

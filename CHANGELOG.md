@@ -10,6 +10,8 @@
   * Support for setting group shared runner settings, `path`,
     `prevent_sharing_groups_outside_hierarchy`,
     `prevent_forking_outside_group`, and `file_template_project_id`.
+  * Support for `invite_source`, `tasks_to_be_done`, and `tasks_project_id`
+    when adding a member to a group or project.
 
 ## Deprecations
 
