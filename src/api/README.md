@@ -268,12 +268,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/issues/:issue/todo` https://gitlab.kitware.com/help/api/issues.md#create-a-to-do-item
   * `POST   /projects/:project/issues/:issue/unsubscribe` https://gitlab.kitware.com/help/api/issues.md#unsubscribe-from-an-issue
   * `GET    /projects/:project/issues/:issue/user_agent_detail` https://gitlab.kitware.com/help/api/issues.md#get-user-agent-details
-  * `GET    /projects/:project/jobs/artifacts/:ref/download` https://gitlab.kitware.com/help/api/jobs.md#download-the-artifacts-archive
-  * `GET    /projects/:project/jobs/artifacts/:ref/raw/*artifact_path` https://gitlab.kitware.com/help/api/jobs.md#download-a-single-artifact-file-from-specific-tag-or-branch
-  * `GET    /projects/:project/jobs/:job/artifacts` https://gitlab.kitware.com/help/api/jobs.md#get-job-artifacts
-  * `DELETE /projects/:project/jobs/:job/artifacts` https://gitlab.kitware.com/help/api/jobs.md#delete-artifacts
-  * `POST   /projects/:project/jobs/:job/artifacts/keep` https://gitlab.kitware.com/help/api/jobs.md#keep-artifacts
-  * `GET    /projects/:project/jobs/:job/artifacts/*artifact_path` https://gitlab.kitware.com/help/api/jobs.md#download-a-single-artifact-file-by-job-id
   * `PUT    /projects/:project/labels/:label` https://gitlab.kitware.com/help/api/labels.md#edit-an-existing-label
   * `POST   /projects/:project/labels/:label/subscribe` https://gitlab.kitware.com/help/api/labels.md#subscribe-to-a-label
   * `POST   /projects/:project/labels/:label/unsubscribe` https://gitlab.kitware.com/help/api/labels.md#unsubscribe-from-a-label
@@ -465,6 +459,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/group_iterations.md
   * https://gitlab.kitware.com/help/api/group_labels.md
   * https://gitlab.kitware.com/help/api/group_level_variables.md
+  * https://gitlab.kitware.com/help/api/group_releases.md
   * https://gitlab.kitware.com/help/api/group_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/group_wikis.md
   * https://gitlab.kitware.com/help/api/import.md
@@ -475,13 +470,13 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/issue_links.md
   * https://gitlab.kitware.com/help/api/issues_statistics.md
   * https://gitlab.kitware.com/help/api/iterations.md
+  * https://gitlab.kitware.com/help/api/job_artifacts.md
   * https://gitlab.kitware.com/help/api/keys.md
   * https://gitlab.kitware.com/help/api/license.md
   * https://gitlab.kitware.com/help/api/linked_epics.md
   * https://gitlab.kitware.com/help/api/lint.md
   * https://gitlab.kitware.com/help/api/managed_licenses.md
   * https://gitlab.kitware.com/help/api/markdown.md
-  * https://gitlab.kitware.com/help/api/merge_request_approvals.md
   * https://gitlab.kitware.com/help/api/merge_request_context_commits.md
   * https://gitlab.kitware.com/help/api/metadata.md
   * https://gitlab.kitware.com/help/api/metrics_dashboard_annotations.md
@@ -509,10 +504,8 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/protected_environments.md
   * https://gitlab.kitware.com/help/api/releases/links.md
   * https://gitlab.kitware.com/help/api/remote_mirrors.md
-  * https://gitlab.kitware.com/help/api/repository_files.md
   * https://gitlab.kitware.com/help/api/repository_submodules.md
   * https://gitlab.kitware.com/help/api/resource_iteration_events.md
-  * https://gitlab.kitware.com/help/api/resource_label_events.md
   * https://gitlab.kitware.com/help/api/resource_milestone_events.md
   * https://gitlab.kitware.com/help/api/resource_state_events.md
   * https://gitlab.kitware.com/help/api/resource_weight_events.md
