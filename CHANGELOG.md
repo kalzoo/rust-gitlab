@@ -18,6 +18,8 @@
   * Support sorting merge requests by title.
   * Support requesting retried jobs when requesting pipeline jobs.
   * Support pipeline status states `Preparing` and `WaitingForResource`.
+  * Support setting the `security_and_compliance_access_level` when creating
+    and editing projects.
 
 ## Deprecations
 
