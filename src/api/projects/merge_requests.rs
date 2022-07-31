@@ -69,6 +69,7 @@ pub use self::changes::MergeRequestChangesBuilderError;
 
 pub use self::merge_requests::MergeRequestOrderBy;
 pub use self::merge_requests::MergeRequestScope;
+#[allow(deprecated)]
 pub use self::merge_requests::MergeRequestSearchScope;
 pub use self::merge_requests::MergeRequestState;
 pub use self::merge_requests::MergeRequestView;

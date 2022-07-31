@@ -18,6 +18,10 @@
     is deprecated in favor of `container_registry_access_level`.
   * `api::projects::{CreateProject, EditProject}::{tag, tags}` are deprecated
     in favor of `topic` and `topics`.
+  * `api::projects::merge_requests::MergeRequests::search_in` is deprecated
+    because GitLab doesn't actually have such a query parameter.
+  * `api::projects::merge_requests::MergeRequestSearchScope` is deprecated
+    because GitLab doesn't actually have such a query parameter it represented.
 
 ## Breaking changes
 
