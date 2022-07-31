@@ -150,6 +150,8 @@ pub enum MergeRequestOrderBy {
     CreatedAt,
     /// Sort by last updated date.
     UpdatedAt,
+    /// Sort by title.
+    Title,
 }
 
 impl Default for MergeRequestOrderBy {
@@ -163,6 +165,7 @@ impl MergeRequestOrderBy {
         match self {
             MergeRequestOrderBy::CreatedAt => "created_at",
             MergeRequestOrderBy::UpdatedAt => "updated_at",
+            MergeRequestOrderBy::Title => "title",
         }
     }
 }
@@ -667,6 +670,7 @@ mod tests {
         let items = &[
             (MergeRequestOrderBy::CreatedAt, "created_at"),
             (MergeRequestOrderBy::UpdatedAt, "updated_at"),
+            (MergeRequestOrderBy::Title, "title"),
         ];
 
         for (i, s) in items {
