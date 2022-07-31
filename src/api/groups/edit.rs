@@ -245,6 +245,25 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_name() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("name=name")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .name("name")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_path() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
