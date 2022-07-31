@@ -16,6 +16,7 @@
   * Support for filtering on `epic_id` when listing issues.
   * Support for issue types when creating, editing, and filtering issues.
   * Support sorting merge requests by title.
+  * Support requesting retried jobs when requesting pipeline jobs.
 
 ## Deprecations
 
