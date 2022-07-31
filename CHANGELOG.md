@@ -18,6 +18,9 @@
 ## Breaking changes
 
   * `api::deploy_keys::DeployKeys::public` is now private.
+  * `api::projects::{CreateProject, EditProject}::requirements_access_level` do
+    not support `Public`, so they now uses `api::FeatureAccessLevel` instead of
+    `api::FeatureAccessLevelPublic`.
 
 # v0.1502.0
 

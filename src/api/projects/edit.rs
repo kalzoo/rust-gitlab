@@ -69,7 +69,7 @@ pub struct EditProject<'a> {
     operations_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for requirements features.
     #[builder(default)]
-    requirements_access_level: Option<FeatureAccessLevelPublic>,
+    requirements_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for analytics features.
     #[builder(default)]
     analytics_access_level: Option<FeatureAccessLevel>,
@@ -787,14 +787,14 @@ mod tests {
             .method(Method::PUT)
             .endpoint("projects/simple%2Fproject")
             .content_type("application/x-www-form-urlencoded")
-            .body_str("requirements_access_level=public")
+            .body_str("requirements_access_level=enabled")
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = EditProject::builder()
             .project("simple/project")
-            .requirements_access_level(FeatureAccessLevelPublic::Public)
+            .requirements_access_level(FeatureAccessLevel::Enabled)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

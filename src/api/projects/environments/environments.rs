@@ -21,6 +21,8 @@ enum NameOrSearch<'a> {
 pub enum EnvironmentState {
     /// Environments that have been deployed and are available.
     Available,
+    /// Environments that are being stopped.
+    Stopping,
     /// Environments that have been stopped.
     Stopped,
 }
@@ -29,6 +31,7 @@ impl EnvironmentState {
     fn as_str(self) -> &'static str {
         match self {
             EnvironmentState::Available => "available",
+            EnvironmentState::Stopping => "stopping",
             EnvironmentState::Stopped => "stopped",
         }
     }
