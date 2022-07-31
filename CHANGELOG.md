@@ -8,6 +8,10 @@
   * Support for `Push` branch protections when creating groups.
   * Support for sorting project search results by `Similarity`.
 
+## Breaking changes
+
+  * `api::deploy_keys::DeployKeys::public` is now private.
+
 # v0.1502.0
 
 ## Changes
