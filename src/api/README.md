@@ -333,8 +333,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/repository/files/*file_path/blame` https://gitlab.kitware.com/help/api/repository_files.md#get-file-blame-from-repository
   * `DELETE /projects/:project/repository/merged_branches` https://gitlab.kitware.com/help/api/branches.md#delete-merged-branches
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
-  * `POST   /projects/:project/repository/tags/:tag/release` https://gitlab.kitware.com/help/api/tags.md#create-a-new-release
-  * `PUT    /projects/:project/repository/tags/:tag/release` https://gitlab.kitware.com/help/api/tags.md#update-a-release
   * `GET    /projects/:project/repository/archive[.format]` https://gitlab.kitware.com/help/api/repositories.md#get-file-archive
   * `GET    /projects/:project/repository/blobs/:sha` https://gitlab.kitware.com/help/api/repositories.md#get-a-blob-from-repository
   * `GET    /projects/:project/repository/blobs/:sha/raw` https://gitlab.kitware.com/help/api/repositories.md#raw-blob-content
