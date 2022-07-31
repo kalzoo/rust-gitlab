@@ -299,9 +299,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/merge_requests/:merge_request/resource_label_events/:event` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-merge-request-label-event
   * `GET    /projects/:project/milestones` https://gitlab.kitware.com/help/api/milestones.md#list-project-milestones
-  * `GET    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#list-project-milestones
-  * `PUT    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#create-new-milestone
-  * `DELETE /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#create-new-milestone
+  * `GET    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#get-single-milestone
+  * `PUT    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#edit-milestone
+  * `DELETE /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#delete-project-milestone
   * `GET    /projects/:project/milestones/:milestone/burndown_events` https://gitlab.kitware.com/help/api/milestones.md#get-all-burndown-chart-events-for-a-single-milestone-starter
   * `GET    /projects/:project/milestones/:milestone/issues` https://gitlab.kitware.com/help/api/milestones.md#get-all-issues-assigned-to-a-single-milestone
   * `GET    /projects/:project/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
