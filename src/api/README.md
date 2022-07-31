@@ -29,9 +29,9 @@ These API endpoints have been implemented.
   * `DELETE /groups/:group/share/:id` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
   * `GET    /projects` `projects/projects.rs`
-  * `POST   /projects` `projects/projects/create.rs`
-  * `GET    /projects/:project` `projects/projects/project.rs`
-  * `PUT    /projects/:project` `projects/projects/edit.rs`
+  * `POST   /projects` `projects/create.rs`
+  * `GET    /projects/:project` `projects/project.rs`
+  * `PUT    /projects/:project` `projects/edit.rs`
   * `GET    /projects/:project/environments` `projects/environments/environments.rs`
   * `GET    /projects/:project/environments/:id` `projects/environments/environment.rs`
   * `GET    /projects/:project/hooks` `projects/hooks/hooks.rs`
@@ -56,9 +56,9 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/jobs/:id/retry` `projects/jobs/retry.rs`
   * `POST   /projects/:project/jobs/:id/play` `projects/jobs/play.rs`
   * `GET    /projects/:project/jobs/:id/trace` `projects/jobs/trace.rs`
-  * `GET    /projects/:project/labels` `projects/labels/label.rs`
+  * `GET    /projects/:project/labels` `projects/labels/labels.rs`
   * `POST   /projects/:project/labels` `projects/labels/create.rs`
-  * `GET    /projects/:project/labels/:label` `projects/labels/labels.rs`
+  * `GET    /projects/:project/labels/:label` `projects/labels/label.rs`
   * `DELETE /projects/:project/labels/:label` `projects/labels/delete.rs`
   * `PUT    /projects/:project/labels/:label/promote` `projects/labels/promote.rs`
     Arguably, this should be `POST /projects/:project/labels/:label/promote`.
@@ -137,10 +137,10 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/repository/tree` `projects/repository/tree.rs`
   * `POST   /projects/:project/share` `projects/share.rs`
   * `DELETE /projects/:project/share/:group` `projects/unshare.rs`
-  * `GET    /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
+  * `POST   /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
     Arguably, this should be `POST /projects/:project/repository/commits/:sha/statuses`.
     https://gitlab.com/gitlab-org/gitlab/-/issues/217412
-  * `POST   /projects/:project/variables` `projects/variables/variables.rs`
+  * `POST   /projects/:project/variables` `projects/variables/create.rs`
   * `GET    /projects/:project/variables/:key` `projects/variables/variable.rs`
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
   * `GET    /user` `users/current_user.rs`
