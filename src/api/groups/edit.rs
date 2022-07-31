@@ -52,6 +52,9 @@ pub struct EditGroup<'a> {
     /// The name of the group.
     #[builder(setter(into), default)]
     name: Option<Cow<'a, str>>,
+    /// The path of the group.
+    #[builder(setter(into), default)]
+    path: Option<Cow<'a, str>>,
     /// A short description for the group.
     #[builder(setter(into), default)]
     description: Option<Cow<'a, str>>,
@@ -88,6 +91,11 @@ pub struct EditGroup<'a> {
     /// Disable group-wide mentions.
     #[builder(default)]
     mentions_disabled: Option<bool>,
+    /// Disable sharing outside of the group hierarchy.
+    ///
+    /// Only available on top-level groups.
+    #[builder(default)]
+    prevent_sharing_groups_outside_hierarchy: Option<bool>,
     /// Whether `git-lfs` is enabled by default for projects within the group.
     #[builder(default)]
     lfs_enabled: Option<bool>,
@@ -109,6 +117,12 @@ pub struct EditGroup<'a> {
     /// Pipeline quota excess (in minutes) for the group on shared runners.
     #[builder(default)]
     extra_shared_runners_minutes_limit: Option<u64>,
+    /// The project id to load custom file templates from.
+    #[builder(default)]
+    file_template_project_id: Option<u64>,
+    /// When enabled, users cannot fork projects from this group to other namespaces.
+    #[builder(default)]
+    prevent_forking_outside_group: Option<bool>,
 }
 
 impl<'a> EditGroup<'a> {
@@ -132,6 +146,7 @@ impl<'a> Endpoint for EditGroup<'a> {
 
         params
             .push_opt("name", self.name.as_ref())
+            .push_opt("path", self.path.as_ref())
             .push_opt("description", self.description.as_ref())
             .push_opt("membership_lock", self.membership_lock)
             .push_opt("visibility", self.visibility)
@@ -146,6 +161,10 @@ impl<'a> Endpoint for EditGroup<'a> {
             .push_opt("subgroup_creation_level", self.subgroup_creation_level)
             .push_opt("emails_disabled", self.emails_disabled)
             .push_opt("mentions_disabled", self.mentions_disabled)
+            .push_opt(
+                "prevent_sharing_groups_outside_hierarchy",
+                self.prevent_sharing_groups_outside_hierarchy,
+            )
             .push_opt("lfs_enabled", self.lfs_enabled)
             .push_opt("request_access_enabled", self.request_access_enabled)
             .push_opt("parent_id", self.parent_id)
@@ -158,6 +177,11 @@ impl<'a> Endpoint for EditGroup<'a> {
             .push_opt(
                 "extra_shared_runners_minutes_limit",
                 self.extra_shared_runners_minutes_limit,
+            )
+            .push_opt("file_template_project_id", self.file_template_project_id)
+            .push_opt(
+                "prevent_forking_outside_group",
+                self.prevent_forking_outside_group,
             );
 
         params.into_body()
@@ -217,6 +241,25 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = EditGroup::builder().group("simple/group").build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_path() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("path=path")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .path("path")
+            .build()
+            .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 
@@ -430,6 +473,25 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_prevent_sharing_groups_outside_hierarchy() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("prevent_sharing_groups_outside_hierarchy=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .prevent_sharing_groups_outside_hierarchy(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_lfs_enabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -576,6 +638,44 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .extra_shared_runners_minutes_limit(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_file_template_project_id() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("file_template_project_id=1")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .file_template_project_id(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_prevent_forking_outside_group() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("prevent_forking_outside_group=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .prevent_forking_outside_group(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

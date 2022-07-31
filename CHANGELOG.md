@@ -7,7 +7,9 @@
     - Creating, getting, editing, listing and deleting group hooks.
   * Support for `Push` branch protections when creating groups.
   * Support for sorting project search results by `Similarity`.
-  * Support for setting group shared runner settings.
+  * Support for setting group shared runner settings, `path`,
+    `prevent_sharing_groups_outside_hierarchy`,
+    `prevent_forking_outside_group`, and `file_template_project_id`.
 
 ## Deprecations
 
