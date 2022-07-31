@@ -12,6 +12,7 @@ use derive_builder::Builder;
 
 use crate::api::common::{CommaSeparatedList, NameOrId};
 use crate::api::endpoint_prelude::*;
+use crate::api::issues::IssueType;
 use crate::api::ParamValue;
 
 /// States an issue may be set to.
@@ -107,6 +108,9 @@ pub struct EditIssue<'a> {
     /// The ID of the epic to add the issue to.
     #[builder(default)]
     epic_id: Option<u64>,
+    /// The type of issue.
+    #[builder(default)]
+    issue_type: Option<IssueType>,
 
     /// The internal ID of the epic to add the issue to.
     #[deprecated(note = "use `epic_id` instead")]
@@ -279,6 +283,7 @@ impl<'a> Endpoint for EditIssue<'a> {
             .push_opt("weight", self.weight)
             .push_opt("discussion_locked", self.discussion_locked)
             .push_opt("epic_id", self.epic_id)
+            .push_opt("issue_type", self.issue_type)
             .push_opt("confidential", self.confidential);
 
         if let Some(assignees) = self.assignee_ids.as_ref() {
@@ -306,6 +311,7 @@ mod tests {
     use chrono::{NaiveDate, TimeZone, Utc};
     use http::Method;
 
+    use crate::api::issues::IssueType;
     use crate::api::projects::issues::{EditIssue, EditIssueBuilderError, IssueStateEvent};
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -713,6 +719,26 @@ mod tests {
             .project("simple/project")
             .issue(1)
             .epic_id(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_type() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/issues/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("issue_type=incident")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditIssue::builder()
+            .project("simple/project")
+            .issue(1)
+            .issue_type(IssueType::Incident)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

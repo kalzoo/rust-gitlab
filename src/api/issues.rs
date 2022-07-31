@@ -70,6 +70,33 @@ impl ParamValue<'static> for IssueScope {
     }
 }
 
+/// Types of issues.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IssueType {
+    /// Regular issues.
+    Issue,
+    /// Incident reports.
+    Incident,
+    /// Test case issues.
+    TestCase,
+}
+
+impl IssueType {
+    fn as_str(self) -> &'static str {
+        match self {
+            IssueType::Issue => "issue",
+            IssueType::Incident => "incident",
+            IssueType::TestCase => "test_case",
+        }
+    }
+}
+
+impl ParamValue<'static> for IssueType {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
 /// Filter values for issue iteration values.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IssueIteration<'a> {
@@ -275,7 +302,8 @@ impl ParamValue<'static> for IssueOrderBy {
 #[cfg(test)]
 mod tests {
     use crate::api::issues::{
-        IssueDueDateFilter, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+        IssueDueDateFilter, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType,
+        IssueWeight,
     };
 
     #[test]
@@ -296,6 +324,19 @@ mod tests {
             (IssueScope::CreatedByMe, "created_by_me"),
             (IssueScope::AssignedToMe, "assigned_to_me"),
             (IssueScope::All, "all"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_type_as_str() {
+        let items = &[
+            (IssueType::Issue, "issue"),
+            (IssueType::Incident, "incident"),
+            (IssueType::TestCase, "test_case"),
         ];
 
         for (i, s) in items {

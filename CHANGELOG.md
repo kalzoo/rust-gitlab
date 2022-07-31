@@ -13,6 +13,8 @@
   * Support for `invite_source`, `tasks_to_be_done`, and `tasks_project_id`
     when adding a member to a group or project.
   * Support `skip_subresources` when deleting group memberships.
+  * Support for filtering on `epic_id` when listing issues.
+  * Support for issue types when creating, editing, and filtering issues.
 
 ## Deprecations
 
