@@ -237,6 +237,9 @@ pub enum IssueOrderBy {
     /// Sort by popularity.
     Popularity,
     /// Sort by weight.
+    Weight,
+    /// Sort by weight.
+    #[deprecated(note = "use `Weight` instead (`gitlab` crate typo)")]
     WeightFields,
 }
 
@@ -257,7 +260,8 @@ impl IssueOrderBy {
             IssueOrderBy::LabelPriority => "label_priority",
             IssueOrderBy::MilestoneDue => "milestone_due",
             IssueOrderBy::Popularity => "popularity",
-            IssueOrderBy::WeightFields => "weight_fields",
+            #[allow(deprecated)]
+            IssueOrderBy::Weight | IssueOrderBy::WeightFields => "weight",
         }
     }
 }
@@ -358,7 +362,9 @@ mod tests {
             (IssueOrderBy::LabelPriority, "label_priority"),
             (IssueOrderBy::MilestoneDue, "milestone_due"),
             (IssueOrderBy::Popularity, "popularity"),
-            (IssueOrderBy::WeightFields, "weight_fields"),
+            (IssueOrderBy::Weight, "weight"),
+            #[allow(deprecated)]
+            (IssueOrderBy::WeightFields, "weight"),
         ];
 
         for (i, s) in items {

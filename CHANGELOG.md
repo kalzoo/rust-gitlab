@@ -8,6 +8,13 @@
   * Support for `Push` branch protections when creating groups.
   * Support for sorting project search results by `Similarity`.
 
+## Deprecations
+
+  * `api::issues::IssueOrderBy::WeightFields` is now
+    `api::issues::IssueOrderBy::Weight`. The old name seems to come from a
+    misreading of the documentation's list of supported fields. Its field name
+    has also been fixed to `weight` instead of `weight_fields`.
+
 ## Breaking changes
 
   * `api::deploy_keys::DeployKeys::public` is now private.
