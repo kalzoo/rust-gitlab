@@ -33,6 +33,8 @@
     because GitLab doesn't actually have such a query parameter.
   * `api::projects::merge_requests::MergeRequestSearchScope` is deprecated
     because GitLab doesn't actually have such a query parameter it represented.
+  * `api::projects::pipelines::Pipelines::name` is deprecated; GitLab never
+    supported such a parameter.
 
 ## Breaking changes
 

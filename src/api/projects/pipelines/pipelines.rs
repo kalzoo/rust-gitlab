@@ -160,9 +160,6 @@ pub struct Pipelines<'a> {
     /// Filter pipelines with or without YAML errors.
     #[builder(default)]
     yaml_errors: Option<bool>,
-    /// Filter pipelines by the name of the triggering user.
-    #[builder(setter(into), default)]
-    name: Option<Cow<'a, str>>,
     /// Filter pipelines by the username of the triggering user.
     #[builder(setter(into), default)]
     username: Option<Cow<'a, str>>,
@@ -189,6 +186,17 @@ impl<'a> Pipelines<'a> {
     }
 }
 
+impl<'a> PipelinesBuilder<'a> {
+    /// Filter pipelines by the name of the triggering user.
+    #[deprecated(note = "use `username` instead; `name` was never accepted by GitLab")]
+    pub fn name<N>(&mut self, _: N) -> &mut Self
+    where
+        N: Into<Cow<'a, str>>,
+    {
+        self
+    }
+}
+
 impl<'a> Endpoint for Pipelines<'a> {
     fn method(&self) -> Method {
         Method::GET
@@ -207,7 +215,6 @@ impl<'a> Endpoint for Pipelines<'a> {
             .push_opt("ref", self.ref_.as_ref())
             .push_opt("sha", self.sha.as_ref())
             .push_opt("yaml_errors", self.yaml_errors)
-            .push_opt("name", self.name.as_ref())
             .push_opt("username", self.username.as_ref())
             .push_opt("updated_after", self.updated_after)
             .push_opt("updated_before", self.updated_before)
@@ -393,23 +400,6 @@ mod tests {
         let endpoint = Pipelines::builder()
             .project(1)
             .yaml_errors(true)
-            .build()
-            .unwrap();
-        api::ignore(endpoint).query(&client).unwrap();
-    }
-
-    #[test]
-    fn endpoint_name() {
-        let endpoint = ExpectedUrl::builder()
-            .endpoint("projects/1/pipelines")
-            .add_query_params(&[("name", "name")])
-            .build()
-            .unwrap();
-        let client = SingleTestClient::new_raw(endpoint, "");
-
-        let endpoint = Pipelines::builder()
-            .project(1)
-            .name("name")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
