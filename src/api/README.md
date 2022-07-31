@@ -282,6 +282,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/issues/:issue/participants` https://gitlab.kitware.com/help/api/issues.md#participants-on-issues
   * `GET    /projects/:project/issues/:issue/related_merge_requests` https://gitlab.kitware.com/help/api/issues.md#list-merge-requests-related-to-issue
   * `PUT    /projects/:project/issues/:issue/reorder` https://gitlab.kitware.com/help/api/issues.md#reorder-an-issue
+    Arguably this should be a `POST` endpoint
   * `POST   /projects/:project/issues/:issue/reset_spent_time` https://gitlab.kitware.com/help/api/issues.md#reset-spent-time-for-an-issue
   * `POST   /projects/:project/issues/:issue/reset_time_estimate` https://gitlab.kitware.com/help/api/issues.md#reset-the-time-estimate-for-an-issue
   * `GET    /projects/:project/issues/:issue/resource_label_events/:event` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-issue-label-event
@@ -305,6 +306,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/cancel_merge_when_pipeline_succeeds` https://gitlab.kitware.com/help/api/merge_requests.md#cancel-merge-when-pipeline-succeeds
   * `GET    /projects/:project/merge_requests/:merge_request/merge_ref` https://gitlab.kitware.com/help/api/merge_requests.md#merge-to-default-merge-ref-path
+    This should probably be a `POST` event?
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
   * `POST   /projects/:project/merge_requests/:merge_request/reset_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#reset-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/reset_time_estimate` https://gitlab.kitware.com/help/api/merge_requests.md#reset-the-time-estimate-for-a-merge-request
@@ -363,6 +365,7 @@ instead of having to search the page for missing endpoints.
   * `HEAD   /projects/:project/repository/files/*file_path` https://gitlab.kitware.com/help/api/repository_files.md#get-file-from-repository
   * `GET    /projects/:project/repository/files/*file_path/blame` https://gitlab.kitware.com/help/api/repository_files.md#get-file-blame-from-repository
   * `DELETE /projects/:project/repository/merged_branches` https://gitlab.kitware.com/help/api/branches.md#delete-merged-branches
+    Arguably this should be `POST /projects/:project/repository/delete_merged_branches`
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
   * `GET    /projects/:project/repository/archive[.format]` https://gitlab.kitware.com/help/api/repositories.md#get-file-archive
   * `GET    /projects/:project/repository/blobs/:sha` https://gitlab.kitware.com/help/api/repositories.md#get-a-blob-from-repository
@@ -470,6 +473,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/appearance.md
   * https://gitlab.kitware.com/help/api/applications.md
   * https://gitlab.kitware.com/help/api/audit_events.md
+    - keyset pagination is supported for group audit events with `order_by=id` and `sort=desc`
   * https://gitlab.kitware.com/help/api/avatar.md
   * https://gitlab.kitware.com/help/api/boards.md
   * https://gitlab.kitware.com/help/api/broadcast_messages.md
