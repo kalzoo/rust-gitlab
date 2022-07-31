@@ -14,31 +14,31 @@ These API endpoints have been implemented.
   * `GET    /groups/:group` `groups/group.rs`
   * `GET    /groups/:group/hooks` `groups/hooks/hooks.rs`
   * `POST   /groups/:group/hooks` `groups/hooks/create.rs`
-  * `GET    /groups/:group/hooks/:id` `groups/hooks/hook.rs`
-  * `PUT    /groups/:group/hooks/:id` `groups/hooks/edit.rs`
-  * `DELETE /groups/:group/hooks/:id` `groups/hooks/delete.rs`
+  * `GET    /groups/:group/hooks/:hook` `groups/hooks/hook.rs`
+  * `PUT    /groups/:group/hooks/:hook` `groups/hooks/edit.rs`
+  * `DELETE /groups/:group/hooks/:hook` `groups/hooks/delete.rs`
   * `GET    /groups/:group/members` `groups/members/members.rs`
   * `POST   /groups/:group/members` `groups/members/add.rs`
-  * `GET    /groups/:group/members/:id` `groups/members/member.rs`
-  * `DELETE /groups/:group/members/:id` `groups/members/remove.rs`
-  * `PUT    /groups/:group/members/:id` `groups/members/edit.rs`
+  * `GET    /groups/:group/members/:member` `groups/members/member.rs`
+  * `DELETE /groups/:group/members/:member` `groups/members/remove.rs`
+  * `PUT    /groups/:group/members/:member` `groups/members/edit.rs`
   * `POST   /groups/:group/milestones` `groups/milestones/create.rs`
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
   * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
   * `POST   /groups/:group/share` `groups/share.rs`
-  * `DELETE /groups/:group/share/:id` `groups/unshare.rs`
+  * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
   * `GET    /projects` `projects/projects.rs`
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
   * `PUT    /projects/:project` `projects/edit.rs`
   * `GET    /projects/:project/environments` `projects/environments/environments.rs`
-  * `GET    /projects/:project/environments/:id` `projects/environments/environment.rs`
+  * `GET    /projects/:project/environments/:environment` `projects/environments/environment.rs`
   * `GET    /projects/:project/hooks` `projects/hooks/hooks.rs`
   * `POST   /projects/:project/hooks` `projects/hooks/create.rs`
-  * `GET    /projects/:project/hooks/:id` `projects/hooks/hook.rs`
-  * `PUT    /projects/:project/hooks/:id` `projects/hooks/edit.rs`
-  * `DELETE /projects/:project/hooks/:id` `projects/hooks/delete.rs`
+  * `GET    /projects/:project/hooks/:hook` `projects/hooks/hook.rs`
+  * `PUT    /projects/:project/hooks/:hook` `projects/hooks/edit.rs`
+  * `DELETE /projects/:project/hooks/:hook` `projects/hooks/delete.rs`
   * `GET    /projects/:project/issues` `projects/issues/issues.rs`
     - Missing support for `not`.
   * `POST   /projects/:project/issues` `projects/issues/create.rs`
@@ -50,12 +50,12 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/issues/:issue/notes/:note` `projects/issues/notes/edit.rs`
   * `GET    /projects/:project/issues/:issue/resource_label_events` `projects/issues/resource_label_events.rs`
   * `GET    /projects/:project/jobs` `projects/jobs/jobs.rs`
-  * `GET    /projects/:project/jobs/:id` `projects/jobs/job.rs`
-  * `POST   /projects/:project/jobs/:id/cancel` `projects/jobs/cancel.rs`
-  * `POST   /projects/:project/jobs/:id/erase` `projects/jobs/erase.rs`
-  * `POST   /projects/:project/jobs/:id/retry` `projects/jobs/retry.rs`
-  * `POST   /projects/:project/jobs/:id/play` `projects/jobs/play.rs`
-  * `GET    /projects/:project/jobs/:id/trace` `projects/jobs/trace.rs`
+  * `GET    /projects/:project/jobs/:job` `projects/jobs/job.rs`
+  * `POST   /projects/:project/jobs/:job/cancel` `projects/jobs/cancel.rs`
+  * `POST   /projects/:project/jobs/:job/erase` `projects/jobs/erase.rs`
+  * `POST   /projects/:project/jobs/:job/retry` `projects/jobs/retry.rs`
+  * `POST   /projects/:project/jobs/:job/play` `projects/jobs/play.rs`
+  * `GET    /projects/:project/jobs/:job/trace` `projects/jobs/trace.rs`
   * `GET    /projects/:project/labels` `projects/labels/labels.rs`
   * `POST   /projects/:project/labels` `projects/labels/create.rs`
   * `GET    /projects/:project/labels/:label` `projects/labels/label.rs`
@@ -65,11 +65,11 @@ These API endpoints have been implemented.
     https://gitlab.com/gitlab-org/gitlab/-/issues/219324#note_382305638
   * `GET    /projects/:project/members` `projects/members/members.rs`
   * `GET    /projects/:project/members/all` `projects/members/members.rs`
-  * `GET    /projects/:project/members/all/:id` `projects/members/member.rs`
-  * `DELETE /projects/:project/members/:id` `projects/members/remove.rs`
+  * `GET    /projects/:project/members/all/:member` `projects/members/member.rs`
+  * `DELETE /projects/:project/members/:member` `projects/members/remove.rs`
   * `POST   /projects/:project/members` `projects/members/add.rs`
-  * `PUT    /projects/:project/members/:id` `projects/members/edit.rs`
-  * `GET    /projects/:project/members/:id` `projects/members/member.rs`
+  * `PUT    /projects/:project/members/:member` `projects/members/edit.rs`
+  * `GET    /projects/:project/members/:member` `projects/members/member.rs`
   * `GET    /projects/:project/merge_requests` `projects/merge_requests/merge_requests.rs`
     - Missing support for `not`.
   * `POST   /projects/:project/merge_requests` `projects/merge_requests/create.rs`
@@ -148,11 +148,11 @@ These API endpoints have been implemented.
   * `GET    /users/:user` `users/user.rs`
   * `GET    /deploy_keys` `deploy_keys/deploy_keys.rs`
   * `GET    /projects/:project/deploy_keys` `projects/deploy_keys/deploy_keys.rs`
-  * `GET    /projects/:project/deploy_keys/:id` `projects/deploy_keys/deploy_key.rs`
-  * `POST   /projects/:project/deploy_keys` `projects/deploy_keys/add.rs`
-  * `PUT    /projects/:project/deploy_keys/:id` `projects/deploy_keys/edit.rs`
-  * `DELETE /projects/:project/deploy_keys/:id` `projects/deploy_keys/delete.rs`
-  * `POST   /projects/:project/deploy_keys/:id/enable` `projects/deploy_keys/enable.rs`
+  * `GET    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/deploy_key.rs`
+  * `POST   /projects/:project/deploy_keys` `projects/deploy_keys/create.rs`
+  * `PUT    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/edit.rs`
+  * `DELETE /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/delete.rs`
+  * `POST   /projects/:project/deploy_keys/:deploy_key/enable` `projects/deploy_keys/enable.rs`
 
 # Todo
 
@@ -166,7 +166,7 @@ implemented above. This is split out into a separate list for convenience
 instead of having to search the page for missing endpoints.
 
   * `GET    /issues` https://gitlab.kitware.com/help/api/issues.md#list-issues
-  * `GET    /issues/:id` https://gitlab.kitware.com/help/api/issues.md#single-issue
+  * `GET    /issues/:issue` https://gitlab.kitware.com/help/api/issues.md#single-issue
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
   * `DELETE /groups/:group` https://gitlab.kitware.com/help/api/groups.md#remove-group
   * `GET    /groups/:group/billable_members` https://gitlab.kitware.com/help/api/groups.md#list-all-billable-members-of-a-group
@@ -192,10 +192,10 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/ldap_group_links/:provider/:cn` https://gitlab.kitware.com/help/api/groups.md#delete-ldap-group-link-starter (deprecated)
   * `DELETE /groups/:group/ldap_group_links` https://gitlab.kitware.com/help/api/groups.md#delete-ldap-group-link-with-cn-or-filter-starter
   * `GET    /groups/:group/members/all` https://gitlab.kitware.com/help/api/members.md#list-all-members-of-a-group-or-project-including-inherited-members
-  * `GET    /groups/:group/members/all/:id` https://gitlab.kitware.com/help/api/members.md#get-a-member-of-a-group-or-project-including-inherited-members
-  * `PUT    /groups/:group/members/:id` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
-  * `POST   /groups/:group/members/:id/override` https://gitlab.kitware.com/help/api/members.md#set-override-flag-for-a-member-from-a-group
-  * `DELETE /groups/:group/members/:id/override` https://gitlab.kitware.com/help/api/members.md#remove-override-for-a-member-from-a-group
+  * `GET    /groups/:group/members/all/:member` https://gitlab.kitware.com/help/api/members.md#get-a-member-of-a-group-or-project-including-inherited-members
+  * `PUT    /groups/:group/members/:member` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
+  * `POST   /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#set-override-flag-for-a-member-from-a-group
+  * `DELETE /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#remove-override-for-a-member-from-a-group
   * `GET    /groups/:group/merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-group-merge-requests
   * `GET    /groups/:group/milestones` https://gitlab.kitware.com/help/api/group_milestones.md#list-group-milestones
   * `GET    /groups/:group/milestones/:milestone` https://gitlab.kitware.com/help/api/group_milestones.md#get-single-milestone
@@ -204,7 +204,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/milestones/:milestone/burndown_events` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-burndown-chart-events-for-a-single-milestone-starter
   * `GET    /groups/:group/milestones/:milestone/issues` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-issues-assigned-to-a-single-milestone
   * `GET    /groups/:group/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
-  * `POST   /groups/:group/projects/:id` https://gitlab.kitware.com/help/api/groups.md#transfer-project-to-group
+  * `POST   /groups/:group/projects/:project` https://gitlab.kitware.com/help/api/groups.md#transfer-project-to-group
   * `GET    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#get-group-push-rules
   * `POST   /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#add-group-push-rule
   * `PUT    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#edit-group-push-rule
@@ -222,14 +222,14 @@ instead of having to search the page for missing endpoints.
   * `PUT    /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#modify-an-existing-commit-thread-note
   * `DELETE /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-a-commit-thread-note
   * `POST   /projects/:project/environments` https://gitlab.kitware.com/help/api/environments.md#create-a-new-environment
-  * `PUT    /projects/:project/environments/:id` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
-  * `DELETE /projects/:project/environments/:id` https://gitlab.kitware.com/help/api/environments.md#delete-an-environment
-  * `POST   /projects/:project/environments/:id/stop` https://gitlab.kitware.com/help/api/environments.md#stop-an-environment
-  * `GET    /projects/:project/epics/:id/notes` https://gitlab.kitware.com/help/api/notes.md#list-all-epic-notes
-  * `GET    /projects/:project/epics/:id/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-epic-note
-  * `POST   /projects/:project/epics/:id/notes` https://gitlab.kitware.com/help/api/notes.md#create-new-epic-note
-  * `PUT    /projects/:project/epics/:id/notes/:note` https://gitlab.kitware.com/help/api/notes.md#modify-existing-epic-note
-  * `DELETE /projects/:project/epics/:id/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-an-epic-note
+  * `PUT    /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
+  * `DELETE /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#delete-an-environment
+  * `POST   /projects/:project/environments/:environment/stop` https://gitlab.kitware.com/help/api/environments.md#stop-an-environment
+  * `GET    /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#list-all-epic-notes
+  * `GET    /projects/:project/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-epic-note
+  * `POST   /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#create-new-epic-note
+  * `PUT    /projects/:project/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#modify-existing-epic-note
+  * `DELETE /projects/:project/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-an-epic-note
   * `POST   /projects/:project/fork` https://gitlab.kitware.com/help/api/projects.md#fork-project
   * `DELETE /projects/:project/fork` https://gitlab.kitware.com/help/api/projects.md#delete-an-existing-forked-from-relationship
   * `POST   /projects/:project/fork/:from` https://gitlab.kitware.com/help/api/projects.md#create-a-forked-fromto-relation-between-existing-projects
@@ -255,7 +255,7 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#list-metric-images
   * `POST   /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#upload-metric-image
-  * `DELETE /projects/:project/issues/:issue/metric_images/:id` https://gitlab.kitware.com/help/api/issues.md#delete-metric-image
+  * `DELETE /projects/:project/issues/:issue/metric_images/:metric_image` https://gitlab.kitware.com/help/api/issues.md#delete-metric-image
   * `POST   /projects/:project/issues/:issue/move` https://gitlab.kitware.com/help/api/issues.md#move-an-issue
   * `GET    /projects/:project/issues/:issue/participants` https://gitlab.kitware.com/help/api/issues.md#participants-on-issues
   * `GET    /projects/:project/issues/:issue/related_merge_requests` https://gitlab.kitware.com/help/api/issues.md#list-merge-requests-related-to-issue
@@ -271,16 +271,16 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/issues/:issue/user_agent_detail` https://gitlab.kitware.com/help/api/issues.md#get-user-agent-details
   * `GET    /projects/:project/jobs/artifacts/:ref/download` https://gitlab.kitware.com/help/api/jobs.md#download-the-artifacts-archive
   * `GET    /projects/:project/jobs/artifacts/:ref/raw/*artifact_path` https://gitlab.kitware.com/help/api/jobs.md#download-a-single-artifact-file-from-specific-tag-or-branch
-  * `GET    /projects/:project/jobs/:id/artifacts` https://gitlab.kitware.com/help/api/jobs.md#get-job-artifacts
-  * `DELETE /projects/:project/jobs/:id/artifacts` https://gitlab.kitware.com/help/api/jobs.md#delete-artifacts
-  * `POST   /projects/:project/jobs/:id/artifacts/keep` https://gitlab.kitware.com/help/api/jobs.md#keep-artifacts
-  * `GET    /projects/:project/jobs/:id/artifacts/*artifact_path` https://gitlab.kitware.com/help/api/jobs.md#download-a-single-artifact-file-by-job-id
+  * `GET    /projects/:project/jobs/:job/artifacts` https://gitlab.kitware.com/help/api/jobs.md#get-job-artifacts
+  * `DELETE /projects/:project/jobs/:job/artifacts` https://gitlab.kitware.com/help/api/jobs.md#delete-artifacts
+  * `POST   /projects/:project/jobs/:job/artifacts/keep` https://gitlab.kitware.com/help/api/jobs.md#keep-artifacts
+  * `GET    /projects/:project/jobs/:job/artifacts/*artifact_path` https://gitlab.kitware.com/help/api/jobs.md#download-a-single-artifact-file-by-job-id
   * `PUT    /projects/:project/labels/:label` https://gitlab.kitware.com/help/api/labels.md#edit-an-existing-label
   * `POST   /projects/:project/labels/:label/subscribe` https://gitlab.kitware.com/help/api/labels.md#subscribe-to-a-label
   * `POST   /projects/:project/labels/:label/unsubscribe` https://gitlab.kitware.com/help/api/labels.md#unsubscribe-from-a-label
   * `GET    /projects/:project/languages` https://gitlab.kitware.com/help/api/projects.md#languages
-  * `PUT    /projects/:project/members/:id` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
-  * `DELETE /projects/:project/members/:id` https://gitlab.kitware.com/help/api/members.md#remove-a-member-from-a-group-or-project
+  * `PUT    /projects/:project/members/:member` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
+  * `DELETE /projects/:project/members/:member` https://gitlab.kitware.com/help/api/members.md#remove-a-member-from-a-group-or-project
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/approve` https://gitlab.kitware.com/help/api/merge_requests.md#approve-merge-request
@@ -388,16 +388,16 @@ instead of having to search the page for missing endpoints.
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
   * `GET    /user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails
   * `POST   /user/emails` https://gitlab.kitware.com/help/api/users.md#add-email
-  * `GET    /user/emails/:id` https://gitlab.kitware.com/help/api/users.md#single-email
-  * `DELETE /user/emails/:id` https://gitlab.kitware.com/help/api/users.md#delete-email-for-current-user
+  * `GET    /user/emails/:email` https://gitlab.kitware.com/help/api/users.md#single-email
+  * `DELETE /user/emails/:email` https://gitlab.kitware.com/help/api/users.md#delete-email-for-current-user
   * `GET    /user/gpg_keys` https://gitlab.kitware.com/help/api/users.md#list-all-gpg-keys
   * `POST   /user/gpg_keys` https://gitlab.kitware.com/help/api/users.md#add-a-gpg-key
-  * `GET    /user/gpg_keys/:id` https://gitlab.kitware.com/help/api/users.md#get-a-specific-gpg-key
-  * `DELETE /user/gpg_keys/:id` https://gitlab.kitware.com/help/api/users.md#delete-a-gpg-key
+  * `GET    /user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#get-a-specific-gpg-key
+  * `DELETE /user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#delete-a-gpg-key
   * `GET    /user/keys` https://gitlab.kitware.com/help/api/users.md#list-user-projects
   * `POST   /user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key
-  * `GET    /user/keys/:id` https://gitlab.kitware.com/help/api/users.md#single-ssh-key
-  * `DELETE /user/keys/:id` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-current-user
+  * `GET    /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#single-ssh-key
+  * `DELETE /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-current-user
   * `GET    /user/status` https://gitlab.kitware.com/help/api/users.md#user-status
   * `PUT    /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
   * `POST   /users` https://gitlab.kitware.com/help/api/users.md#user-creation
@@ -409,19 +409,19 @@ instead of having to search the page for missing endpoints.
   * `POST   /users/:user/deactivate` https://gitlab.kitware.com/help/api/users.md#deactivate-user
   * `GET    /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails-for-user
   * `POST   /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#add-email-for-user
-  * `DELETE /users/:user/emails/:id` https://gitlab.kitware.com/help/api/users.md#delete-email-for-given-user
+  * `DELETE /users/:user/emails/:email` https://gitlab.kitware.com/help/api/users.md#delete-email-for-given-user
   * `GET    /users/:user/gpg_keys` https://gitlab.kitware.com/help/api/users.md#list-all-gpg-keys-for-given-user
   * `POST   /users/:user/gpg_keys` https://gitlab.kitware.com/help/api/users.md#add-a-gpg-key-for-a-given-user
-  * `GET    /users/:user/gpg_keys/:id` https://gitlab.kitware.com/help/api/users.md#get-a-specific-gpg-key-for-a-given-user
-  * `DELETE /users/:user/gpg_keys/:id` https://gitlab.kitware.com/help/api/users.md#add-a-gpg-key-for-a-given-user
+  * `GET    /users/:user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#get-a-specific-gpg-key-for-a-given-user
+  * `DELETE /users/:user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#add-a-gpg-key-for-a-given-user
   * `DELETE /users/:user/identities/:provider` https://gitlab.kitware.com/help/api/users.md#delete-authentication-identity-from-user
   * `GET    /users/:user/impersonation_tokens` https://gitlab.kitware.com/help/api/users.md#get-all-impersonation-tokens-of-a-user
   * `POST   /users/:user/impersonation_tokens` https://gitlab.kitware.com/help/api/users.md#create-an-impersonation-token
-  * `GET    /users/:user/impersonation_tokens/:id` https://gitlab.kitware.com/help/api/users.md#get-an-impersonation-token-of-a-user
-  * `DELETE /users/:user/impersonation_tokens/:id` https://gitlab.kitware.com/help/api/users.md#revoke-an-impersonation-token
+  * `GET    /users/:user/impersonation_tokens/:impersonation_token` https://gitlab.kitware.com/help/api/users.md#get-an-impersonation-token-of-a-user
+  * `DELETE /users/:user/impersonation_tokens/:impersonation_token` https://gitlab.kitware.com/help/api/users.md#revoke-an-impersonation-token
   * `GET    /users/:user/keys` https://gitlab.kitware.com/help/api/users.md#list-ssh-keys-for-user
   * `POST   /users/:user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key-for-user
-  * `DELETE /users/:user/keys/:id` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-given-user
+  * `DELETE /users/:user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-given-user
   * `GET    /users/:user/memberships` https://gitlab.kitware.com/help/api/users.md#user-memberships-admin-only
   * `POST   /users/:user/personal_access_tokens` https://gitlab.kitware.com/help/api/users.md#create-a-personal-access-token
   * `GET    /users/:user/projects` https://gitlab.kitware.com/help/api/projects.md#list-user-projects
