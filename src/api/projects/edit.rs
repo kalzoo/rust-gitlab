@@ -141,6 +141,9 @@ pub struct EditProject<'a> {
     /// Whether merge trains are enabled.
     #[builder(default)]
     merge_trains_enabled: Option<bool>,
+    /// Whether MRs default to targing this project or the upstream project.
+    #[builder(default)]
+    mr_default_target_self: Option<bool>,
     /// Whether issues referenced on the default branch should be closed or not.
     #[builder(default)]
     autoclose_referenced_issues: Option<bool>,
@@ -234,6 +237,9 @@ pub struct EditProject<'a> {
     /// Whether to keep the latest artifact for pipelines or not.
     #[builder(default)]
     keep_latest_artifact: Option<bool>,
+    /// Whether to or not caches should be separated based on branch protection status or not.
+    #[builder(default)]
+    ci_separated_caches: Option<bool>,
 
     /// Whether to enable issues or not.
     #[deprecated(note = "use `issues_access_level` instead")]
@@ -401,6 +407,7 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt("squash_option", self.squash_option)
             .push_opt("merge_pipelines_enabled", self.merge_pipelines_enabled)
             .push_opt("merge_trains_enabled", self.merge_trains_enabled)
+            .push_opt("mr_default_target_self", self.mr_default_target_self)
             .push_opt(
                 "autoclose_referenced_issues",
                 self.autoclose_referenced_issues,
@@ -458,7 +465,8 @@ impl<'a> Endpoint for EditProject<'a> {
             )
             .push_opt("packages_enabled", self.packages_enabled)
             .push_opt("service_desk_enabled", self.service_desk_enabled)
-            .push_opt("keep_latest_artifact", self.keep_latest_artifact);
+            .push_opt("keep_latest_artifact", self.keep_latest_artifact)
+            .push_opt("ci_separated_caches", self.ci_separated_caches);
 
         if let Some(policy) = self.container_expiration_policy_attributes.as_ref() {
             policy.add_query(&mut params);
@@ -1384,6 +1392,25 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_mr_default_target_self() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("mr_default_target_self=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .mr_default_target_self(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_autoclose_referenced_issues() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1894,6 +1921,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .keep_latest_artifact(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ci_separated_caches() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ci_separated_caches=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .ci_separated_caches(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

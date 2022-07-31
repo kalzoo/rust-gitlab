@@ -20,6 +20,8 @@
   * Support pipeline status states `Preparing` and `WaitingForResource`.
   * Support setting the `security_and_compliance_access_level` when creating
     and editing projects.
+  * Support editing the `mr_default_target_self` and `ci_separated_caches`
+    project fields.
 
 ## Deprecations
 
