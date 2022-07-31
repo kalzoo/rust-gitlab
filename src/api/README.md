@@ -193,7 +193,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/ldap_group_links` https://gitlab.kitware.com/help/api/groups.md#delete-ldap-group-link-with-cn-or-filter-starter
   * `GET    /groups/:group/members/all` https://gitlab.kitware.com/help/api/members.md#list-all-members-of-a-group-or-project-including-inherited-members
   * `GET    /groups/:group/members/all/:member` https://gitlab.kitware.com/help/api/members.md#get-a-member-of-a-group-or-project-including-inherited-members
-  * `PUT    /groups/:group/members/:member` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
   * `POST   /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#set-override-flag-for-a-member-from-a-group
   * `DELETE /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#remove-override-for-a-member-from-a-group
   * `GET    /groups/:group/merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-group-merge-requests
@@ -279,11 +278,8 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/labels/:label/subscribe` https://gitlab.kitware.com/help/api/labels.md#subscribe-to-a-label
   * `POST   /projects/:project/labels/:label/unsubscribe` https://gitlab.kitware.com/help/api/labels.md#unsubscribe-from-a-label
   * `GET    /projects/:project/languages` https://gitlab.kitware.com/help/api/projects.md#languages
-  * `PUT    /projects/:project/members/:member` https://gitlab.kitware.com/help/api/members.md#edit-a-member-of-a-group-or-project
-  * `DELETE /projects/:project/members/:member` https://gitlab.kitware.com/help/api/members.md#remove-a-member-from-a-group-or-project
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
-  * `POST   /projects/:project/merge_requests/:merge_request/approve` https://gitlab.kitware.com/help/api/merge_requests.md#approve-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/cancel_merge_when_pipeline_succeeds` https://gitlab.kitware.com/help/api/merge_requests.md#cancel-merge-when-pipeline-succeeds
   * `GET    /projects/:project/merge_requests/:merge_request/merge_ref` https://gitlab.kitware.com/help/api/merge_requests.md#merge-to-default-merge-ref-path
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
@@ -296,7 +292,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/merge_requests/:merge_request/unsubscribe` https://gitlab.kitware.com/help/api/merge_requests.md#unsubscribe-from-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/versions` https://gitlab.kitware.com/help/api/merge_requests.md#get-mr-diff-versions
   * `GET    /projects/:project/merge_requests/:merge_request/versions/:version` https://gitlab.kitware.com/help/api/merge_requests.md#get-a-single-mr-diff-version
-  * `GET    /projects/:project/merge_requests/:merge_request/approval_state` https://docs.gitlab.com/ee/api/merge_request_approvals.html#get-the-approval-state-of-merge-requests
   * `POST   /projects/:project/merge_requests/:merge_request/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
   * `GET    /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-award-emoji
   * `DELETE /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji
