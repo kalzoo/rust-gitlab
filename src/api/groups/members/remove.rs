@@ -18,6 +18,9 @@ pub struct RemoveGroupMember<'a> {
     group: NameOrId<'a>,
     /// The user to remove from the group.
     user: u64,
+    /// Skip deletion of direct membership to subgroups and projects.
+    #[builder(default)]
+    skip_subresources: Option<bool>,
     /// Unassign from any issues or merge requests inside a given group.
     #[builder(default)]
     unassign_issuables: Option<bool>,
@@ -42,7 +45,9 @@ impl<'a> Endpoint for RemoveGroupMember<'a> {
     fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
         let mut params = FormParams::default();
 
-        params.push_opt("unassign_issuables", self.unassign_issuables);
+        params
+            .push_opt("skip_subresources", self.skip_subresources)
+            .push_opt("unassign_issuables", self.unassign_issuables);
 
         params.into_body()
     }
@@ -96,6 +101,26 @@ mod tests {
         let endpoint = RemoveGroupMember::builder()
             .group("group/subgroup")
             .user(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_skip_subresources() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::DELETE)
+            .endpoint("groups/group%2Fsubgroup/members/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("skip_subresources=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = RemoveGroupMember::builder()
+            .group("group/subgroup")
+            .user(1)
+            .skip_subresources(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
