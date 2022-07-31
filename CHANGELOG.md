@@ -29,6 +29,8 @@
   * `api::projects::{CreateProject, EditProject}::requirements_access_level` do
     not support `Public`, so they now uses `api::FeatureAccessLevel` instead of
     `api::FeatureAccessLevelPublic`.
+  * `api::users::Users::external` is now a `()` instead of `bool` because
+    GitLab doesn't actually support `external=false`.
 
 # v0.1502.0
 

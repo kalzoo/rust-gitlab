@@ -104,7 +104,7 @@ pub struct Users<'a> {
     external_provider: Option<ExternalProvider<'a>>,
     /// Whether to return external users or not.
     #[builder(default)]
-    external: Option<bool>,
+    external: Option<()>,
 
     /// Return users created before a given date.
     #[builder(default)]
@@ -193,7 +193,7 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("username", self.username.as_ref())
             .push_opt("active", self.active.map(|()| true))
             .push_opt("blocked", self.blocked.map(|()| true))
-            .push_opt("external", self.external)
+            .push_opt("external", self.external.map(|()| true))
             .push_opt("created_before", self.created_before)
             .push_opt("created_after", self.created_after)
             .extend(
@@ -369,12 +369,12 @@ mod tests {
     fn endpoint_external() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("users")
-            .add_query_params(&[("external", "false")])
+            .add_query_params(&[("external", "true")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
-        let endpoint = Users::builder().external(false).build().unwrap();
+        let endpoint = Users::builder().external(()).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 
