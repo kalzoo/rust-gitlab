@@ -27,7 +27,7 @@ pub enum ProtectedAccess {
 }
 
 impl ProtectedAccess {
-    fn add_query(self, name: &str, params: &mut FormParams) {
+    pub(crate) fn add_query(self, name: &str, params: &mut FormParams) {
         match self {
             ProtectedAccess::User(user) => {
                 params.push(format!("{}[][user_id]", name), user);

@@ -16,6 +16,7 @@ mod unprotect;
 pub use self::protect::ProtectTag;
 pub use self::protect::ProtectTagBuilder;
 pub use self::protect::ProtectTagBuilderError;
+pub use super::protected_branches::ProtectedAccess;
 
 pub use self::unprotect::UnprotectTag;
 pub use self::unprotect::UnprotectTagBuilder;
