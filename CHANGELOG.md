@@ -29,6 +29,7 @@
   * Support allowing force pushes when protecting branches.
   * Support including HTML descriptions in project releases.
   * Support sorting parameters for project releases.
+  * Support including trailers in commit queries.
 
 ## Deprecations
 
