@@ -41,7 +41,7 @@ pub struct UpdateProjectVariable<'a> {
 }
 
 impl<'a> UpdateProjectVariable<'a> {
-    /// Update a builder for the endpoint.
+    /// Create a builder for the endpoint.
     pub fn builder() -> UpdateProjectVariableBuilder<'a> {
         UpdateProjectVariableBuilder::default()
     }
