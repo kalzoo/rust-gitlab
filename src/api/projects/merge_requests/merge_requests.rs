@@ -307,6 +307,7 @@ pub struct MergeRequests<'a> {
     #[builder(default)]
     deployed_before: Option<DateTime<Utc>>,
 
+    // TODO: support `not`
     /// Filter merge requests with a search query.
     #[builder(setter(into), default)]
     search: Option<Cow<'a, str>>,
