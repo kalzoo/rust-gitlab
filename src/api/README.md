@@ -12,6 +12,11 @@ These API endpoints have been implemented.
   * `POST   /groups` `groups/create.rs`
   * `PUT    /groups/:group` `groups/edit.rs`
   * `GET    /groups/:group` `groups/group.rs`
+  * `GET    /groups/:group/hooks` `groups/hooks/hooks.rs`
+  * `POST   /groups/:group/hooks` `groups/hooks/create.rs`
+  * `GET    /groups/:group/hooks/:id` `groups/hooks/hook.rs`
+  * `PUT    /groups/:group/hooks/:id` `groups/hooks/edit.rs`
+  * `DELETE /groups/:group/hooks/:id` `groups/hooks/delete.rs`
   * `GET    /groups/:group/members` `groups/members/members.rs`
   * `POST   /groups/:group/members` `groups/members/add.rs`
   * `GET    /groups/:group/members/:id` `groups/members/member.rs`
@@ -179,11 +184,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-an-epic-note
   * `GET    /groups/:group/epics/:epic/resource_label_events` https://gitlab.kitware.com/help/api/resource_label_events.md#list-group-epic-label-events
   * `GET    /groups/:group/epics/:epic/resource_label_events/:event` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-epic-label-event
-  * `GET    /groups/:group/hooks` https://gitlab.kitware.com/help/api/groups.md#list-group-hooks
-  * `POST   /groups/:group/hooks` https://gitlab.kitware.com/help/api/groups.md#add-group-hook
-  * `GET    /groups/:group/hooks/:id` https://gitlab.kitware.com/help/api/groups.md#get-group-hook
-  * `PUT    /groups/:group/hooks/:id` https://gitlab.kitware.com/help/api/groups.md#edit-group-hook
-  * `DELETE /groups/:group/hooks/:id` https://gitlab.kitware.com/help/api/groups.md#delete-group-hook
   * `GET    /groups/:group/issues` https://gitlab.kitware.com/help/api/issues.md#list-group-issues
   * `POST   /groups/:group/ldap_sync` https://gitlab.kitware.com/help/api/groups.md#sync-group-with-ldap-starter
   * `GET    /groups/:group/ldap_group_links` https://gitlab.kitware.com/help/api/groups.md#list-ldap-group-links-starter

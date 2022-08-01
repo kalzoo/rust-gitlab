@@ -14,6 +14,7 @@ mod create;
 mod edit;
 mod group;
 mod groups;
+pub mod hooks;
 pub mod issues;
 pub mod members;
 pub mod milestones;
