@@ -24,3 +24,4 @@ pub use self::update::UpdateProjectVariableBuilderError;
 pub use self::variable::ProjectVariable;
 pub use self::variable::ProjectVariableBuilder;
 pub use self::variable::ProjectVariableBuilderError;
+pub use self::variable::ProjectVariableFilter;

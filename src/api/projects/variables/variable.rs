@@ -23,7 +23,7 @@ impl<'a> ProjectVariableFilter<'a> {
         ProjectVariableFilterBuilder::default()
     }
 
-    fn add_query<'b>(&'b self, params: &mut FormParams<'b>) {
+    pub(crate) fn add_query<'b>(&'b self, params: &mut FormParams<'b>) {
         if let Some(environment_scope) = self.environment_scope.as_ref() {
             params.push("filter[environment_scope]", environment_scope);
         }
