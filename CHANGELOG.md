@@ -34,6 +34,7 @@
     the API.
   * Support querying custom attributes of users.
   * Support `without_project_bots` and `saml_provider_id` when listing users.
+  * Support for filtering projects based on import status and topics.
 
 ## Deprecations
 
