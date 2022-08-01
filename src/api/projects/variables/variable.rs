@@ -15,7 +15,7 @@ use crate::api::endpoint_prelude::*;
 pub struct ProjectVariableFilter<'a> {
     /// Filter based on the environment scope.
     #[builder(setter(into), default)]
-    pub environment_scope: Option<Cow<'a, str>>,
+    environment_scope: Option<Cow<'a, str>>,
 }
 
 impl<'a> ProjectVariableFilter<'a> {
