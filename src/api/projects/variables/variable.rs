@@ -19,6 +19,7 @@ pub struct ProjectVariableFilter<'a> {
 }
 
 impl<'a> ProjectVariableFilter<'a> {
+    /// Create a builder for the endpoint.
     pub fn builder() -> ProjectVariableFilterBuilder<'a> {
         ProjectVariableFilterBuilder::default()
     }
