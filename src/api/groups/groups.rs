@@ -32,6 +32,10 @@ impl Default for GroupOrderBy {
 }
 
 impl GroupOrderBy {
+    fn use_keyset_pagination(self) -> bool {
+        self == GroupOrderBy::Name
+    }
+
     /// The ordering as a query parameter.
     fn as_str(self) -> &'static str {
         match self {
@@ -156,7 +160,13 @@ impl<'a> Endpoint for Groups<'a> {
     }
 }
 
-impl<'a> Pageable for Groups<'a> {}
+impl<'a> Pageable for Groups<'a> {
+    fn use_keyset_pagination(&self) -> bool {
+        self.order_by
+            .map_or(false, |order_by| order_by.use_keyset_pagination())
+            && self.sort.map_or(true, |sort| sort == SortOrder::Ascending)
+    }
+}
 
 #[cfg(test)]
 mod tests {

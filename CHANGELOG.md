@@ -37,6 +37,7 @@
   * Support for filtering projects based on import status and topics.
   * Support for finer-grained creation rules for protected tags.
   * Support filters when updating project pipeline variables.
+  * Keyset pagination is now supported for group searches ordered by name.
 
 ## Deprecations
 
