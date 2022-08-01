@@ -43,6 +43,7 @@ pub use self::pipeline::PipelineBuilderError;
 
 pub use self::pipelines::PipelineOrderBy;
 pub use self::pipelines::PipelineScope;
+pub use self::pipelines::PipelineSource;
 pub use self::pipelines::PipelineStatus;
 pub use self::pipelines::Pipelines;
 pub use self::pipelines::PipelinesBuilder;

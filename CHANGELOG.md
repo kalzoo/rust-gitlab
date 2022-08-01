@@ -25,6 +25,7 @@
   * Support setting variables when playing manual jobs.
   * Support `merge_request_diff_sha` when editing and creating MR notes
     (required for the `/merge` command).
+  * Support filtering pipelines by their source.
 
 ## Deprecations
 
