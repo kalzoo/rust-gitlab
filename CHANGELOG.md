@@ -27,6 +27,8 @@
     (required for the `/merge` command).
   * Support filtering pipelines by their source.
   * Support allowing force pushes when protecting branches.
+  * Support including HTML descriptions in project releases.
+  * Support sorting parameters for project releases.
 
 ## Deprecations
 
