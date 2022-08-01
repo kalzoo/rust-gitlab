@@ -106,6 +106,10 @@ pub struct CreateFile<'a> {
     /// The name of the author for the new commit.
     #[builder(setter(into), default)]
     author_name: Option<Cow<'a, str>>,
+
+    /// Whether the file is executable or not.
+    #[builder(default)]
+    execute_filemode: Option<bool>,
 }
 
 impl<'a> CreateFile<'a> {
@@ -139,7 +143,8 @@ impl<'a> Endpoint for CreateFile<'a> {
             .push("commit_message", &self.commit_message)
             .push_opt("start_branch", self.start_branch.as_ref())
             .push_opt("author_email", self.author_email.as_ref())
-            .push_opt("author_name", self.author_name.as_ref());
+            .push_opt("author_name", self.author_name.as_ref())
+            .push_opt("execute_filemode", self.execute_filemode);
 
         let content = str::from_utf8(&self.content);
         let needs_encoding = content.is_err();
@@ -462,6 +467,34 @@ mod tests {
             .content(&b"file contents"[..])
             .commit_message("commit message")
             .author_name("Arthur Developer")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_execute_filemode() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "branch=branch",
+                "&commit_message=commit+message",
+                "&execute_filemode=false",
+                "&content=file+contents",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateFile::builder()
+            .project("simple/project")
+            .file_path("path/to/file")
+            .branch("branch")
+            .content(&b"file contents"[..])
+            .commit_message("commit message")
+            .execute_filemode(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
