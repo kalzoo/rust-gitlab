@@ -33,6 +33,7 @@
   * Support `execute_filemode` and `last_commit_id` when editing files through
     the API.
   * Support querying custom attributes of users.
+  * Support `without_project_bots` and `saml_provider_id` when listing users.
 
 ## Deprecations
 
