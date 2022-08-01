@@ -32,6 +32,7 @@
   * Support including trailers in commit queries.
   * Support `execute_filemode` and `last_commit_id` when editing files through
     the API.
+  * Support querying custom attributes of users.
 
 ## Deprecations
 
