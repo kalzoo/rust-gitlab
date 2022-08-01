@@ -62,6 +62,8 @@
     `api::FeatureAccessLevelPublic`.
   * `api::users::Users::external` is now a `()` instead of `bool` because
     GitLab doesn't actually support `external=false`.
+  * `api::projects::repository::Tree` now uses keyset pagination and requires
+    GitLab 15.0. Page-based iteration has been deprecated by GitLab.
 
 # v0.1502.0
 
