@@ -33,6 +33,9 @@ pub use self::jobs::Jobs;
 pub use self::jobs::JobsBuilder;
 pub use self::jobs::JobsBuilderError;
 
+pub use self::play::JobVariableAttribute;
+pub use self::play::JobVariableAttributeBuilder;
+pub use self::play::JobVariableAttributeBuilderError;
 pub use self::play::PlayJob;
 pub use self::play::PlayJobBuilder;
 pub use self::play::PlayJobBuilderError;

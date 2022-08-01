@@ -22,6 +22,7 @@
     and editing projects.
   * Support editing the `mr_default_target_self` and `ci_separated_caches`
     project fields.
+  * Support setting variables when playing manual jobs.
 
 ## Deprecations
 
