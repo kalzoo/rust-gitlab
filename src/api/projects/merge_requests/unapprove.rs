@@ -11,7 +11,6 @@ use crate::api::endpoint_prelude::*;
 
 /// Unapprove a merge request.
 #[derive(Debug, Builder)]
-#[builder(setter(strip_option))]
 pub struct UnapproveMergeRequest<'a> {
     /// The project with the merge request.
     #[builder(setter(into))]

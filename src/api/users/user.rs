@@ -10,9 +10,14 @@ use crate::api::endpoint_prelude::*;
 
 /// Query a user by ID.
 #[derive(Debug, Clone, Copy, Builder)]
+#[builder(setter(strip_option))]
 pub struct User {
     /// The ID of the user.
     user: u64,
+
+    #[builder(default)]
+    /// Provide custom attributes as well.
+    with_custom_attributes: Option<bool>,
 }
 
 impl User {
@@ -29,6 +34,14 @@ impl Endpoint for User {
 
     fn endpoint(&self) -> Cow<'static, str> {
         format!("users/{}", self.user).into()
+    }
+
+    fn parameters(&self) -> QueryParams {
+        let mut params = QueryParams::default();
+
+        params.push_opt("with_custom_attributes", self.with_custom_attributes);
+
+        params
     }
 }
 
@@ -55,6 +68,23 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = User::builder().user(1).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_with_custom_attributes() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("users/1")
+            .add_query_params(&[("with_custom_attributes", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = User::builder()
+            .user(1)
+            .with_custom_attributes(true)
+            .build()
+            .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 }

@@ -18,7 +18,7 @@ pub struct RemoveProjectMember<'a> {
     project: NameOrId<'a>,
     /// The user to remove from the project.
     user: u64,
-    /// unassign from any issues or merge requests inside a given project.
+    /// Unassign from any issues or merge requests inside a given project.
     #[builder(default)]
     unassign_issuables: Option<bool>,
 }

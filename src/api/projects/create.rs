@@ -541,10 +541,13 @@ pub struct CreateProject<'a> {
     operations_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for requirements features.
     #[builder(default)]
-    requirements_access_level: Option<FeatureAccessLevelPublic>,
+    requirements_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for analytics features.
     #[builder(default)]
     analytics_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for security and compliance features.
+    #[builder(default)]
+    security_and_compliance_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
@@ -560,6 +563,7 @@ pub struct CreateProject<'a> {
     resolve_outdated_diff_discussions: Option<bool>,
     /// Whether the container registry is enabled or not.
     #[builder(default)]
+    #[deprecated(note = "use `container_registry_access_level` instead")]
     container_registry_enabled: Option<bool>,
     /// The expiration policy for containers.
     #[builder(default)]
@@ -632,7 +636,7 @@ pub struct CreateProject<'a> {
     #[builder(default)]
     build_timeout: Option<u64>,
     /// Whether to automatically cancel pipelines when branches are updated when using a previous
-    /// version of th branch.
+    /// version of the branch.
     #[builder(setter(into), default)]
     auto_cancel_pending_pipelines: Option<EnableState>,
     /// The default regular expression to use for build coverage extraction.
@@ -751,6 +755,7 @@ impl<'a> CreateProjectBuilder<'a> {
     }
 
     /// Add a tag.
+    #[deprecated(note = "use `topic` instead")]
     pub fn tag<T>(&mut self, tag: T) -> &mut Self
     where
         T: Into<Cow<'a, str>>,
@@ -762,6 +767,7 @@ impl<'a> CreateProjectBuilder<'a> {
     }
 
     /// Add multiple tags.
+    #[deprecated(note = "use `topics` instead")]
     pub fn tags<I, T>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = T>,
@@ -859,6 +865,10 @@ impl<'a> Endpoint for CreateProject<'a> {
             .push_opt("operations_access_level", self.operations_access_level)
             .push_opt("requirements_access_level", self.requirements_access_level)
             .push_opt("analytics_access_level", self.analytics_access_level)
+            .push_opt(
+                "security_and_compliance_access_level",
+                self.security_and_compliance_access_level,
+            )
             .push_opt("emails_disabled", self.emails_disabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
@@ -868,10 +878,6 @@ impl<'a> Endpoint for CreateProject<'a> {
             .push_opt(
                 "resolve_outdated_diff_discussions",
                 self.resolve_outdated_diff_discussions,
-            )
-            .push_opt(
-                "container_registry_enabled",
-                self.container_registry_enabled,
             )
             .push_opt("shared_runners_enabled", self.shared_runners_enabled)
             .push_opt("visibility", self.visibility)
@@ -951,7 +957,11 @@ impl<'a> Endpoint for CreateProject<'a> {
                 .push_opt("merge_requests_enabled", self.merge_requests_enabled)
                 .push_opt("jobs_enabled", self.jobs_enabled)
                 .push_opt("wiki_enabled", self.wiki_enabled)
-                .push_opt("snippets_enabled", self.snippets_enabled);
+                .push_opt("snippets_enabled", self.snippets_enabled)
+                .push_opt(
+                    "container_registry_enabled",
+                    self.container_registry_enabled,
+                );
         }
 
         params.into_body()
@@ -1492,14 +1502,14 @@ mod tests {
             .method(Method::POST)
             .endpoint("projects")
             .content_type("application/x-www-form-urlencoded")
-            .body_str(concat!("name=name", "&requirements_access_level=public"))
+            .body_str(concat!("name=name", "&requirements_access_level=enabled"))
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = CreateProject::builder()
             .name("name")
-            .requirements_access_level(FeatureAccessLevelPublic::Public)
+            .requirements_access_level(FeatureAccessLevel::Enabled)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -1519,6 +1529,28 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .analytics_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_security_and_compliance_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&security_and_compliance_access_level=private",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .security_and_compliance_access_level(FeatureAccessLevel::Private)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -1607,6 +1639,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_container_registry_enabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -2150,6 +2183,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tag_list() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)

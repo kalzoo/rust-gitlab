@@ -32,6 +32,7 @@ impl<'a> ProjectMember<'a> {
     }
 
     /// Create an ancester-including builder for the endpoint.
+    #[deprecated(note = "use `api/projects/members/AllProjectMember` instead")]
     pub fn all_builder() -> ProjectMemberBuilder<'a> {
         ProjectMemberBuilder {
             _include_ancestors: Some(true),
@@ -65,6 +66,7 @@ mod tests {
         let err = ProjectMember::builder().build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "project");
 
+        #[allow(deprecated)]
         let err = ProjectMember::all_builder().build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "project");
     }
@@ -74,6 +76,7 @@ mod tests {
         let err = ProjectMember::builder().user(1).build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "project");
 
+        #[allow(deprecated)]
         let err = ProjectMember::all_builder().user(1).build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "project");
     }
@@ -83,6 +86,7 @@ mod tests {
         let err = ProjectMember::builder().project(1).build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "user");
 
+        #[allow(deprecated)]
         let err = ProjectMember::all_builder().project(1).build().unwrap_err();
         crate::test::assert_missing_field!(err, ProjectMemberBuilderError, "user");
     }
@@ -90,6 +94,7 @@ mod tests {
     #[test]
     fn project_and_user_are_sufficient() {
         ProjectMember::builder().project(1).user(1).build().unwrap();
+        #[allow(deprecated)]
         ProjectMember::all_builder()
             .project(1)
             .user(1)
@@ -121,6 +126,7 @@ mod tests {
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
+        #[allow(deprecated)]
         let endpoint = ProjectMember::all_builder()
             .project("simple/project")
             .user(1)

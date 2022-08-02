@@ -70,6 +70,9 @@ pub enum BranchProtection {
     Partial,
     /// Maintainers may push branches.
     Full,
+    /// Developers may accept merge requests; maintainers may push, force push, and accept merge
+    /// requests.
+    Push,
 }
 
 impl BranchProtection {
@@ -78,6 +81,7 @@ impl BranchProtection {
             BranchProtection::None => "0",
             BranchProtection::Partial => "1",
             BranchProtection::Full => "2",
+            BranchProtection::Push => "3",
         }
     }
 }
@@ -288,6 +292,7 @@ mod tests {
             (BranchProtection::None, "0"),
             (BranchProtection::Partial, "1"),
             (BranchProtection::Full, "2"),
+            (BranchProtection::Push, "3"),
         ];
 
         for (i, s) in items {

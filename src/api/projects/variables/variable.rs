@@ -15,18 +15,17 @@ use crate::api::endpoint_prelude::*;
 pub struct ProjectVariableFilter<'a> {
     /// Filter based on the environment scope.
     #[builder(setter(into), default)]
-    pub environment_scope: Option<Cow<'a, str>>,
+    environment_scope: Option<Cow<'a, str>>,
 }
 
 impl<'a> ProjectVariableFilter<'a> {
+    /// Create a builder for the endpoint.
     pub fn builder() -> ProjectVariableFilterBuilder<'a> {
         ProjectVariableFilterBuilder::default()
     }
 
-    fn add_query<'b>(&'b self, params: &mut FormParams<'b>) {
-        if let Some(environment_scope) = self.environment_scope.as_ref() {
-            params.push("filter[environment_scope]", environment_scope);
-        }
+    pub(crate) fn add_query<'b>(&'b self, params: &mut FormParams<'b>) {
+        params.push_opt("filter[environment_scope]", self.environment_scope.as_ref());
     }
 }
 

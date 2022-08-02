@@ -13,6 +13,7 @@ use http::Method;
 use crate::api::{
     common::{CommaSeparatedList, NameOrId, SortOrder},
     helpers::{Labels, Milestone, ReactionEmoji},
+    issues::IssueType,
     Endpoint, Pageable, QueryParams,
 };
 
@@ -88,6 +89,12 @@ pub struct ProjectIssues<'a> {
     /// Filter issues by due date.
     #[builder(default)]
     due_date: Option<IssueDueDateFilter>,
+    /// Filter by epic ID.
+    #[builder(default)]
+    epic_id: Option<u64>,
+    /// Filter by issue type.
+    #[builder(default)]
+    issue_type: Option<IssueType>,
 
     // TODO: How best to support this parameter?
     // not
@@ -301,6 +308,8 @@ impl<'a> Endpoint for ProjectIssues<'a> {
             .push_opt("updated_before", self.updated_before)
             .push_opt("confidential", self.confidential)
             .push_opt("due_date", self.due_date)
+            .push_opt("epic_id", self.epic_id)
+            .push_opt("issue_type", self.issue_type)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -334,7 +343,8 @@ mod tests {
     use crate::api::common::SortOrder;
     use crate::api::issues::{
         projects::ProjectIssues, projects::ProjectIssuesBuilderError, IssueDueDateFilter,
-        IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+        IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType,
+        IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -877,6 +887,40 @@ mod tests {
         let endpoint = ProjectIssues::builder()
             .project("simple/project")
             .due_date(IssueDueDateFilter::ThisWeek)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_epic_id() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/issues")
+            .add_query_params(&[("epic_id", "1")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = ProjectIssues::builder()
+            .project("simple/project")
+            .epic_id(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_type() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/issues")
+            .add_query_params(&[("issue_type", "incident")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = ProjectIssues::builder()
+            .project("simple/project")
+            .issue_type(IssueType::Incident)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

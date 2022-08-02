@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 use chrono::{DateTime, Utc};
 use derive_builder::Builder;
 
-use crate::api::common::{AccessLevel, SortOrder, VisibilityLevel};
+use crate::api::common::{AccessLevel, CommaSeparatedList, SortOrder, VisibilityLevel};
 use crate::api::endpoint_prelude::*;
 use crate::api::ParamValue;
 
@@ -28,6 +28,8 @@ pub enum ProjectOrderBy {
     UpdatedAt,
     /// Order by the last activity date of the project.
     LastActivityAt,
+    /// Order by similarity (only relevant for searches).
+    Similarity,
     /// Order by repository size.
     RepositorySize,
     /// Order by storage size.
@@ -58,6 +60,7 @@ impl ProjectOrderBy {
             ProjectOrderBy::CreatedAt => "created_at",
             ProjectOrderBy::UpdatedAt => "updated_at",
             ProjectOrderBy::LastActivityAt => "last_activity_at",
+            ProjectOrderBy::Similarity => "similarity",
             ProjectOrderBy::RepositorySize => "repository_size",
             ProjectOrderBy::StorageSize => "storage_size",
             ProjectOrderBy::PackagesSize => "packages_size",
@@ -134,6 +137,15 @@ pub struct Projects<'a> {
     /// Search for projects with custom attributes.
     #[builder(default)]
     with_custom_attributes: Option<bool>,
+    /// Filter projects based on import status.
+    #[builder(default)]
+    imported: Option<bool>,
+    /// Filter projects to those with all indicated topics.
+    #[builder(setter(name = "_topic"), default, private)]
+    topic: Option<CommaSeparatedList<Cow<'a, str>>>,
+    /// Filter projects to those with the given topic ID.
+    #[builder(default)]
+    topic_id: Option<u64>,
 
     /// Filter projects by those with at least this ID.
     #[builder(default)]
@@ -169,6 +181,31 @@ impl<'a> Projects<'a> {
 }
 
 impl<'a> ProjectsBuilder<'a> {
+    /// Add a custom attribute search parameter.
+    pub fn topic<T>(&mut self, topic: T) -> &mut Self
+    where
+        T: Into<Cow<'a, str>>,
+    {
+        self.topic
+            .get_or_insert(None)
+            .get_or_insert_with(CommaSeparatedList::new)
+            .push(topic.into());
+        self
+    }
+
+    /// Add multiple custom attribute search parameters.
+    pub fn topics<I, T>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = T>,
+        T: Into<Cow<'a, str>>,
+    {
+        self.topic
+            .get_or_insert(None)
+            .get_or_insert_with(CommaSeparatedList::new)
+            .extend(iter.map(Into::into));
+        self
+    }
+
     /// Add a custom attribute search parameter.
     pub fn custom_attribute<K, V>(&mut self, key: K, value: V) -> &mut Self
     where
@@ -246,6 +283,9 @@ impl<'a> Endpoint for Projects<'a> {
                     .map(|(key, value)| (format!("custom_attributes[{}]", key), value)),
             )
             .push_opt("with_custom_attributes", self.with_custom_attributes)
+            .push_opt("imported", self.imported)
+            .push_opt("topic", self.topic.as_ref())
+            .push_opt("topic_id", self.topic_id)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -283,6 +323,7 @@ mod tests {
             (ProjectOrderBy::CreatedAt, "created_at"),
             (ProjectOrderBy::UpdatedAt, "updated_at"),
             (ProjectOrderBy::LastActivityAt, "last_activity_at"),
+            (ProjectOrderBy::Similarity, "similarity"),
             (ProjectOrderBy::RepositorySize, "repository_size"),
             (ProjectOrderBy::StorageSize, "storage_size"),
             (ProjectOrderBy::PackagesSize, "packages_size"),
@@ -561,6 +602,49 @@ mod tests {
             .with_custom_attributes(true)
             .build()
             .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_imported() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("imported", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder().imported(true).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_topic() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("topic", "a,b,c")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder()
+            .topic("a")
+            .topics(["b", "c"].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_topic_id() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("topic_id", "4")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder().topic_id(4).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 

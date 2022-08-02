@@ -8,7 +8,7 @@ use derive_builder::Builder;
 
 use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
-use crate::api::projects::variables::ProjectVariableType;
+use crate::api::projects::variables::{ProjectVariableFilter, ProjectVariableType};
 
 /// Edit a variable of a project.
 #[derive(Debug, Builder)]
@@ -35,10 +35,13 @@ pub struct UpdateProjectVariable<'a> {
     /// The environment scope of the variable.
     #[builder(setter(into), default)]
     environment_scope: Option<Cow<'a, str>>,
+    /// Filters to apply to the returned variables.
+    #[builder(default)]
+    filter: Option<ProjectVariableFilter<'a>>,
 }
 
 impl<'a> UpdateProjectVariable<'a> {
-    /// Update a builder for the endpoint.
+    /// Create a builder for the endpoint.
     pub fn builder() -> UpdateProjectVariableBuilder<'a> {
         UpdateProjectVariableBuilder::default()
     }
@@ -68,6 +71,10 @@ impl<'a> Endpoint for UpdateProjectVariable<'a> {
             .push_opt("masked", self.masked)
             .push_opt("environment_scope", self.environment_scope.as_ref());
 
+        if let Some(filter) = self.filter.as_ref() {
+            filter.add_query(&mut params);
+        }
+
         params.into_body()
     }
 }
@@ -77,7 +84,8 @@ mod tests {
     use http::Method;
 
     use crate::api::projects::variables::update::{
-        ProjectVariableType, UpdateProjectVariable, UpdateProjectVariableBuilderError,
+        ProjectVariableFilter, ProjectVariableType, UpdateProjectVariable,
+        UpdateProjectVariableBuilderError,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -227,6 +235,35 @@ mod tests {
             .key("testkey")
             .value("testvalue")
             .environment_scope("*")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_filter() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/variables/testkey")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "value=testvalue",
+                "&filter%5Benvironment_scope%5D=production",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = UpdateProjectVariable::builder()
+            .project("simple/project")
+            .key("testkey")
+            .value("testvalue")
+            .filter(
+                ProjectVariableFilter::builder()
+                    .environment_scope("production")
+                    .build()
+                    .unwrap(),
+            )
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

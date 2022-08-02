@@ -9,14 +9,26 @@
 //! These endpoints are used for querying project members.
 
 mod add;
+mod all_member;
+mod all_members;
 mod edit;
 mod member;
 mod members;
 mod remove;
 
+pub use self::all_member::AllProjectMember;
+pub use self::all_member::AllProjectMemberBuilder;
+pub use self::all_member::AllProjectMemberBuilderError;
+
+pub use self::all_members::AllProjectMembers;
+pub use self::all_members::AllProjectMembersBuilder;
+pub use self::all_members::AllProjectMembersBuilderError;
+pub use self::all_members::ProjectMemberState;
+
 pub use self::add::AddProjectMember;
 pub use self::add::AddProjectMemberBuilder;
 pub use self::add::AddProjectMemberBuilderError;
+pub use self::add::ProjectInviteTasksToBeDone;
 
 pub use self::edit::EditProjectMember;
 pub use self::edit::EditProjectMemberBuilder;

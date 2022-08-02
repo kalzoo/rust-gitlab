@@ -55,8 +55,6 @@ pub struct CommentOnCommit<'a> {
     #[builder(default)]
     line: Option<u64>,
     /// Set the line type to comment on.
-    ///
-    /// Note: must be `LineType::New` for line commenting to actually work.
     #[builder(default)]
     line_type: Option<LineType>,
 }

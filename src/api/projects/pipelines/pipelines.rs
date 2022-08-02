@@ -66,6 +66,10 @@ pub enum PipelineStatus {
     Manual,
     /// Pipelines which have been scheduled.
     Scheduled,
+    /// Pipelines which are being prepared.
+    Preparing,
+    /// Pipelines waiting for a resource.
+    WaitingForResource,
 }
 
 impl PipelineStatus {
@@ -81,6 +85,8 @@ impl PipelineStatus {
             PipelineStatus::Created => "created",
             PipelineStatus::Manual => "manual",
             PipelineStatus::Scheduled => "scheduled",
+            PipelineStatus::Preparing => "preparing",
+            PipelineStatus::WaitingForResource => "waiting_for_resource",
         }
     }
 }
@@ -131,6 +137,67 @@ impl ParamValue<'static> for PipelineOrderBy {
     }
 }
 
+/// Ways that pipelines can be created.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PipelineSource {
+    /// A pipeline crated by pushing to a repository.
+    Push,
+    /// A pipeline created through the web interface.
+    Web,
+    /// A pipeline created by a trigger.
+    Trigger,
+    /// A pipeline created on a schedule.
+    Schedule,
+    /// A pipeline created through the API.
+    Api,
+    /// A pipeline created externally.
+    External,
+    /// A pipeline created by another pipeline.
+    Pipeline,
+    /// A pipeline created through a chat.
+    Chat,
+    /// A pipeline created through the web IDE.
+    WebIde,
+    /// A pipeline created by a merge request event.
+    MergeRequestEvent,
+    /// A pipeline created by an external pull request event.
+    ExternalPullRequestEvent,
+    /// A pipeline created by a parent pipeline.
+    ParentPipeline,
+    /// A pipeline created by an on-demand DAST scan.
+    OnDemandDastScan,
+    /// A pipeline created by an on-demand DAST validation.
+    OnDemandDastValidation,
+}
+
+impl PipelineSource {
+    /// The ordering as a query parameter.
+    fn as_str(self) -> &'static str {
+        match self {
+            PipelineSource::Push => "push",
+            PipelineSource::Web => "web",
+            PipelineSource::Trigger => "trigger",
+            PipelineSource::Schedule => "schedule",
+            PipelineSource::Api => "api",
+            PipelineSource::External => "external",
+            PipelineSource::Pipeline => "pipeline",
+            PipelineSource::Chat => "chat",
+            PipelineSource::WebIde => "web_ide",
+            PipelineSource::MergeRequestEvent => "merge_request_event",
+            PipelineSource::ExternalPullRequestEvent => "external_pull_request_event",
+            PipelineSource::ParentPipeline => "parent_pipeline",
+            PipelineSource::OnDemandDastScan => "ondemand_dast_scan",
+            PipelineSource::OnDemandDastValidation => "ondemand_dast_validation",
+        }
+    }
+}
+
+impl ParamValue<'static> for PipelineSource {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
 /// Query for pipelines within a project.
 #[derive(Debug, Builder)]
 #[builder(setter(strip_option))]
@@ -154,9 +221,6 @@ pub struct Pipelines<'a> {
     /// Filter pipelines with or without YAML errors.
     #[builder(default)]
     yaml_errors: Option<bool>,
-    /// Filter pipelines by the name of the triggering user.
-    #[builder(setter(into), default)]
-    name: Option<Cow<'a, str>>,
     /// Filter pipelines by the username of the triggering user.
     #[builder(setter(into), default)]
     username: Option<Cow<'a, str>>,
@@ -174,12 +238,26 @@ pub struct Pipelines<'a> {
     /// Filter pipelines by the last updated date after this time.
     #[builder(default)]
     updated_after: Option<DateTime<Utc>>,
+    /// How the pipeline was triggered.
+    #[builder(default)]
+    source: Option<PipelineSource>,
 }
 
 impl<'a> Pipelines<'a> {
     /// Create a builder for the endpoint.
     pub fn builder() -> PipelinesBuilder<'a> {
         PipelinesBuilder::default()
+    }
+}
+
+impl<'a> PipelinesBuilder<'a> {
+    /// Filter pipelines by the name of the triggering user.
+    #[deprecated(note = "use `username` instead; `name` was never accepted by GitLab")]
+    pub fn name<N>(&mut self, _: N) -> &mut Self
+    where
+        N: Into<Cow<'a, str>>,
+    {
+        self
     }
 }
 
@@ -201,10 +279,10 @@ impl<'a> Endpoint for Pipelines<'a> {
             .push_opt("ref", self.ref_.as_ref())
             .push_opt("sha", self.sha.as_ref())
             .push_opt("yaml_errors", self.yaml_errors)
-            .push_opt("name", self.name.as_ref())
             .push_opt("username", self.username.as_ref())
             .push_opt("updated_after", self.updated_after)
             .push_opt("updated_before", self.updated_before)
+            .push_opt("source", self.source)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -220,7 +298,8 @@ mod tests {
 
     use crate::api::common::SortOrder;
     use crate::api::projects::pipelines::{
-        PipelineOrderBy, PipelineScope, PipelineStatus, Pipelines, PipelinesBuilderError,
+        PipelineOrderBy, PipelineScope, PipelineSource, PipelineStatus, Pipelines,
+        PipelinesBuilderError,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -252,6 +331,8 @@ mod tests {
             (PipelineStatus::Created, "created"),
             (PipelineStatus::Manual, "manual"),
             (PipelineStatus::Scheduled, "scheduled"),
+            (PipelineStatus::Preparing, "preparing"),
+            (PipelineStatus::WaitingForResource, "waiting_for_resource"),
         ];
 
         for (i, s) in items {
@@ -272,6 +353,36 @@ mod tests {
             (PipelineOrderBy::Ref, "ref"),
             (PipelineOrderBy::UpdatedAt, "updated_at"),
             (PipelineOrderBy::UserId, "user_id"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn pipeline_source_as_str() {
+        let items = &[
+            (PipelineSource::Push, "push"),
+            (PipelineSource::Web, "web"),
+            (PipelineSource::Trigger, "trigger"),
+            (PipelineSource::Schedule, "schedule"),
+            (PipelineSource::Api, "api"),
+            (PipelineSource::External, "external"),
+            (PipelineSource::Pipeline, "pipeline"),
+            (PipelineSource::Chat, "chat"),
+            (PipelineSource::WebIde, "web_ide"),
+            (PipelineSource::MergeRequestEvent, "merge_request_event"),
+            (
+                PipelineSource::ExternalPullRequestEvent,
+                "external_pull_request_event",
+            ),
+            (PipelineSource::ParentPipeline, "parent_pipeline"),
+            (PipelineSource::OnDemandDastScan, "ondemand_dast_scan"),
+            (
+                PipelineSource::OnDemandDastValidation,
+                "ondemand_dast_validation",
+            ),
         ];
 
         for (i, s) in items {
@@ -391,23 +502,6 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_name() {
-        let endpoint = ExpectedUrl::builder()
-            .endpoint("projects/1/pipelines")
-            .add_query_params(&[("name", "name")])
-            .build()
-            .unwrap();
-        let client = SingleTestClient::new_raw(endpoint, "");
-
-        let endpoint = Pipelines::builder()
-            .project(1)
-            .name("name")
-            .build()
-            .unwrap();
-        api::ignore(endpoint).query(&client).unwrap();
-    }
-
-    #[test]
     fn endpoint_username() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/1/pipelines")
@@ -453,6 +547,23 @@ mod tests {
         let endpoint = Pipelines::builder()
             .project(1)
             .updated_after(Utc.ymd(2020, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_source() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/1/pipelines")
+            .add_query_params(&[("source", "trigger")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Pipelines::builder()
+            .project(1)
+            .source(PipelineSource::Trigger)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

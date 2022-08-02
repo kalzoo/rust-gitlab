@@ -52,6 +52,14 @@ pub struct UpdateFile<'a> {
     /// The name of the author for the new commit.
     #[builder(setter(into), default)]
     author_name: Option<Cow<'a, str>>,
+    /// Whether the file is executable or not.
+    #[builder(default)]
+    execute_filemode: Option<bool>,
+    /// The last commit ID the path was modified in.
+    ///
+    /// Used to detect conflicts.
+    #[builder(setter(into), default)]
+    last_commit_id: Option<Cow<'a, str>>,
 }
 
 impl<'a> UpdateFile<'a> {
@@ -85,7 +93,9 @@ impl<'a> Endpoint for UpdateFile<'a> {
             .push("commit_message", &self.commit_message)
             .push_opt("start_branch", self.start_branch.as_ref())
             .push_opt("author_email", self.author_email.as_ref())
-            .push_opt("author_name", self.author_name.as_ref());
+            .push_opt("author_name", self.author_name.as_ref())
+            .push_opt("execute_filemode", self.execute_filemode)
+            .push_opt("last_commit_id", self.last_commit_id.as_ref());
 
         let content = str::from_utf8(&self.content);
         let needs_encoding = content.is_err();
@@ -370,6 +380,62 @@ mod tests {
             .content(&b"file contents"[..])
             .commit_message("commit message")
             .author_name("Arthur Developer")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_execute_filemode() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "branch=branch",
+                "&commit_message=commit+message",
+                "&execute_filemode=true",
+                "&content=file+contents",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = UpdateFile::builder()
+            .project("simple/project")
+            .file_path("path/to/file")
+            .branch("branch")
+            .content(&b"file contents"[..])
+            .commit_message("commit message")
+            .execute_filemode(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_last_commit_id() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "branch=branch",
+                "&commit_message=commit+message",
+                "&last_commit_id=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+                "&content=file+contents",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = UpdateFile::builder()
+            .project("simple/project")
+            .file_path("path/to/file")
+            .branch("branch")
+            .content(&b"file contents"[..])
+            .commit_message("commit message")
+            .last_commit_id("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

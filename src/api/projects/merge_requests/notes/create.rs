@@ -28,6 +28,12 @@ pub struct CreateMergeRequestNote<'a> {
     /// Requires administrator or owner permissions.
     #[builder(default)]
     created_at: Option<DateTime<Utc>>,
+    /// The SHA of the head of the merge request.
+    ///
+    /// Required when using the `/merge` command to verify that the intended commit is being
+    /// merged.
+    #[builder(setter(into), default)]
+    merge_request_diff_sha: Option<Cow<'a, str>>,
 }
 
 impl<'a> CreateMergeRequestNote<'a> {
@@ -55,7 +61,11 @@ impl<'a> Endpoint for CreateMergeRequestNote<'a> {
 
         params
             .push("body", self.body.as_ref())
-            .push_opt("created_at", self.created_at);
+            .push_opt("created_at", self.created_at)
+            .push_opt(
+                "merge_request_diff_sha",
+                self.merge_request_diff_sha.as_ref(),
+            );
 
         params.into_body()
     }
@@ -158,6 +168,30 @@ mod tests {
             .merge_request(1)
             .body("body")
             .created_at(Utc.ymd(2020, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_merge_request_diff_sha() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/notes")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "body=body",
+                "&merge_request_diff_sha=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateMergeRequestNote::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .body("body")
+            .merge_request_diff_sha("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

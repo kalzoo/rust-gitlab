@@ -14,7 +14,7 @@ use crate::api::endpoint_prelude::*;
 pub struct DeployKeys {
     /// If `true`, list only public deploy keys.
     #[builder(default)]
-    pub public: Option<bool>,
+    public: Option<bool>,
 }
 
 impl DeployKeys {

@@ -17,6 +17,7 @@ mod remove;
 pub use self::add::AddGroupMember;
 pub use self::add::AddGroupMemberBuilder;
 pub use self::add::AddGroupMemberBuilderError;
+pub use self::add::GroupInviteTasksToBeDone;
 
 pub use self::edit::EditGroupMember;
 pub use self::edit::EditGroupMemberBuilder;

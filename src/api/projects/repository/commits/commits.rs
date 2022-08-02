@@ -75,6 +75,9 @@ pub struct Commits<'a> {
     /// If true, only consider commits in the first parent history.
     #[builder(default)]
     order: Option<CommitsOrder>,
+    /// If true, parse and include trailers from commit messages.
+    #[builder(default)]
+    trailers: Option<bool>,
 }
 
 impl<'a> Commits<'a> {
@@ -104,7 +107,8 @@ impl<'a> Endpoint for Commits<'a> {
             .push_opt("all", self.all)
             .push_opt("with_stats", self.with_stats)
             .push_opt("first_parent", self.first_parent)
-            .push_opt("order", self.order);
+            .push_opt("order", self.order)
+            .push_opt("trailers", self.trailers);
 
         params
     }
@@ -294,6 +298,23 @@ mod tests {
         let endpoint = Commits::builder()
             .project("simple/project")
             .order(CommitsOrder::Topo)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_trailers() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/repository/commits")
+            .add_query_params(&[("trailers", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Commits::builder()
+            .project("simple/project")
+            .trailers(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

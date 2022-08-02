@@ -4,7 +4,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use derive_builder::Builder;
 
@@ -21,6 +21,8 @@ pub enum GroupOrderBy {
     Path,
     /// Order by the group ID.
     Id,
+    /// Order by similarity (only relevant for searches).
+    Similarity,
 }
 
 impl Default for GroupOrderBy {
@@ -30,12 +32,17 @@ impl Default for GroupOrderBy {
 }
 
 impl GroupOrderBy {
+    fn use_keyset_pagination(self) -> bool {
+        self == GroupOrderBy::Name
+    }
+
     /// The ordering as a query parameter.
     fn as_str(self) -> &'static str {
         match self {
             GroupOrderBy::Name => "name",
             GroupOrderBy::Path => "path",
             GroupOrderBy::Id => "id",
+            GroupOrderBy::Similarity => "similarity",
         }
     }
 }
@@ -78,9 +85,12 @@ pub struct Groups<'a> {
     /// Include project statistics in the results.
     #[builder(default)]
     statistics: Option<bool>,
-    /// Include custom attributes in th response.
+    /// Include custom attributes in the response.
     #[builder(default)]
     with_custom_attributes: Option<bool>,
+    /// Search for projects with a given custom attribute set.
+    #[builder(setter(name = "_custom_attributes"), default, private)]
+    custom_attributes: BTreeMap<Cow<'a, str>, Cow<'a, str>>,
 
     /// Order results by a given key.
     #[builder(default)]
@@ -116,6 +126,31 @@ impl<'a> GroupsBuilder<'a> {
             .extend(iter);
         self
     }
+
+    /// Add a custom attribute search parameter.
+    pub fn custom_attribute<K, V>(&mut self, key: K, value: V) -> &mut Self
+    where
+        K: Into<Cow<'a, str>>,
+        V: Into<Cow<'a, str>>,
+    {
+        self.custom_attributes
+            .get_or_insert_with(BTreeMap::new)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Add multiple custom attribute search parameters.
+    pub fn custom_attributes<I, K, V>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = (K, V)>,
+        K: Into<Cow<'a, str>>,
+        V: Into<Cow<'a, str>>,
+    {
+        self.custom_attributes
+            .get_or_insert_with(BTreeMap::new)
+            .extend(iter.map(|(k, v)| (k.into(), v.into())));
+        self
+    }
 }
 
 impl<'a> Endpoint for Groups<'a> {
@@ -146,6 +181,11 @@ impl<'a> Endpoint for Groups<'a> {
             .push_opt("top_level_only", self.top_level_only)
             .push_opt("statistics", self.statistics)
             .push_opt("with_custom_attributes", self.with_custom_attributes)
+            .extend(
+                self.custom_attributes
+                    .iter()
+                    .map(|(key, value)| (format!("custom_attributes[{}]", key), value)),
+            )
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -153,7 +193,13 @@ impl<'a> Endpoint for Groups<'a> {
     }
 }
 
-impl<'a> Pageable for Groups<'a> {}
+impl<'a> Pageable for Groups<'a> {
+    fn use_keyset_pagination(&self) -> bool {
+        self.order_by
+            .map_or(false, |order_by| order_by.use_keyset_pagination())
+            && self.sort.map_or(true, |sort| sort == SortOrder::Ascending)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -173,6 +219,7 @@ mod tests {
             (GroupOrderBy::Name, "name"),
             (GroupOrderBy::Path, "path"),
             (GroupOrderBy::Id, "id"),
+            (GroupOrderBy::Similarity, "similarity"),
         ];
 
         for (i, s) in items {
@@ -303,6 +350,27 @@ mod tests {
 
         let endpoint = Groups::builder()
             .with_custom_attributes(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_custom_attributes() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups")
+            .add_query_params(&[
+                ("custom_attributes[key]", "value"),
+                ("custom_attributes[key2]", "value"),
+                ("custom_attributes[key3]", "value&value"),
+            ])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Groups::builder()
+            .custom_attribute("key", "value")
+            .custom_attributes([("key2", "value"), ("key3", "value&value")].iter().cloned())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

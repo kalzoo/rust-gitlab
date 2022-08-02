@@ -5,6 +5,74 @@
   * `types::GroupHook` has been added.
   * New endpoints for:
     - Creating, getting, editing, listing and deleting group hooks.
+  * Support for `Push` branch protections when creating groups.
+  * Support for sorting project search results by `Similarity`.
+  * Support for setting group shared runner settings, `path`,
+    `prevent_sharing_groups_outside_hierarchy`,
+    `prevent_forking_outside_group`, and `file_template_project_id`.
+  * Support for `invite_source`, `tasks_to_be_done`, and `tasks_project_id`
+    when adding a member to a group or project.
+  * Support `skip_subresources` when deleting group memberships.
+  * Support for filtering on `epic_id` when listing issues.
+  * Support for issue types when creating, editing, and filtering issues.
+  * Support sorting merge requests by title.
+  * Support requesting retried jobs when requesting pipeline jobs.
+  * Support pipeline status states `Preparing` and `WaitingForResource`.
+  * Support setting the `security_and_compliance_access_level` when creating
+    and editing projects.
+  * Support editing the `mr_default_target_self` and `ci_separated_caches`
+    project fields.
+  * Support setting variables when playing manual jobs.
+  * Support `merge_request_diff_sha` when editing and creating MR notes
+    (required for the `/merge` command).
+  * Support filtering pipelines by their source.
+  * Support allowing force pushes when protecting branches.
+  * Support including HTML descriptions in project releases.
+  * Support sorting parameters for project releases.
+  * Support including trailers in commit queries.
+  * Support `execute_filemode` and `last_commit_id` when editing files through
+    the API.
+  * Support querying custom attributes of users.
+  * Support `without_project_bots` and `saml_provider_id` when listing users.
+  * Support for filtering projects based on import status and topics.
+  * Support for finer-grained creation rules for protected tags.
+  * Support filters when updating project pipeline variables.
+  * Keyset pagination is now supported for group searches ordered by name.
+  * Support filtering groups based on custom attributes.
+  * The `all` project membership endpoints have been split out.
+
+## Deprecations
+
+  * `api::issues::IssueOrderBy::WeightFields` is now
+    `api::issues::IssueOrderBy::Weight`. The old name seems to come from a
+    misreading of the documentation's list of supported fields. Its field name
+    has also been fixed to `weight` instead of `weight_fields`.
+  * `api::projects::{CreateProject, EditProject}::container_registry_enabled`
+    is deprecated in favor of `container_registry_access_level`.
+  * `api::projects::{CreateProject, EditProject}::{tag, tags}` are deprecated
+    in favor of `topic` and `topics`.
+  * `api::projects::merge_requests::MergeRequests::search_in` is deprecated
+    because GitLab doesn't actually have such a query parameter.
+  * `api::projects::merge_requests::MergeRequestSearchScope` is deprecated
+    because GitLab doesn't actually have such a query parameter it represented.
+  * `api::projects::pipelines::Pipelines::name` is deprecated; GitLab never
+    supported such a parameter.
+  * `api::projects::members::{ProjectMember, ProjectMembers}::all_members` is
+    deprecated. The `all` endpoints have different parameters, so merging them
+    doesn't work anymore.
+
+## Breaking changes
+
+  * `api::deploy_keys::DeployKeys::public` is now private.
+  * `api::projects::{CreateProject, EditProject}::requirements_access_level` do
+    not support `Public`, so they now uses `api::FeatureAccessLevel` instead of
+    `api::FeatureAccessLevelPublic`.
+  * `api::users::Users::external` is now a `()` instead of `bool` because
+    GitLab doesn't actually support `external=false`.
+  * `api::projects::repository::Tree` now uses keyset pagination and requires
+    GitLab 15.0. Page-based iteration has been deprecated by GitLab.
+  * `api::projects::variables::ProjectVariableFilter::environment_scope` is now
+    private.
 
 # v0.1502.0
 

@@ -104,7 +104,7 @@ pub struct Users<'a> {
     external_provider: Option<ExternalProvider<'a>>,
     /// Whether to return external users or not.
     #[builder(default)]
-    external: Option<bool>,
+    external: Option<()>,
 
     /// Return users created before a given date.
     #[builder(default)]
@@ -132,6 +132,9 @@ pub struct Users<'a> {
     /// If set to `true`, filter out users without any projects.
     #[builder(default)]
     without_projects: Option<bool>,
+    /// If set to `true`, filter out bot users for projects.
+    #[builder(default)]
+    without_project_bots: Option<bool>,
     /// Exclude internal users.
     ///
     /// These are generally Service Desk users or other GitLab-managed users.
@@ -140,6 +143,9 @@ pub struct Users<'a> {
     /// Filter uses based on administrator status.
     #[builder(default)]
     admins: Option<bool>,
+    /// If provided, only return users created by the given SAML provider ID.
+    #[builder(default)]
+    saml_provider_id: Option<u64>,
 }
 
 impl<'a> Users<'a> {
@@ -193,7 +199,7 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("username", self.username.as_ref())
             .push_opt("active", self.active.map(|()| true))
             .push_opt("blocked", self.blocked.map(|()| true))
-            .push_opt("external", self.external)
+            .push_opt("external", self.external.map(|()| true))
             .push_opt("created_before", self.created_before)
             .push_opt("created_after", self.created_after)
             .extend(
@@ -206,8 +212,10 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("sort", self.sort)
             .push_opt("two_factor", self.two_factor)
             .push_opt("without_projects", self.without_projects)
+            .push_opt("without_project_bots", self.without_project_bots)
             .push_opt("exclude_internal", self.exclude_internal)
-            .push_opt("admins", self.admins);
+            .push_opt("admins", self.admins)
+            .push_opt("saml_provider_id", self.saml_provider_id);
 
         if let Some(value) = self.external_provider.as_ref() {
             params
@@ -369,12 +377,12 @@ mod tests {
     fn endpoint_external() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("users")
-            .add_query_params(&[("external", "false")])
+            .add_query_params(&[("external", "true")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
-        let endpoint = Users::builder().external(false).build().unwrap();
+        let endpoint = Users::builder().external(()).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 
@@ -506,6 +514,22 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_without_project_bots() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("users")
+            .add_query_params(&[("without_project_bots", "false")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Users::builder()
+            .without_project_bots(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_exclude_internal() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("users")
@@ -528,6 +552,19 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Users::builder().admins(false).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_saml_provider_id() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("users")
+            .add_query_params(&[("saml_provider_id", "2")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Users::builder().saml_provider_id(2).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 }

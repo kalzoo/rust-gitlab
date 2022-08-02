@@ -11,6 +11,7 @@ use crate::api::endpoint_prelude::*;
 
 /// Edit a merge request note on a project.
 #[derive(Debug, Builder)]
+#[builder(setter(strip_option))]
 pub struct EditMergeRequestNote<'a> {
     /// The project to add the merge request to.
     #[builder(setter(into))]
@@ -23,6 +24,12 @@ pub struct EditMergeRequestNote<'a> {
     /// The content of the note.
     #[builder(setter(into))]
     body: Cow<'a, str>,
+    /// The SHA of the head of the merge request.
+    ///
+    /// Required when using the `/merge` command to verify that the intended commit is being
+    /// merged.
+    #[builder(setter(into), default)]
+    merge_request_diff_sha: Option<Cow<'a, str>>,
 }
 
 impl<'a> EditMergeRequestNote<'a> {
@@ -48,7 +55,10 @@ impl<'a> Endpoint for EditMergeRequestNote<'a> {
     fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
         let mut params = FormParams::default();
 
-        params.push("body", self.body.as_ref());
+        params.push("body", self.body.as_ref()).push_opt(
+            "merge_request_diff_sha",
+            self.merge_request_diff_sha.as_ref(),
+        );
 
         params.into_body()
     }
@@ -141,6 +151,31 @@ mod tests {
             .merge_request(1)
             .note(1)
             .body("body")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_merge_request_diff_sha() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/notes/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "body=body",
+                "&merge_request_diff_sha=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditMergeRequestNote::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .note(1)
+            .body("body")
+            .merge_request_diff_sha("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

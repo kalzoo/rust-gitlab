@@ -27,7 +27,7 @@ pub enum ProtectedAccess {
 }
 
 impl ProtectedAccess {
-    fn add_query(self, name: &str, params: &mut FormParams) {
+    pub(crate) fn add_query(self, name: &str, params: &mut FormParams) {
         match self {
             ProtectedAccess::User(user) => {
                 params.push(format!("{}[][user_id]", name), user);
@@ -87,6 +87,9 @@ pub struct ProtectBranch<'a> {
     /// The minimum access level required to unprotect the branch.
     #[builder(default)]
     unprotect_access_level: Option<ProtectedAccessLevel>,
+    /// Allow all users with push access to force push.
+    #[builder(default)]
+    allow_force_push: Option<bool>,
     /// A discrete set of accesses allowed to push to the branch.
     #[builder(setter(name = "_allowed_to_push"), default, private)]
     allowed_to_push: BTreeSet<ProtectedAccess>,
@@ -151,6 +154,7 @@ impl<'a> Endpoint for ProtectBranch<'a> {
             .push_opt("push_access_level", self.push_access_level)
             .push_opt("merge_access_level", self.merge_access_level)
             .push_opt("unprotect_access_level", self.unprotect_access_level)
+            .push_opt("allow_force_push", self.allow_force_push)
             .push_opt(
                 "code_owner_approval_required",
                 self.code_owner_approval_required,
@@ -334,6 +338,26 @@ mod tests {
             .project("simple/project")
             .name("master")
             .unprotect_access_level(ProtectedAccessLevel::Maintainer)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_allow_force_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/protected_branches")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=master", "&allow_force_push=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = ProtectBranch::builder()
+            .project("simple/project")
+            .name("master")
+            .allow_force_push(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
