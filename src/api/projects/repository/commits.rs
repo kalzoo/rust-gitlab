@@ -12,6 +12,7 @@ mod comment;
 mod comments;
 mod commit;
 mod commits;
+mod create;
 mod create_status;
 mod merge_requests;
 mod statuses;
@@ -33,6 +34,14 @@ pub use self::commits::Commits;
 pub use self::commits::CommitsBuilder;
 pub use self::commits::CommitsBuilderError;
 pub use self::commits::CommitsOrder;
+
+pub use self::create::CommitAction;
+pub use self::create::CommitActionBuilder;
+pub use self::create::CommitActionBuilderError;
+pub use self::create::CommitActionType;
+pub use self::create::CreateCommit;
+pub use self::create::CreateCommitBuilder;
+pub use self::create::CreateCommitBuilderError;
 
 pub use self::create_status::CommitStatusState;
 pub use self::create_status::CreateCommitStatus;
