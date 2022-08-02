@@ -39,6 +39,7 @@
   * Support filters when updating project pipeline variables.
   * Keyset pagination is now supported for group searches ordered by name.
   * Support filtering groups based on custom attributes.
+  * The `all` project membership endpoints have been split out.
 
 ## Deprecations
 
@@ -56,6 +57,9 @@
     because GitLab doesn't actually have such a query parameter it represented.
   * `api::projects::pipelines::Pipelines::name` is deprecated; GitLab never
     supported such a parameter.
+  * `api::projects::members::{ProjectMember, ProjectMembers}::all_members` is
+    deprecated. The `all` endpoints have different parameters, so merging them
+    doesn't work anymore.
 
 ## Breaking changes
 

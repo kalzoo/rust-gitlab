@@ -10,11 +10,36 @@ use derive_builder::Builder;
 
 use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
+use crate::api::ParamValue;
 
-/// Query a members of a project.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// States that project memberships may be in.
+pub enum ProjectMemberState {
+    /// Users awaiting acceptance.
+    Awaiting,
+    /// Users actively members of the project.
+    Active,
+}
+
+impl ProjectMemberState {
+    fn as_str(self) -> &'static str {
+        match self {
+            ProjectMemberState::Awaiting => "awaiting",
+            ProjectMemberState::Active => "active",
+        }
+    }
+}
+
+impl ParamValue<'static> for ProjectMemberState {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
+/// Query a members of a project including parent group memberships.
 #[derive(Debug, Builder)]
 #[builder(setter(strip_option))]
-pub struct ProjectMembers<'a> {
+pub struct AllProjectMembers<'a> {
     /// The project to query for membership.
     #[builder(setter(into))]
     project: NameOrId<'a>,
@@ -25,29 +50,19 @@ pub struct ProjectMembers<'a> {
     /// A search string to filter members by.
     #[builder(setter(name = "_user_ids"), default, private)]
     user_ids: BTreeSet<u64>,
-    // Whether to include ancestor users from enclosing Groups in the queried list of members.
-    #[builder(private)]
-    _include_ancestors: bool,
+    /// Filter results by member state.
+    #[builder(default)]
+    state: Option<ProjectMemberState>,
 }
 
-impl<'a> ProjectMembers<'a> {
+impl<'a> AllProjectMembers<'a> {
     /// Create a builder for the endpoint.
-    pub fn builder() -> ProjectMembersBuilder<'a> {
-        let mut builder = ProjectMembersBuilder::default();
-        builder._include_ancestors(false);
-        builder
-    }
-
-    /// Create a builder for the endpoint that includes ancestor groups.
-    #[deprecated(note = "use `api/projects/members/AllProjectMembers` instead")]
-    pub fn all_builder() -> ProjectMembersBuilder<'a> {
-        let mut builder = ProjectMembersBuilder::default();
-        builder._include_ancestors(true);
-        builder
+    pub fn builder() -> AllProjectMembersBuilder<'a> {
+        AllProjectMembersBuilder::default()
     }
 }
 
-impl<'a> ProjectMembersBuilder<'a> {
+impl<'a> AllProjectMembersBuilder<'a> {
     /// Filter results by the given user ID.
     pub fn user_id(&mut self, user_id: u64) -> &mut Self {
         self.user_ids
@@ -66,17 +81,13 @@ impl<'a> ProjectMembersBuilder<'a> {
     }
 }
 
-impl<'a> Endpoint for ProjectMembers<'a> {
+impl<'a> Endpoint for AllProjectMembers<'a> {
     fn method(&self) -> Method {
         Method::GET
     }
 
     fn endpoint(&self) -> Cow<'static, str> {
-        if self._include_ancestors {
-            format!("projects/{}/members/all", self.project).into()
-        } else {
-            format!("projects/{}/members", self.project).into()
-        }
+        format!("projects/{}/members/all", self.project).into()
     }
 
     fn parameters(&self) -> QueryParams {
@@ -84,63 +95,55 @@ impl<'a> Endpoint for ProjectMembers<'a> {
 
         params
             .push_opt("query", self.query.as_ref())
-            .extend(self.user_ids.iter().map(|&value| ("user_ids[]", value)));
+            .extend(self.user_ids.iter().map(|&value| ("user_ids[]", value)))
+            .push_opt("state", self.state);
 
         params
     }
 }
 
-impl<'a> Pageable for ProjectMembers<'a> {}
+impl<'a> Pageable for AllProjectMembers<'a> {}
 
 #[cfg(test)]
 mod tests {
-    use crate::api::projects::members::{ProjectMembers, ProjectMembersBuilderError};
+    use crate::api::projects::members::{
+        AllProjectMembers, AllProjectMembersBuilderError, ProjectMemberState,
+    };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
 
     #[test]
-    fn project_is_needed() {
-        let err = ProjectMembers::builder().build().unwrap_err();
-        crate::test::assert_missing_field!(err, ProjectMembersBuilderError, "project");
+    fn project_member_state_as_str() {
+        let items = &[
+            (ProjectMemberState::Awaiting, "awaiting"),
+            (ProjectMemberState::Active, "active"),
+        ];
 
-        #[allow(deprecated)]
-        let err = ProjectMembers::all_builder().build().unwrap_err();
-        crate::test::assert_missing_field!(err, ProjectMembersBuilderError, "project");
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn project_is_needed() {
+        let err = AllProjectMembers::builder().build().unwrap_err();
+        crate::test::assert_missing_field!(err, AllProjectMembersBuilderError, "project");
     }
 
     #[test]
     fn project_is_sufficient() {
-        ProjectMembers::builder().project(1).build().unwrap();
-
-        #[allow(deprecated)]
-        ProjectMembers::all_builder().project(1).build().unwrap();
+        AllProjectMembers::builder().project(1).build().unwrap();
     }
 
     #[test]
     fn endpoint() {
-        let endpoint = ExpectedUrl::builder()
-            .endpoint("projects/simple%2Fproject/members")
-            .build()
-            .unwrap();
-        let client = SingleTestClient::new_raw(endpoint, "");
-
-        let endpoint = ProjectMembers::builder()
-            .project("simple/project")
-            .build()
-            .unwrap();
-        api::ignore(endpoint).query(&client).unwrap();
-    }
-
-    #[test]
-    fn endpoint_all() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/members/all")
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
-        #[allow(deprecated)]
-        let endpoint = ProjectMembers::all_builder()
+        let endpoint = AllProjectMembers::builder()
             .project("simple/project")
             .build()
             .unwrap();
@@ -150,13 +153,13 @@ mod tests {
     #[test]
     fn endpoint_query() {
         let endpoint = ExpectedUrl::builder()
-            .endpoint("projects/simple%2Fproject/members")
+            .endpoint("projects/simple%2Fproject/members/all")
             .add_query_params(&[("query", "search")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
-        let endpoint = ProjectMembers::builder()
+        let endpoint = AllProjectMembers::builder()
             .project("simple/project")
             .query("search")
             .build()
@@ -167,16 +170,33 @@ mod tests {
     #[test]
     fn endpoint_user_ids() {
         let endpoint = ExpectedUrl::builder()
-            .endpoint("projects/simple%2Fproject/members")
+            .endpoint("projects/simple%2Fproject/members/all")
             .add_query_params(&[("user_ids[]", "1"), ("user_ids[]", "2")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
-        let endpoint = ProjectMembers::builder()
+        let endpoint = AllProjectMembers::builder()
             .project("simple/project")
             .user_id(1)
             .user_ids([1, 2].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_state() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/members/all")
+            .add_query_params(&[("state", "awaiting")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = AllProjectMembers::builder()
+            .project("simple/project")
+            .state(ProjectMemberState::Awaiting)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
