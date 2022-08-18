@@ -124,6 +124,11 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/protected_tags` `projects/protected_tags/protect.rs`
   * `GET    /projects/:project/protected_tags/:name` `projects/protected_tags/protected_tag.rs`
   * `DELETE /projects/:project/protected_tags/:name` `projects/protected_tags/unprotect.rs`
+  * `GET    /projects/:project/registry/repositories` `projects/registry/repositories.rs`
+  * `DELETE /projects/:project/registry/repositories/:repository` `projects/registry/delete_repository.rs`
+  * `GET    /projects/:project/registry/repositories/:repository/tags` `projects/registry/repository_tags.rs`
+  * `GET    /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/repository_tag_details.rs`
+  * `DELETE /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/delete_repository_tag.rs`
   * `GET    /projects/:project/releases` `projects/releases/releases.rs`
   * `GET    /projects/:project/repository/branches` `projects/repository/branches/branches.rs`
   * `POST   /projects/:project/repository/branches` `projects/repository/branches/create.rs`
@@ -219,6 +224,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#add-group-push-rule
   * `PUT    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#edit-group-push-rule
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
+  * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
   * `POST   /groups/:group/transfer` https://gitlab.kitware.com/help/api/groups.md#transfer-a-group-to-a-new-parent-group-turn-a-subgroup-to-a-top-level-group
   * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
@@ -352,6 +358,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#add-project-push-rule
   * `PUT    /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#edit-project-push-rule
   * `DELETE /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#delete-project-push-rule
+  * `DELETE /projects/:project/registry/repositories/:repository_id/tags` https://gitlab.kitware.com/help/api/container_registry.md#delete-registry-repository-tags-in-bulk
   * `POST   /projects/:project/releases` https://gitlab.kitware.com/help/api/releases/index.md#create-a-release
   * `GET    /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#get-a-release-by-a-tag-name
   * `PUT    /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#update-a-release
@@ -411,6 +418,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/variables` `https://gitlab.kitware.com/help/api/project_level_variables.md#list-project-variables`
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
+  * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
   * `POST   /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
   * `GET    /user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails
@@ -462,6 +470,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /users/:user/unblock` https://gitlab.kitware.com/help/api/users.md#unblock-user
   * `POST   /users/:user/unfollow` https://gitlab.kitware.com/help/api/users.md#follow-and-unfollow-users
   * `GET    /user_counts` https://gitlab.kitware.com/help/api/users.md#user-counts
+  * `GET    /v2/_catalog` https://gitlab.kitware.com/help/api/container_registry.md#listing-all-container-repositories
 
 ## Endpoint groups
 
@@ -478,7 +487,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/boards.md
   * https://gitlab.kitware.com/help/api/broadcast_messages.md
   * https://gitlab.kitware.com/help/api/cluster_agents.md
-  * https://gitlab.kitware.com/help/api/container_registry.md
   * https://gitlab.kitware.com/help/api/custom_attributes.md
   * https://gitlab.kitware.com/help/api/dependencies.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
