@@ -8,11 +8,17 @@
 //!
 //! These endpoints are used for querying a project's repository.
 
+mod archive;
 pub mod branches;
 pub mod commits;
 pub mod files;
 pub mod tags;
 mod tree;
+
+pub use archive::Archive;
+pub use archive::ArchiveBuilder;
+pub use archive::ArchiveBuilderError;
+pub use archive::ArchiveFormat;
 
 pub use tree::Tree;
 pub use tree::TreeBuilder;
