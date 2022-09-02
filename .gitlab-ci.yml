@@ -36,7 +36,7 @@ stages:
 
 .cargo_all_features:
     variables:
-        CARGO_FEATURES: --all-features
+        CARGO_FEATURES: --features client_api
 
 cache-newest:prep:
     extends:
@@ -56,6 +56,7 @@ cache-mindeps:prep:
     variables:
         GENERATE_LOCKFILE_ARGS: "-Z minimal-versions"
         CARGO_UPDATE_POLICY: mindeps
+        CARGO_FEATURES: --features minimal_versions
 
 clippy:build:
     extends:
