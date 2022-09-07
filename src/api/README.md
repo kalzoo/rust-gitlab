@@ -153,6 +153,10 @@ These API endpoints have been implemented.
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `GET    /users/:user` `users/user.rs`
+  * `GET    /users/:user/impersonation_tokens` `users/impersonation_tokens/impersonation_tokens.rs`
+  * `POST   /users/:user/impersonation_tokens` `users/impersonation_tokens/create.rs`
+  * `GET    /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/impersonation_token.rs`
+  * `DELETE /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/delete.rs`
 
 # Todo
 
@@ -444,10 +448,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /users/:user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#get-a-specific-gpg-key-for-a-given-user
   * `DELETE /users/:user/gpg_keys/:gpg_key` https://gitlab.kitware.com/help/api/users.md#add-a-gpg-key-for-a-given-user
   * `DELETE /users/:user/identities/:provider` https://gitlab.kitware.com/help/api/users.md#delete-authentication-identity-from-user
-  * `GET    /users/:user/impersonation_tokens` https://gitlab.kitware.com/help/api/users.md#get-all-impersonation-tokens-of-a-user
-  * `POST   /users/:user/impersonation_tokens` https://gitlab.kitware.com/help/api/users.md#create-an-impersonation-token
-  * `GET    /users/:user/impersonation_tokens/:impersonation_token` https://gitlab.kitware.com/help/api/users.md#get-an-impersonation-token-of-a-user
-  * `DELETE /users/:user/impersonation_tokens/:impersonation_token` https://gitlab.kitware.com/help/api/users.md#revoke-an-impersonation-token
   * `GET    /users/:user/keys` https://gitlab.kitware.com/help/api/users.md#list-ssh-keys-for-user
   * `POST   /users/:user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key-for-user
   * `DELETE /users/:user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-given-user

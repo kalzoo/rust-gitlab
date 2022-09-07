@@ -11,6 +11,7 @@
 //! These endpoints are used for querying and modifying users and their resources.
 
 mod current_user;
+pub mod impersonation_tokens;
 mod user;
 mod users;
 
