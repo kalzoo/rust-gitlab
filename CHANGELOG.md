@@ -1,3 +1,9 @@
+# v0.1503.1
+
+## Additions
+
+  * API endpoints for user impersonation tokens.
+
 # v0.1503.0
 
 ## Additions
