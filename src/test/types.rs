@@ -420,12 +420,12 @@ fn test_read_merge_train() {
 fn test_read_note() {
     let note: Note = read_test_file("note");
 
-    assert_eq!(note.id, NoteId::new(619_275));
-    assert_eq!(note.body, "resolved all threads");
+    assert_eq!(note.id, NoteId::new(880_929));
+    assert_eq!(note.body, "requested review from @brad.king");
     assert_eq!(note.attachment, None);
     check_user_brad_king(&note.author);
-    assert_eq!(note.created_at, datetime((2019, 8, 29), (17, 31, 17, 886)));
-    assert_eq!(note.updated_at, datetime((2019, 8, 29), (17, 31, 17, 889)));
+    assert_eq!(note.created_at, datetime((2021, 1, 7), (19, 18, 28, 633)));
+    assert_eq!(note.updated_at, datetime((2021, 1, 7), (19, 18, 28, 637)));
     assert!(!note.resolvable);
     assert_eq!(note.resolved, None);
     assert!(note.resolved_by.is_none());
