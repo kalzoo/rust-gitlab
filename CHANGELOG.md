@@ -1,3 +1,7 @@
+# v0.1505.0
+
+  * No changes needed for GitLab 15.5.
+
 # v0.1504.0
 
 ## Additions
