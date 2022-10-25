@@ -47,6 +47,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 122.347063,
     "ref": "master",
     "runner": {
@@ -141,6 +144,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 161.366858,
     "ref": "master",
@@ -237,6 +243,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 0.774431,
     "ref": "master",
     "runner": {
@@ -331,6 +340,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 296.258346,
     "ref": "master",
@@ -429,6 +441,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 254.851066,
     "ref": "master",
     "runner": {
@@ -524,6 +539,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 326.132156,
     "ref": "master",
     "runner": {
@@ -618,6 +636,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 376.187102,
     "ref": "master",
@@ -716,6 +737,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 549.146496,
     "ref": "master",
     "runner": {
@@ -810,6 +834,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 445.828488,
     "ref": "master",
@@ -906,6 +933,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 412.400156,
     "ref": "master",
     "runner": {
@@ -1000,6 +1030,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 339.285391,
     "ref": "master",
@@ -1096,6 +1129,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 332.327555,
     "ref": "master",
     "runner": {
@@ -1190,6 +1226,9 @@
       "status": "success",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 265.980344,
     "ref": "master",
@@ -1302,6 +1341,9 @@
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
     },
+    "project": {
+      "ci_job_token_scope_enabled": true
+    },
     "queued_duration": 150.760745,
     "ref": "master",
     "runner": {
@@ -1389,6 +1431,9 @@
       "status": "running",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 2.371889,
     "ref": "master",
@@ -1478,6 +1523,9 @@
       "status": "running",
       "updated_at": "2020-04-13T00:36:12.508-04:00",
       "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/pipelines/168478"
+    },
+    "project": {
+      "ci_job_token_scope_enabled": true
     },
     "queued_duration": 1.062869,
     "ref": "master",
