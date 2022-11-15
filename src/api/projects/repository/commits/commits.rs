@@ -195,7 +195,7 @@ mod tests {
 
         let endpoint = Commits::builder()
             .project("simple/project")
-            .since(Utc.ymd(2021, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .since(Utc.with_ymd_and_hms(2021, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -212,7 +212,7 @@ mod tests {
 
         let endpoint = Commits::builder()
             .project("simple/project")
-            .until(Utc.ymd(2021, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .until(Utc.with_ymd_and_hms(2021, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

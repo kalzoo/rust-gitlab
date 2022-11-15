@@ -172,7 +172,7 @@ mod tests {
             .project("simple/project")
             .issue(1)
             .body("body")
-            .created_at(Utc.ymd(2020, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .created_at(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
