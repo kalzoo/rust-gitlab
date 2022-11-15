@@ -157,7 +157,7 @@ mod tests {
         let endpoint = CreateGroupMilestone::builder()
             .group("group/subgroup")
             .title("title")
-            .due_date(NaiveDate::from_ymd(2020, 1, 1))
+            .due_date(NaiveDate::from_ymd_opt(2020, 1, 1).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -177,7 +177,7 @@ mod tests {
         let endpoint = CreateGroupMilestone::builder()
             .group("group/subgroup")
             .title("title")
-            .start_date(NaiveDate::from_ymd(2020, 1, 1))
+            .start_date(NaiveDate::from_ymd_opt(2020, 1, 1).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

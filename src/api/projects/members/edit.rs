@@ -150,7 +150,7 @@ mod tests {
             .project("project/subproject")
             .user(1)
             .access_level(AccessLevel::Developer)
-            .expires_at(NaiveDate::from_ymd(2020, 1, 1))
+            .expires_at(NaiveDate::from_ymd_opt(2020, 1, 1).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

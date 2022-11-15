@@ -6,7 +6,7 @@
 
 use std::{fs::File, ops::Deref};
 
-use chrono::{DateTime, NaiveDate, TimeZone, Utc};
+use chrono::{DateTime, NaiveDate, Utc};
 use serde::de::DeserializeOwned;
 use serde_json::{from_reader, json};
 
@@ -79,8 +79,12 @@ fn check_empty_time_stats(time_stats: &IssuableTimeStats) {
 }
 
 fn datetime(ymd: (i32, u32, u32), time: (u32, u32, u32, u32)) -> DateTime<Utc> {
-    Utc.ymd(ymd.0, ymd.1, ymd.2)
-        .and_hms_milli(time.0, time.1, time.2, time.3)
+    NaiveDate::from_ymd_opt(ymd.0, ymd.1, ymd.2)
+        .unwrap()
+        .and_hms_milli_opt(time.0, time.1, time.2, time.3)
+        .unwrap()
+        .and_local_timezone(Utc)
+        .unwrap()
 }
 
 fn read_test_file<T: DeserializeOwned>(name: &str) -> T {
@@ -793,7 +797,7 @@ fn test_read_user_public() {
     );
     assert_eq!(
         user_public.last_activity_on.unwrap(),
-        NaiveDate::from_ymd(2022, 1, 6),
+        NaiveDate::from_ymd_opt(2022, 1, 6).unwrap(),
     );
     assert_eq!(
         user_public.confirmed_at.unwrap(),

@@ -684,7 +684,7 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Projects::builder()
-            .last_activity_before(Utc.ymd(2020, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .last_activity_before(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -716,7 +716,7 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Projects::builder()
-            .last_activity_after(Utc.ymd(2020, 1, 1).and_hms_milli(0, 0, 0, 0))
+            .last_activity_after(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

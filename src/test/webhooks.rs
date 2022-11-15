@@ -4,7 +4,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use chrono::{TimeZone, Utc};
+use chrono::{NaiveDate, TimeZone, Utc};
 use serde_json::from_str;
 
 use crate::webhooks::*;
@@ -16,17 +16,22 @@ fn test_hookdate_deserialize() {
     let hook: HookDate = from_str("\"2019-01-20 15:00:12 UTC\"").unwrap();
     assert_eq!(
         *hook.as_ref(),
-        Utc.ymd(2019, 1, 20).and_hms_milli(15, 00, 12, 0),
+        Utc.with_ymd_and_hms(2019, 1, 20, 15, 00, 12).unwrap(),
     );
     let hook: HookDate = from_str("\"2019-03-01T19:39:17Z\"").unwrap();
     assert_eq!(
         *hook.as_ref(),
-        Utc.ymd(2019, 3, 1).and_hms_milli(19, 39, 17, 0),
+        Utc.with_ymd_and_hms(2019, 3, 1, 19, 39, 17).unwrap(),
     );
     let hook: HookDate = from_str("\"2019-03-01T17:50:02.036-05:00\"").unwrap();
     assert_eq!(
         *hook.as_ref(),
-        Utc.ymd(2019, 3, 1).and_hms_milli(22, 50, 2, 36),
+        NaiveDate::from_ymd_opt(2019, 3, 1)
+            .unwrap()
+            .and_hms_milli_opt(22, 50, 2, 36)
+            .unwrap()
+            .and_local_timezone(Utc)
+            .unwrap(),
     );
 }
 

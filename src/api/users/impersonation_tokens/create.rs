@@ -209,7 +209,7 @@ mod tests {
             .user(1)
             .name("name")
             .scope(ImpersonationTokenScope::Api)
-            .expires_at(NaiveDate::from_ymd(2022, 1, 1))
+            .expires_at(NaiveDate::from_ymd_opt(2022, 1, 1).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
