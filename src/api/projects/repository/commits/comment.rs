@@ -35,7 +35,7 @@ impl ParamValue<'static> for LineType {
 }
 
 /// Post a comment on a specific commit in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CommentOnCommit<'a> {
     /// The project to get a commit from.

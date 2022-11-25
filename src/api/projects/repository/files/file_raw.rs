@@ -13,7 +13,7 @@ use crate::api::endpoint_prelude::*;
 ///
 /// Note: This endpoint returns raw data, so [`crate::api::raw`] is recommended to avoid the normal
 /// JSON parsing present in the typical endpoint handling.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct FileRaw<'a> {
     /// The project to get a file within.
     #[builder(setter(into))]

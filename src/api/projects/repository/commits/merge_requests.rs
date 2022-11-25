@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Get a list of merge requests related to the specified commit.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct MergeRequests<'a> {
     /// The project to get commits from.
     #[builder(setter(into))]

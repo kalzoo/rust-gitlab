@@ -11,7 +11,7 @@ use crate::api::common::{AccessLevel, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Share group with another group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ShareGroup<'a> {
     /// The ID or URL-encoded path of the group.

@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query a single member of a group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct GroupMember<'a> {
     /// The group to query for membership.
     #[builder(setter(into))]

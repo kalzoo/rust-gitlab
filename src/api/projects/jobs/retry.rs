@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Retry a job.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct RetryJob<'a> {
     /// The project which owns the job.
     #[builder(setter(into))]

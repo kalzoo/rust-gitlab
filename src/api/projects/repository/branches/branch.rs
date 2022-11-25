@@ -10,7 +10,7 @@ use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Query for a specific branch in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct Branch<'a> {
     /// The project to get a branch from.
     #[builder(setter(into))]

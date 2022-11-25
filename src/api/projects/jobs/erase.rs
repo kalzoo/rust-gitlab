@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Erase a job.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct EraseJob<'a> {
     /// The project which owns the job.
     #[builder(setter(into))]

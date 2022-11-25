@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query for approval state of a merge request.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct MergeRequestApprovalState<'a> {
     /// The project to query for approval state.
     #[builder(setter(into))]

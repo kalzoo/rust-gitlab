@@ -41,7 +41,7 @@ impl ParamValue<'static> for GroupInviteTasksToBeDone {
 }
 
 /// Add a user as a member of a group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct AddGroupMember<'a> {
     /// The group to add the user to.

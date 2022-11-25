@@ -38,7 +38,7 @@ impl ParamValue<'static> for MergeTrainsScope {
 }
 
 /// Get the list of merge trains for project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct MergeTrains<'a> {
     /// The project with the merge request.

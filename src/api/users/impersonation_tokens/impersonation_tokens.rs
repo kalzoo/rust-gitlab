@@ -38,7 +38,7 @@ impl ParamValue<'static> for ImpersonationTokenState {
 }
 
 /// Get impersonation tokens of a user.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ImpersonationTokens {
     /// The user to list impersonation tokens for.

@@ -11,7 +11,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::helpers::NoteOrderBy;
 
 /// Query for notes on an merge request within a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct MergeRequestNotes<'a> {
     /// The project to query for the merge request.

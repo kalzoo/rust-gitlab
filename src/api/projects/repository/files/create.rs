@@ -68,7 +68,7 @@ impl ParamValue<'static> for Encoding {
 }
 
 /// Create a new file in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateFile<'a> {
     /// The project to create a file within.

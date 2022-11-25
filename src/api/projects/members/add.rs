@@ -41,7 +41,7 @@ impl ParamValue<'static> for ProjectInviteTasksToBeDone {
 }
 
 /// Add a user as a member of a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct AddProjectMember<'a> {
     /// The project to add the user to.

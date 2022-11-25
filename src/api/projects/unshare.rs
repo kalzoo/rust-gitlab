@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Unshare a project with a group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct UnshareProject<'a> {
     /// The project to add the user to.
     #[builder(setter(into))]

@@ -24,7 +24,7 @@ use super::{
 /// Query for issues within a group.
 ///
 /// TODO: Negation (not) filters are not yet supported.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct GroupIssues<'a> {
     /// The group to query for issues.

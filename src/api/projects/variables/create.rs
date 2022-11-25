@@ -41,7 +41,7 @@ impl ParamValue<'static> for ProjectVariableType {
 }
 
 /// Add a variable to a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateProjectVariable<'a> {
     /// The project to add the variable to.

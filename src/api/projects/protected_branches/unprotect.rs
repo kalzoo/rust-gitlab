@@ -10,7 +10,7 @@ use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Unprotect a branch in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct UnprotectBranch<'a> {
     /// The project to unprotect a branch within.
     #[builder(setter(into))]

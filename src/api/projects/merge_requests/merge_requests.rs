@@ -225,7 +225,7 @@ impl ApprovedByIds {
 /// Query for merge requests within a project.
 ///
 /// TODO: Negation (not) filters are not yet supported.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct MergeRequests<'a> {
     /// The project to query for merge requests.

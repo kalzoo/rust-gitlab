@@ -30,7 +30,7 @@ impl<'a> ProjectVariableFilter<'a> {
 }
 
 /// Get the variable from a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ProjectVariable<'a> {
     /// The project to get the variable from.

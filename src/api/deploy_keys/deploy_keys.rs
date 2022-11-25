@@ -9,7 +9,7 @@ use derive_builder::Builder;
 use crate::api::endpoint_prelude::*;
 
 /// Query for deploy keys.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct DeployKeys {
     /// If `true`, list only public deploy keys.

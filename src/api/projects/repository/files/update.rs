@@ -14,7 +14,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::projects::repository::files::Encoding;
 
 /// Update a file in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct UpdateFile<'a> {
     /// The project to update a file within.

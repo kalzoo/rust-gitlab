@@ -37,7 +37,7 @@ impl ParamValue<'static> for ProjectMemberState {
 }
 
 /// Query a members of a project including parent group memberships.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct AllProjectMembers<'a> {
     /// The project to query for membership.

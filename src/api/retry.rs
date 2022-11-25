@@ -25,7 +25,7 @@ use thiserror::Error;
 use crate::api;
 
 /// Parameters for retrying queries with an exponential backoff.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct Backoff {
     /// The maximum number of times to backoff.
     ///

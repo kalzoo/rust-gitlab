@@ -80,7 +80,7 @@ impl<'a> ExternalProviderBuilder<'a> {
 }
 
 /// Query for users on an instance.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct Users<'a> {
     /// Search for users using a query string.

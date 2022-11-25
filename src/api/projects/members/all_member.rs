@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query a single member of a project with ancestor collapsing.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct AllProjectMember<'a> {
     /// The project to query for membership.
     #[builder(setter(into))]

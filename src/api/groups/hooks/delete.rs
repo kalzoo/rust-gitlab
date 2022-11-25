@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Delete a group webhook.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct DeleteHook<'a> {
     /// The group to delete a webhook within.
     #[builder(setter(into))]

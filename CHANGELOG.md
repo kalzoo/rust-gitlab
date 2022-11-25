@@ -1,3 +1,9 @@
+# v0.1506.1 (unreleased)
+
+## Additions
+
+  * Implement `Clone` for structs that implement `Endpoint`.
+
 # v0.1506.0
 
   * No changes needed for GitLab 15.6.

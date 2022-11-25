@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Unapprove a merge request.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct UnapproveMergeRequest<'a> {
     /// The project with the merge request.
     #[builder(setter(into))]

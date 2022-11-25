@@ -33,7 +33,7 @@ impl<'a> JobVariableAttribute<'a> {
 }
 
 /// Play a job.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct PlayJob<'a> {
     /// The project which owns the job.
     #[builder(setter(into))]

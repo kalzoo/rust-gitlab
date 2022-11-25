@@ -13,7 +13,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::projects::jobs::JobScope;
 
 /// Query for jobs within a pipeline.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct PipelineJobs<'a> {
     /// The project to query for the pipeline.

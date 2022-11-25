@@ -61,7 +61,7 @@ impl<'a> PipelineVariable<'a> {
 }
 
 /// Create a new pipeline on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct CreatePipeline<'a> {
     /// The project to create the pipeline within.
     #[builder(setter(into))]

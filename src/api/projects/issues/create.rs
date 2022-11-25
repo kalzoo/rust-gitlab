@@ -14,7 +14,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::issues::IssueType;
 
 /// Create a new issue on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateIssue<'a> {
     /// The project to add the issue to.
