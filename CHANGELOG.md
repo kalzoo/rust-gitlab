@@ -1,3 +1,9 @@
+# v0.1507.1 (unreleased)
+
+## Additions
+
+  * Add API endpoint `api::projects::merge_requests::approval_rules`.
+
 # v0.1507.0
 
 ## Additions

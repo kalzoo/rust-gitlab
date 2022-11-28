@@ -82,6 +82,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/merge_requests` `projects/merge_requests/create.rs`
   * `GET    /projects/:project/merge_requests/:merge_request` `projects/merge_requests/merge_request.rs`
   * `PUT    /projects/:project/merge_requests/:merge_request` `projects/merge_requests/edit.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/approval_rules` `projects/merge_requests/approval_rules/approval_rules.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/approval_state` `projects/merge_requests/approval_state/approval_state.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/approvals` `projects/merge_requests/approvals/approvals.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/approve` `projects/merge_requests/approve.rs`
@@ -310,7 +311,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration
-  * `GET    /projects/:project/merge_requests/:merge_request/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-merge-request-level-rules
   * `POST   /projects/:project/merge_requests/:merge_request/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-merge-request-level-rules
   * `GET    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-a-single-merge-request-level-rule
   * `PUT    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#update-merge-request-level-rule
