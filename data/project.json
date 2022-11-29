@@ -46,6 +46,7 @@
   "import_status": "none",
   "import_type": null,
   "import_url": "",
+  "issue_branch_template": null,
   "issues_access_level": "enabled",
   "issues_enabled": true,
   "jobs_enabled": true,

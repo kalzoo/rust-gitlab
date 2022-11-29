@@ -33,6 +33,7 @@
   "closed_by": null,
   "created_at": "2016-10-04T15:56:43.276-04:00",
   "description": "Fixes #5.",
+  "detailed_merge_status": "not_open",
   "diff_refs": {
     "base_sha": "981262b03fc0149c1677ca51ea47b570e30d6a90",
     "head_sha": "04e94ae667024a62a90179f395bfdc2b35f3efd2",
