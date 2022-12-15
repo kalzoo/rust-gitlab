@@ -215,6 +215,7 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
+  * `POST   /users` `users/create.rs`
   * `GET    /users/:user` `users/user.rs`
   * `GET    /users/:user/impersonation_tokens` `users/impersonation_tokens/impersonation_tokens.rs`
   * `POST   /users/:user/impersonation_tokens` `users/impersonation_tokens/create.rs`
@@ -501,7 +502,6 @@ instead of having to search the page for missing endpoints.
   * `PUT    /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
     Note that this clears `emoji`, `message`, and `clear_status_after` if they're not present. Prefer `PATCH`.
   * `PATCH  /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
-  * `POST   /users` https://gitlab.kitware.com/help/api/users.md#user-creation
   * `DELETE /users/:user` https://gitlab.kitware.com/help/api/users.md#user-deletion
   * `PUT    /users/:user` https://gitlab.kitware.com/help/api/users.md#user-modification
   * `POST   /users/:user/activate` https://gitlab.kitware.com/help/api/users.md#activate-user

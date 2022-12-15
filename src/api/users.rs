@@ -10,11 +10,17 @@
 //!
 //! These endpoints are used for querying and modifying users and their resources.
 
+mod create;
 mod current_user;
 pub mod impersonation_tokens;
 mod projects;
 mod user;
 mod users;
+
+pub use self::create::CreateUser;
+pub use self::create::CreateUserBuilder;
+pub use self::create::CreateUserBuilderError;
+pub use self::create::NewUserPassword;
 
 pub use self::projects::UserProjects;
 pub use self::projects::UserProjectsBuilder;
