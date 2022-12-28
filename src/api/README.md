@@ -130,6 +130,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/repository_tag_details.rs`
   * `DELETE /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/delete_repository_tag.rs`
   * `GET    /projects/:project/releases` `projects/releases/releases.rs`
+  * `GET    /projects/:project/repository/archive[.format]` `projects/repository/archive.rs`
   * `GET    /projects/:project/repository/branches` `projects/repository/branches/branches.rs`
   * `POST   /projects/:project/repository/branches` `projects/repository/branches/create.rs`
   * `GET    /projects/:project/repository/branches/:branch` `projects/repository/branches/branch.rs`
@@ -364,7 +365,6 @@ instead of having to search the page for missing endpoints.
   * `PUT    /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#update-a-release
   * `DELETE /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#delete-a-release
   * `GET    /projects/:project/releases/:tag_name/evidence` https://gitlab.kitware.com/help/api/releases/index.md#collect-release-evidence
-  * `GET    /projects/:project/repository/archive[.format]` https://gitlab.kitware.com/help/api/repositories.md#get-file-archive
   * `GET    /projects/:project/repository/blobs/:sha` https://gitlab.kitware.com/help/api/repositories.md#get-a-blob-from-repository
   * `GET    /projects/:project/repository/blobs/:sha/raw` https://gitlab.kitware.com/help/api/repositories.md#raw-blob-content
   * `DELETE /projects/:project/repository/branches/:branch` https://gitlab.kitware.com/help/api/branches.md#delete-repository-branch

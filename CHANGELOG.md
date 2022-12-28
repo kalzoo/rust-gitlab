@@ -4,6 +4,7 @@
 
   * Implement `Clone` for structs that implement `Endpoint`.
   * Support for container registry endpoints.
+  * Support `/project/:project/repository/archive` endpoint.
 
 # v0.1506.0
 
