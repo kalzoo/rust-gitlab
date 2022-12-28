@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Enable a new deploy key on project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct EnableDeployKey<'a> {
     /// The project to enable the deploy key on.
     #[builder(setter(into))]

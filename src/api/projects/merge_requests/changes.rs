@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Shows information of a merge request including its files and changes.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct MergeRequestChanges<'a> {
     /// The project with the merge request.

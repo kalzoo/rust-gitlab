@@ -9,7 +9,7 @@ use derive_builder::Builder;
 use crate::api::endpoint_prelude::*;
 
 /// Get a single impersonation token of a user.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct ImpersonationToken {
     /// The user to create an impersonation token for.
     user: u64,

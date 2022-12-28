@@ -54,7 +54,7 @@ impl ParamValue<'static> for GroupOrderBy {
 }
 
 /// Query for groups on an instance.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct Groups<'a> {
     /// Search for groups using a query string.

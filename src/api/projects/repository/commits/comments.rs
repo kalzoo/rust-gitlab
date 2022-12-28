@@ -10,7 +10,7 @@ use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Query for comments on a specific commit in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct CommitComments<'a> {
     /// The project to get a commit from.
     #[builder(setter(into))]

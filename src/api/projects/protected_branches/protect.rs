@@ -69,7 +69,7 @@ impl From<ProtectedAccessLevel> for ProtectedAccess {
 }
 
 /// Protect a branch or set of branches on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ProtectBranch<'a> {
     /// The project to protect a branch within.

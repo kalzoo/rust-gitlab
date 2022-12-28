@@ -42,7 +42,7 @@ impl ParamValue<'static> for SharedRunnersSetting {
 }
 
 /// Edit an existing group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct EditGroup<'a> {
     /// The group to edit.

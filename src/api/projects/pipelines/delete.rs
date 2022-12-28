@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Delete a pipeline.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct DeletePipeline<'a> {
     /// The project to delete the pipeline from.
     #[builder(setter(into))]

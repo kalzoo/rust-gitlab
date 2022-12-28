@@ -16,7 +16,7 @@ use crate::api::projects::{
 };
 
 /// Edit an existing project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct EditProject<'a> {
     /// The project to edit.

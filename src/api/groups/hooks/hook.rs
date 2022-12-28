@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query for a webhook within a group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct Hook<'a> {
     /// The group to query for webhooks.
     #[builder(setter(into))]

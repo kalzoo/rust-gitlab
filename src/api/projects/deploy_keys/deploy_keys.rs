@@ -11,7 +11,7 @@ use crate::api::endpoint_prelude::*;
 
 /// Query for deploy keys within a project.
 ///
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct DeployKeys<'a> {
     /// The project to query for deploy keys.
     #[builder(setter(into))]

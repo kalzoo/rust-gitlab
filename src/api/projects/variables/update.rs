@@ -11,7 +11,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::projects::variables::{ProjectVariableFilter, ProjectVariableType};
 
 /// Edit a variable of a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct UpdateProjectVariable<'a> {
     /// The project to edit the variable on.

@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query for a merge request on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct MergeRequestCommits<'a> {
     /// The project with the merge request.
     #[builder(setter(into))]

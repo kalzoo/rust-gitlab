@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Create a new award on a note on a merge request on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct CreateMergeRequestNoteAward<'a> {
     /// The project the merge request belongs to.
     #[builder(setter(into))]

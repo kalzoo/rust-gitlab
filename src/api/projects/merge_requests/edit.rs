@@ -53,7 +53,7 @@ impl ParamValue<'static> for MergeRequestStateEvent {
 }
 
 /// Edit a new merge request on project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct EditMergeRequest<'a> {
     /// The project to open the merge requset *from*.

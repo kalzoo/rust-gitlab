@@ -199,7 +199,7 @@ impl ParamValue<'static> for PipelineSource {
 }
 
 /// Query for pipelines within a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct Pipelines<'a> {
     /// The project to query for pipelines.

@@ -44,7 +44,7 @@ impl ParamValue<'static> for EnvironmentState {
 }
 
 /// Query for environments within a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct Environments<'a> {
     /// The project to query for environments.

@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query for resource label events for an issue.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct IssueResourceLabelEvents<'a> {
     /// The project to query for the issue.
     #[builder(setter(into))]

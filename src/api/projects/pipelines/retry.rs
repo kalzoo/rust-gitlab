@@ -12,7 +12,7 @@ use crate::api::endpoint_prelude::*;
 /// Retry a pipeline.
 ///
 /// Note that this only restarts failed jobs.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct RetryPipeline<'a> {
     /// The project of the pipelines.
     #[builder(setter(into))]

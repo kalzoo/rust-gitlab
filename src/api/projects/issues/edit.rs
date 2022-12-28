@@ -61,7 +61,7 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueLabels<'a> {
 }
 
 /// Create a new issue on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct EditIssue<'a> {
     /// The project to add the issue to.

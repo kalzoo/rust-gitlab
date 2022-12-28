@@ -12,7 +12,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Create a new milestone on a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateProjectMilestone<'a> {
     /// The project to create a new milestone within.

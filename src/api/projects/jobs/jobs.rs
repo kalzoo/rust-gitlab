@@ -56,7 +56,7 @@ impl ParamValue<'static> for JobScope {
 }
 
 /// Query for jobs within a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct Jobs<'a> {
     /// The project to query for jobs.
     #[builder(setter(into))]

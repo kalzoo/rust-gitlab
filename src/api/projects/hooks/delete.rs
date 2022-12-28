@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Edit an existing webhook for a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct DeleteHook<'a> {
     /// The project to edit a webhook within.
     #[builder(setter(into))]

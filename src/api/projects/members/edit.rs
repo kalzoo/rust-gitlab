@@ -11,7 +11,7 @@ use crate::api::common::{AccessLevel, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Edit a member of a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct EditProjectMember<'a> {
     /// The project to add the user to.

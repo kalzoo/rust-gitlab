@@ -25,7 +25,7 @@ use super::{
 /// Query for issues within a project.
 ///
 /// TODO: Negation (not) filters are not yet supported.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ProjectIssues<'a> {
     /// The project to query for issues.

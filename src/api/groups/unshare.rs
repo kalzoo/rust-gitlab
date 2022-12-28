@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Unshare a group from another group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct UnshareGroup<'a> {
     /// The ID or URL-encoded path of the group
     #[builder(setter(into))]

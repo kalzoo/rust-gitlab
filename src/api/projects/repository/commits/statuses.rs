@@ -10,7 +10,7 @@ use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Query for statuses on a specific commit in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CommitStatuses<'a> {
     /// The project to get a commit from.

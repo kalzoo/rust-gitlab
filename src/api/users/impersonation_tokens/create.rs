@@ -38,7 +38,7 @@ impl ParamValue<'static> for ImpersonationTokenScope {
 }
 
 /// Create a new impersonation token for a user.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateImpersonationToken<'a> {
     /// The user to create an impersonation token for.

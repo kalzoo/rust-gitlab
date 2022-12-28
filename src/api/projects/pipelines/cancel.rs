@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Cancel a pipeline.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct CancelPipeline<'a> {
     /// The project to query for the pipeline.
     #[builder(setter(into))]

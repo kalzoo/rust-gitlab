@@ -10,7 +10,7 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
 /// Query for the variables of a pipeline.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct PipelineVariables<'a> {
     /// The project of the pipelines.
     #[builder(setter(into))]

@@ -58,7 +58,7 @@ impl Reviewer {
 }
 
 /// Create a new merge request on project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateMergeRequest<'a> {
     /// The project to open the merge requset *from*.

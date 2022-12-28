@@ -489,7 +489,7 @@ impl<'a> ProjectName<'a> {
 }
 
 /// Create a new project on an instance.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct CreateProject<'a> {
     /// The name and/or path of the project.

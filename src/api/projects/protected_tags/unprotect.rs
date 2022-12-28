@@ -10,7 +10,7 @@ use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Unprotect a tag in a project.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct UnprotectTag<'a> {
     /// The project to unprotect a tag within.
     #[builder(setter(into))]

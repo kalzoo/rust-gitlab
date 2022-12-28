@@ -11,7 +11,7 @@ use crate::api::common::{AccessLevel, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 /// Share a project with a group.
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct ShareProject<'a> {
     /// The project to add the user to.
