@@ -1,3 +1,10 @@
+# v0.1602.2 (unreleased)
+
+## Additions
+
+  * Support `/project/:project/issues/:issue_iid/related_merge_requests`
+    endpoint.
+
 # v0.1602.1
 
 ## Breaking changes
