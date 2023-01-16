@@ -86,10 +86,9 @@ clippy-features:build:
     variables:
         # Ignored advisories
         #
-        # Potential segfault in localtime_r invocations
-        # https://rustsec.org/advisories/RUSTSEC-2020-0159
-        # https://github.com/chronotope/chrono/issues/499
-        CARGO_AUDIT_ARGS: --ignore RUSTSEC-2020-0159
+        # Use-after-free due to a lifetime error in `Vec::into_iter()`
+        # https://rustsec.org/advisories/RUSTSEC-2022-0078
+        CARGO_AUDIT_ARGS: --ignore RUSTSEC-2022-0078
 
 audit-mindeps:build:
     extends:
