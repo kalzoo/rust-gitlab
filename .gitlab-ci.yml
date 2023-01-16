@@ -84,12 +84,7 @@ clippy-features:build:
 
 .cargo_audit_ignore:
     variables:
-        # Ignored advisories
-        #
-        # Potential segfault in localtime_r invocations
-        # https://rustsec.org/advisories/RUSTSEC-2020-0159
-        # https://github.com/chronotope/chrono/issues/499
-        CARGO_AUDIT_ARGS: --ignore RUSTSEC-2020-0159
+        CARGO_AUDIT_ARGS: ""
 
 audit-mindeps:build:
     extends:
