@@ -2882,3 +2882,22 @@ pub struct EventLabel {
     /// The description of the label.
     pub description: Option<String>,
 }
+
+impl_id!(ApprovalRuleId, "Type-safe approval rule ID.");
+
+/// Merge request approval rule.
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ApprovalRule {
+    id: ApprovalRuleId,
+    name: String,
+    rule_type: String,
+    eligible_approvers: Vec<UserBasic>,
+    approvals_required: u32,
+    users: Vec<UserBasic>,
+    groups: Vec<Group>,
+    contains_hidden_groups: bool,
+    overridden: bool,
+
+    /// Section if rule is a Code Owner rule and defined under a section in CODEOWNERS.
+    section: Option<String>,
+}
