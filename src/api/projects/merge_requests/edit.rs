@@ -23,7 +23,7 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b MergeRequestLabels<'a> {
     fn as_value(&self) -> Cow<'a, str> {
         match self {
             MergeRequestLabels::Unlabeled => "".into(),
-            MergeRequestLabels::Labeled(labels) => format!("{}", labels).into(),
+            MergeRequestLabels::Labeled(labels) => labels.to_string().into(),
         }
     }
 }

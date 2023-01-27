@@ -65,13 +65,13 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b Cow<'a, str> {
 
 impl ParamValue<'static> for u64 {
     fn as_value(&self) -> Cow<'static, str> {
-        format!("{}", self).into()
+        self.to_string().into()
     }
 }
 
 impl ParamValue<'static> for f64 {
     fn as_value(&self) -> Cow<'static, str> {
-        format!("{}", self).into()
+        self.to_string().into()
     }
 }
 

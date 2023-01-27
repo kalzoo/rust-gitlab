@@ -165,7 +165,7 @@ impl ContainerExpirationKeepN {
             ContainerExpirationKeepN::TwentyFive => "25".into(),
             ContainerExpirationKeepN::Fifty => "50".into(),
             ContainerExpirationKeepN::OneHundred => "100".into(),
-            ContainerExpirationKeepN::Arbitrary(n) => format!("{}", n).into(),
+            ContainerExpirationKeepN::Arbitrary(n) => n.to_string().into(),
         }
     }
 

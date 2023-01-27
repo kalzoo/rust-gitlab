@@ -55,7 +55,7 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueLabels<'a> {
     fn as_value(&self) -> Cow<'a, str> {
         match self {
             IssueLabels::Unlabeled => "".into(),
-            IssueLabels::Labeled(labels) => format!("{}", labels).into(),
+            IssueLabels::Labeled(labels) => labels.to_string().into(),
         }
     }
 }

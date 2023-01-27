@@ -277,7 +277,7 @@ mod tests {
             typename,
         } = err
         {
-            assert_eq!(format!("{}", source), "missing field `value`");
+            assert_eq!(source.to_string(), "missing field `value`");
             assert_eq!(typename, "gitlab::api::sudo::tests::DummyResult");
         } else {
             panic!("unexpected error: {}", err);

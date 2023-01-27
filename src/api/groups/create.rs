@@ -108,7 +108,7 @@ impl SharedRunnersMinutesLimit {
         match self {
             SharedRunnersMinutesLimit::Inherit => "nil".into(),
             SharedRunnersMinutesLimit::Unlimited => "0".into(),
-            SharedRunnersMinutesLimit::Minutes(m) => format!("{}", m).into(),
+            SharedRunnersMinutesLimit::Minutes(m) => m.to_string().into(),
         }
     }
 }
