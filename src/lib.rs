@@ -6,6 +6,8 @@
 
 // TODO: Document API entities.
 // #![warn(missing_docs)]
+// XXX(rust-1.66)
+#![allow(clippy::uninlined_format_args)]
 
 //! A library for communicating with Gitlab instances.
 
