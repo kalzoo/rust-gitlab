@@ -360,7 +360,7 @@ impl<'de> Deserialize<'de> for SystemHook {
         let val = <Value as Deserialize>::deserialize(deserializer)?;
 
         let event_name = match val.pointer("/event_name") {
-            Some(&Value::String(ref name)) => name,
+            Some(Value::String(name)) => name,
             Some(_) => {
                 return Err(D::Error::invalid_type(
                     Unexpected::Other("JSON value"),
