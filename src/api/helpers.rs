@@ -57,7 +57,7 @@ impl<'a> Labels<'a> {
         match self {
             Labels::Any => "Any".into(),
             Labels::None => "None".into(),
-            Labels::AllOf(labels) => format!("{}", labels).into(),
+            Labels::AllOf(labels) => labels.to_string().into(),
         }
     }
 }

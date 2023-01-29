@@ -75,7 +75,7 @@ impl<'a> ExternalProviderBuilder<'a> {
     /// Deprecated compatibility method to set UID.
     #[deprecated(note = "use `uid` instead")]
     pub fn id(&mut self, id: u64) -> &mut ExternalProviderBuilder<'a> {
-        self.uid(format!("{}", id))
+        self.uid(id.to_string())
     }
 }
 

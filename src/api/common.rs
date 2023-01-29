@@ -592,9 +592,9 @@ mod tests {
     #[test]
     fn comma_separated_list_display() {
         let csl_one: CommaSeparatedList<_> = iter::once(2).collect();
-        assert_eq!(format!("{}", csl_one), "2");
+        assert_eq!(csl_one.to_string(), "2");
         let csl_two: CommaSeparatedList<_> = [1, 2].iter().copied().collect();
-        assert_eq!(format!("{}", csl_two), "1,2");
+        assert_eq!(csl_two.to_string(), "1,2");
     }
 
     #[test]

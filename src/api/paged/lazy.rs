@@ -92,7 +92,7 @@ impl Page {
     fn apply_to(&self, pairs: &mut url::form_urlencoded::Serializer<url::UrlQuery>) {
         match self {
             Self::Number(page) => {
-                let page_str = format!("{}", page);
+                let page_str = page.to_string();
                 pairs.append_pair("page", &page_str);
             },
             Self::Keyset(_) => {
@@ -181,7 +181,7 @@ where
             self.paged.endpoint.parameters().add_to_url(&mut url);
 
             let per_page = self.paged.pagination.page_limit();
-            let per_page_str = format!("{}", per_page);
+            let per_page_str = per_page.to_string();
 
             {
                 let mut pairs = url.query_pairs_mut();

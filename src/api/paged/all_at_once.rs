@@ -59,7 +59,7 @@ where
 
         let mut page_num = 1;
         let per_page = self.pagination.page_limit();
-        let per_page_str = format!("{}", per_page);
+        let per_page_str = per_page.to_string();
 
         let results = Arc::new(Mutex::new(Vec::new()));
         let mut next_url = None;
@@ -71,7 +71,7 @@ where
             let page_url = if let Some(url) = next_url.take() {
                 url
             } else {
-                let page_str = format!("{}", page_num);
+                let page_str = page_num.to_string();
                 let mut page_url = url.clone();
 
                 {

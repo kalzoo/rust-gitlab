@@ -172,7 +172,7 @@ impl IssueWeight {
         match self {
             IssueWeight::Any => "Any".into(),
             IssueWeight::None => "None".into(),
-            IssueWeight::Weight(weight) => format!("{}", weight).into(),
+            IssueWeight::Weight(weight) => weight.to_string().into(),
         }
     }
 }

@@ -11,8 +11,15 @@ stages:
     - build
     - test
 
-.rust_minimum:
+.rust_minimum_mindeps:
     image: "rust:1.57"
+
+    variables:
+        CARGO_UPDATE_POLICY: newest
+        GIT_CLONE_PATH: $CI_BUILDS_DIR/rust
+
+.rust_minimum:
+    image: "rust:1.60"
 
     variables:
         CARGO_UPDATE_POLICY: newest
@@ -92,7 +99,7 @@ clippy-features:build:
 
 audit-mindeps:build:
     extends:
-        - .rust_minimum
+        - .rust_minimum_mindeps
         - .cargo_audit_job
         - .cargo_build_tags
         - .run_automatically
@@ -196,7 +203,7 @@ nightly:test:
 
 mindeps:build:
     extends:
-        - .rust_minimum
+        - .rust_minimum_mindeps
         - .cargo_no_features
         - .cargo_build_job
         - .cargo_build_tags
@@ -209,7 +216,7 @@ mindeps:build:
 
 mindeps:test:
     extends:
-        - .rust_minimum
+        - .rust_minimum_mindeps
         - .cargo_no_features
         - .cargo_test_job
         - .cargo_build_tags
@@ -325,7 +332,7 @@ nightly-features:test:
 
 mindeps-features:build:
     extends:
-        - .rust_minimum
+        - .rust_minimum_mindeps
         - .cargo_all_features
         - .cargo_build_job
         - .cargo_build_tags
@@ -338,7 +345,7 @@ mindeps-features:build:
 
 mindeps-features:test:
     extends:
-        - .rust_minimum
+        - .rust_minimum_mindeps
         - .cargo_all_features
         - .cargo_test_job
         - .cargo_build_tags
