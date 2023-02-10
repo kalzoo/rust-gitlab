@@ -5,11 +5,11 @@ use derive_builder::Builder;
 use crate::api::common::{self, NameOrId};
 use crate::api::endpoint_prelude::*;
 
-/// Create a new file in a project.
+/// Delete a file in a project.
 #[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
 pub struct DeleteFile<'a> {
-    /// The project to create a file within.
+    /// The project to delete a file within.
     #[builder(setter(into))]
     project: NameOrId<'a>,
     /// The path to the file in the repository.
