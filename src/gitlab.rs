@@ -304,6 +304,31 @@ impl Gitlab {
 
         serde_json::from_reader::<_, T>(rsp).map_err(GitlabError::data_type::<T>)
     }
+
+    /// Perform a REST query with a given auth.
+    fn rest_auth(
+        &self,
+        mut request: http::request::Builder,
+        body: Vec<u8>,
+        auth: &Auth,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<<Self as api::RestClient>::Error>> {
+        let call = || -> Result<_, RestError> {
+            auth.set_header(request.headers_mut().unwrap())?;
+            let http_request = request.body(body)?;
+            let request = http_request.try_into()?;
+            let rsp = self.client.execute(request)?;
+
+            let mut http_rsp = HttpResponse::builder()
+                .status(rsp.status())
+                .version(rsp.version());
+            let headers = http_rsp.headers_mut().unwrap();
+            for (key, value) in rsp.headers() {
+                headers.insert(key, value.clone());
+            }
+            Ok(http_rsp.body(rsp.bytes()?)?)
+        };
+        call().map_err(api::ApiError::client)
+    }
 }
 
 #[derive(Debug, Error)]
@@ -338,25 +363,10 @@ impl api::RestClient for Gitlab {
 impl api::Client for Gitlab {
     fn rest(
         &self,
-        mut request: http::request::Builder,
+        request: http::request::Builder,
         body: Vec<u8>,
     ) -> Result<HttpResponse<Bytes>, api::ApiError<Self::Error>> {
-        let call = || -> Result<_, RestError> {
-            self.auth.set_header(request.headers_mut().unwrap())?;
-            let http_request = request.body(body)?;
-            let request = http_request.try_into()?;
-            let rsp = self.client.execute(request)?;
-
-            let mut http_rsp = HttpResponse::builder()
-                .status(rsp.status())
-                .version(rsp.version());
-            let headers = http_rsp.headers_mut().unwrap();
-            for (key, value) in rsp.headers() {
-                headers.insert(key, value.clone());
-            }
-            Ok(http_rsp.body(rsp.bytes()?)?)
-        };
-        call().map_err(api::ApiError::client)
+        self.rest_auth(request, body, &self.auth)
     }
 }
 
@@ -493,28 +503,10 @@ impl api::RestClient for AsyncGitlab {
 impl api::AsyncClient for AsyncGitlab {
     async fn rest_async(
         &self,
-        mut request: http::request::Builder,
+        request: http::request::Builder,
         body: Vec<u8>,
     ) -> Result<HttpResponse<Bytes>, api::ApiError<<Self as api::RestClient>::Error>> {
-        use futures_util::TryFutureExt;
-        let call = || {
-            async {
-                self.auth.set_header(request.headers_mut().unwrap())?;
-                let http_request = request.body(body)?;
-                let request = http_request.try_into()?;
-                let rsp = self.client.execute(request).await?;
-
-                let mut http_rsp = HttpResponse::builder()
-                    .status(rsp.status())
-                    .version(rsp.version());
-                let headers = http_rsp.headers_mut().unwrap();
-                for (key, value) in rsp.headers() {
-                    headers.insert(key, value.clone());
-                }
-                Ok(http_rsp.body(rsp.bytes().await?)?)
-            }
-        };
-        call().map_err(api::ApiError::client).await
+        self.rest_async_auth(request, body, &self.auth).await
     }
 }
 
@@ -605,5 +597,84 @@ impl AsyncGitlab {
         }
 
         serde_json::from_slice::<T>(&rsp.bytes().await?).map_err(GitlabError::data_type::<T>)
+    }
+
+    /// Perform a REST query with a given auth.
+    async fn rest_async_auth(
+        &self,
+        mut request: http::request::Builder,
+        body: Vec<u8>,
+        auth: &Auth,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<<Self as api::RestClient>::Error>> {
+        use futures_util::TryFutureExt;
+        let call = || {
+            async {
+                auth.set_header(request.headers_mut().unwrap())?;
+                let http_request = request.body(body)?;
+                let request = http_request.try_into()?;
+                let rsp = self.client.execute(request).await?;
+
+                let mut http_rsp = HttpResponse::builder()
+                    .status(rsp.status())
+                    .version(rsp.version());
+                let headers = http_rsp.headers_mut().unwrap();
+                for (key, value) in rsp.headers() {
+                    headers.insert(key, value.clone());
+                }
+                Ok(http_rsp.body(rsp.bytes().await?)?)
+            }
+        };
+        call().map_err(api::ApiError::client).await
+    }
+}
+
+#[derive(Clone)]
+pub struct ImpersonationClient<'a, T> {
+    auth: Auth,
+    client: &'a T,
+}
+
+impl<'a, C> ImpersonationClient<'a, C> {
+    /// Wrap an existing client using an impersonation token.
+    pub fn new<T>(client: &'a C, token: T) -> Self
+    where
+        T: Into<String>,
+    {
+        Self {
+            auth: Auth::Token(token.into()),
+            client,
+        }
+    }
+}
+
+impl<'a, C> api::RestClient for ImpersonationClient<'a, C>
+where
+    C: api::RestClient,
+{
+    type Error = C::Error;
+
+    fn rest_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
+        self.client.rest_endpoint(endpoint)
+    }
+}
+
+impl<'a> api::Client for ImpersonationClient<'a, Gitlab> {
+    fn rest(
+        &self,
+        request: http::request::Builder,
+        body: Vec<u8>,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<Self::Error>> {
+        self.client.rest_auth(request, body, &self.auth)
+    }
+}
+
+#[async_trait]
+impl<'a> api::AsyncClient for ImpersonationClient<'a, AsyncGitlab> {
+    async fn rest_async(
+        &self,
+        request: http::request::Builder,
+        body: Vec<u8>,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<<Self as api::RestClient>::Error>> {
+        self.client.rest_async_auth(request, body, &self.auth).await
     }
 }
