@@ -1,3 +1,9 @@
+# v0.1508.1 (unreleased)
+
+## Additions
+
+  * Expose `RestError` at the crate root.
+
 # v0.1508.0
 
 ## Additions
