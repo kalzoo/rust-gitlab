@@ -627,3 +627,54 @@ impl AsyncGitlab {
         call().map_err(api::ApiError::client).await
     }
 }
+
+#[derive(Clone)]
+pub struct ImpersonationClient<'a, T> {
+    auth: Auth,
+    client: &'a T,
+}
+
+impl<'a, C> ImpersonationClient<'a, C> {
+    /// Wrap an existing client using an impersonation token.
+    pub fn new<T>(client: &'a C, token: T) -> Self
+    where
+        T: Into<String>,
+    {
+        Self {
+            auth: Auth::Token(token.into()),
+            client,
+        }
+    }
+}
+
+impl<'a, C> api::RestClient for ImpersonationClient<'a, C>
+where
+    C: api::RestClient,
+{
+    type Error = C::Error;
+
+    fn rest_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
+        self.client.rest_endpoint(endpoint)
+    }
+}
+
+impl<'a> api::Client for ImpersonationClient<'a, Gitlab> {
+    fn rest(
+        &self,
+        request: http::request::Builder,
+        body: Vec<u8>,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<Self::Error>> {
+        self.client.rest_auth(request, body, &self.auth)
+    }
+}
+
+#[async_trait]
+impl<'a> api::AsyncClient for ImpersonationClient<'a, AsyncGitlab> {
+    async fn rest_async(
+        &self,
+        request: http::request::Builder,
+        body: Vec<u8>,
+    ) -> Result<HttpResponse<Bytes>, api::ApiError<<Self as api::RestClient>::Error>> {
+        self.client.rest_async_auth(request, body, &self.auth).await
+    }
+}

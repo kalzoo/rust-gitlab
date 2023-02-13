@@ -3,6 +3,8 @@
 ## Additions
 
   * Expose `RestError` at the crate root.
+  * Add an `ImpersonationClient` type to use impersonation tokens with an
+    existing client.
 
 # v0.1508.0
 
