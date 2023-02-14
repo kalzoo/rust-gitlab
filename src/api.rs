@@ -73,6 +73,7 @@ pub mod common;
 pub mod deploy_keys;
 pub mod groups;
 pub mod issues;
+pub mod packages;
 pub mod projects;
 pub mod retry;
 pub mod users;
