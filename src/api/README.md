@@ -109,6 +109,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/merge_requests/:merge_request/unapprove` `projects/merge_requests/unapprove.rs`
   * `GET    /projects/:project/merge_trains` `projects/merge_trains.rs`
   * `POST   /projects/:project/milestones` `projects/milestones/create.rs`
+  * `GET    /projects/:project/packages` `projects/packages/packages.rs`
   * `GET    /projects/:project/pipelines` `projects/pipelines/pipelines.rs`
   * `POST   /projects/:project/pipelines` `projects/pipelines/create.rs`
   * `GET    /projects/:project/pipelines/:pipeline` `projects/pipelines/pipeline.rs`
@@ -351,7 +352,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
   * `POST   /projects/:project/milestones/:milestone/promote` https://gitlab.kitware.com/help/api/milestones.md#promote-project-milestone-to-a-group-milestone
   * `POST   /projects/:project/mirror/pull` https://gitlab.kitware.com/help/api/projects.md#start-the-pull-mirroring-process-for-a-project-starter
-  * `GET    /projects/:project/packages` https://gitlab.kitware.com/help/api/packages.md#list-packages
   * `GET    /projects/:project/packages/:package` https://gitlab.kitware.com/help/api/packages.md#get-a-project-package
   * `DELETE /projects/:project/packages/:package` https://gitlab.kitware.com/help/api/packages.md#delete-a-project-package
   * `GET    /projects/:project/packages/:package/package_files` https://gitlab.kitware.com/help/api/packages.md#list-package-files
