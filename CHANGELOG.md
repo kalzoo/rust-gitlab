@@ -3,6 +3,10 @@
 ## Additions
 
   * Add "title" to `webhooks::MergeRequestChanges`.
+  * Support `/projects/:id/packages/:package_id` endpoint
+  * Support `/projects/:id/packages/:package_id/package_files` endpoint
+  * Support `/projects/:id/packages/:package_id/package_files/:package_file_id` endpoint
+  * Support `/groups/:id/packages` endpoint.
 
 # v0.1510.0
 

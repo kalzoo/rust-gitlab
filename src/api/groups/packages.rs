@@ -8,18 +8,7 @@
 //!
 //! These endpoints are used for querying packages.
 
-mod delete;
-mod package;
-pub mod package_files;
 mod packages;
-
-pub use self::delete::DeletePackage;
-pub use self::delete::DeletePackageBuilder;
-pub use self::delete::DeletePackageBuilderError;
-
-pub use self::package::Package;
-pub use self::package::PackageBuilder;
-pub use self::package::PackageBuilderError;
 
 pub use self::packages::PackageOrderBy;
 pub use self::packages::Packages;
