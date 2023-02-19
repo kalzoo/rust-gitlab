@@ -148,6 +148,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/repository/commits/:sha/comments` `projects/repository/commits/comment.rs`
   * `GET    /projects/:project/repository/commits/:sha/merge_requests` `projects/repository/commits/merge_requests.rs`
   * `GET    /projects/:project/repository/commits/:sha/statuses` `projects/repository/commits/statuses.rs`
+  * `GET    /projects/:project/repository/files/*file_path` `projects/repository/files/file.rs`
   * `POST   /projects/:project/repository/files/*file_path` `projects/repository/files/create.rs`
   * `PUT    /projects/:project/repository/files/*file_path` `projects/repository/files/update.rs`
   * `DELETE /projects/:project/repository/files/*file_path` `projects/repository/files/delete.rs`
@@ -385,7 +386,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/repository/commits/:sha/signature` https://gitlab.kitware.com/help/api/commits.md#get-gpg-signature-of-a-commit
   * `GET    /projects/:project/repository/compare` https://gitlab.kitware.com/help/api/repositories.md#compare-branches-tags-or-commits
   * `GET    /projects/:project/repository/contributors` https://gitlab.kitware.com/help/api/repositories.md#contributors
-  * `GET    /projects/:project/repository/files/*file_path` https://gitlab.kitware.com/help/api/repository_files.md#get-file-from-repository
   * `HEAD   /projects/:project/repository/files/*file_path` https://gitlab.kitware.com/help/api/repository_files.md#get-file-from-repository
   * `GET    /projects/:project/repository/files/*file_path/blame` https://gitlab.kitware.com/help/api/repository_files.md#get-file-blame-from-repository
   * `GET    /projects/:project/repository/merge_base` https://gitlab.kitware.com/help/api/repositories.md#merge-base
