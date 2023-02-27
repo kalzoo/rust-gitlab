@@ -10,6 +10,7 @@ stages:
     - prep
     - build
     - test
+    - advice
 
 .rust_minimum_mindeps:
     image: "rust:1.57"
@@ -104,6 +105,7 @@ audit-mindeps:build:
         - .cargo_build_tags
         - .run_automatically
         - .cargo_audit_ignore
+    stage: advice
     dependencies:
         - cache-mindeps:prep
     needs:
