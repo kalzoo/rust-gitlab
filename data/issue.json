@@ -40,7 +40,7 @@
   "discussion_locked": null,
   "downvotes": 0,
   "due_date": null,
-  "has_tasks": false,
+  "has_tasks": true,
   "id": 69328,
   "iid": 6,
   "issue_type": "issue",
@@ -64,6 +64,7 @@
     "completed_count": 0,
     "count": 0
   },
+  "task_status": "",
   "time_stats": {
     "human_time_estimate": null,
     "human_total_time_spent": null,

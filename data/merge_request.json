@@ -123,6 +123,7 @@
   "source_project_id": 856,
   "squash": false,
   "squash_commit_sha": null,
+  "squash_on_merge": false,
   "state": "merged",
   "subscribed": true,
   "target_branch": "master",
