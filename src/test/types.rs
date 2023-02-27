@@ -197,7 +197,7 @@ fn test_read_issue() {
     assert_eq!(issue.upvotes, 0);
     assert_eq!(issue.downvotes, 0);
     assert_eq!(issue.due_date, None);
-    assert_eq!(issue.has_tasks, Some(false));
+    assert_eq!(issue.has_tasks, Some(true));
     assert!(!issue.confidential);
     assert_eq!(issue.discussion_locked, None);
     assert_eq!(
