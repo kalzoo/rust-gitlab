@@ -112,6 +112,7 @@ audit-mindeps:build:
         - cache-mindeps:prep
     variables:
         CARGO_UPDATE_POLICY: mindeps
+        RUSTGITLAB_CI_NO_MR: "true"
 
 audit-newest:build:
     extends:

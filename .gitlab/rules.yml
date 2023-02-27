@@ -2,6 +2,8 @@
 
 .run_automatically:
     rules:
+        - if: '($CI_MERGE_REQUEST_ID && $RUSTGITLAB_CI_NO_MR == "true")'
+          when: never
         - if: '$CI_MERGE_REQUEST_ID'
           when: on_success
         - if: '$CI_PROJECT_PATH == "utils/rust-gitlab"'
