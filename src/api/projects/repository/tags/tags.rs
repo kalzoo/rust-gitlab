@@ -28,8 +28,10 @@ impl TagsOrderBy {
     }
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for TagsOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         TagsOrderBy::Name
     }
 }

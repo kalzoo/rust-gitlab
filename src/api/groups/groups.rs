@@ -25,8 +25,10 @@ pub enum GroupOrderBy {
     Similarity,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for GroupOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         GroupOrderBy::Name
     }
 }

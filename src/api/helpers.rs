@@ -24,8 +24,10 @@ pub enum NoteOrderBy {
     UpdatedAt,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for NoteOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         NoteOrderBy::CreatedAt
     }
 }

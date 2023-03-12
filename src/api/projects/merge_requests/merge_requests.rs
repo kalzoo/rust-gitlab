@@ -154,8 +154,10 @@ pub enum MergeRequestOrderBy {
     Title,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for MergeRequestOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         MergeRequestOrderBy::CreatedAt
     }
 }

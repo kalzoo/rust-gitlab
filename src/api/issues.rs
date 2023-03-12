@@ -270,8 +270,10 @@ pub enum IssueOrderBy {
     WeightFields,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for IssueOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         IssueOrderBy::CreatedAt
     }
 }
