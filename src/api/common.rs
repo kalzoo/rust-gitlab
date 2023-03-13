@@ -79,8 +79,10 @@ pub enum SortOrder {
     Descending,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for SortOrder {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         SortOrder::Descending
     }
 }
@@ -271,8 +273,10 @@ pub enum ProtectedAccessLevel {
     NoAccess,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for ProtectedAccessLevel {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         ProtectedAccessLevel::Maintainer
     }
 }

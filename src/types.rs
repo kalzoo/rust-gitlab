@@ -2800,8 +2800,10 @@ pub enum PipelineVariableType {
     File,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for PipelineVariableType {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         PipelineVariableType::EnvVar
     }
 }

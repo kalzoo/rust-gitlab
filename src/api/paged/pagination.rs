@@ -40,8 +40,10 @@ pub enum Pagination {
     Limit(usize),
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for Pagination {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         Pagination::All
     }
 }

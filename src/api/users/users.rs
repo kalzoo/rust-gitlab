@@ -28,8 +28,10 @@ pub enum UserOrderBy {
     UpdatedAt,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for UserOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         UserOrderBy::Id
     }
 }

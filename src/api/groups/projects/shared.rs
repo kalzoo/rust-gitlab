@@ -27,8 +27,10 @@ pub enum SharedGroupProjectsOrderBy {
     LastActivityAt,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for SharedGroupProjectsOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         SharedGroupProjectsOrderBy::CreatedAt
     }
 }

@@ -112,8 +112,10 @@ pub enum PipelineOrderBy {
     UserId,
 }
 
+#[allow(clippy::derivable_impls)]
 impl Default for PipelineOrderBy {
     fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
         PipelineOrderBy::Id
     }
 }
