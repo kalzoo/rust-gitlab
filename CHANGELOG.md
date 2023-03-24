@@ -1,3 +1,9 @@
+# v0.1509.1 (unreleased)
+
+## Additions
+
+  * Add "approval" and "unapproval" to `webhooks::MergeRequestAction`.
+
 # v0.1509.0
 
 ## Additions
