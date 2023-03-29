@@ -433,6 +433,7 @@ pub struct MergeRequestHook {
 /// MR Changes
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct MergeRequestChanges {
+    pub title: Option<MergeRequestChange<String>>,
     pub updated_at: Option<MergeRequestChange<String>>,
     pub merge_status: Option<MergeRequestChange<String>>,
     pub merge_commit_sha: Option<MergeRequestChange<Option<String>>>,
