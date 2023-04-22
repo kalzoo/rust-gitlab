@@ -1,3 +1,9 @@
+# v0.1510.1 (unreleased)
+
+## Additions
+
+  * Add "title" to `webhooks::MergeRequestChanges`.
+
 # v0.1510.0
 
 ## Additions
