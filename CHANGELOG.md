@@ -7,6 +7,7 @@
   * Support `/projects/:id/packages/:package_id/package_files` endpoint
   * Support `/projects/:id/packages/:package_id/package_files/:package_file_id` endpoint
   * Support `/groups/:id/packages` endpoint.
+  * New endpoints for creating commits with `gitlab::api::projects::repository::commits::CreateCommit`
 
 # v0.1510.0
 

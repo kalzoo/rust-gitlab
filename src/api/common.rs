@@ -195,6 +195,24 @@ impl<'a> From<String> for NameOrId<'a> {
     }
 }
 
+impl<'a> ParamValue<'a> for NameOrId<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        match self {
+            Self::Name(n) => n.clone(),
+            Self::Id(id) => format!("{}", id).into(),
+        }
+    }
+}
+
+impl<'a> ParamValue<'a> for &'a NameOrId<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        match self {
+            NameOrId::Name(n) => n.clone(),
+            NameOrId::Id(id) => format!("{}", id).into(),
+        }
+    }
+}
+
 /// Visibility levels of projects.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum VisibilityLevel {
@@ -477,6 +495,23 @@ mod tests {
 
         for (i, s) in items {
             assert_eq!(i.to_string(), *s);
+        }
+    }
+
+    #[test]
+    fn name_or_id_as_value() {
+        let items: &[(NameOrId, _)] = &[
+            ("user".into(), "user"),
+            ("special/name".into(), "special/name"),
+            (
+                "special/name?string".to_string().into(),
+                "special/name?string",
+            ),
+            (1.into(), "1"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_value(), *s);
         }
     }
 

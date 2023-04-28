@@ -142,6 +142,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/repository/branches` `projects/repository/branches/create.rs`
   * `GET    /projects/:project/repository/branches/:branch` `projects/repository/branches/branch.rs`
   * `GET    /projects/:project/repository/commits` `projects/repository/commits/commits.rs`
+  * `POST   /projects/:project/repository/commits` `projects/repository/commits/create.rs`
   * `GET    /projects/:project/repository/commits/:sha` `projects/repository/commits/commit.rs`
   * `GET    /projects/:project/repository/commits/:sha/comments` `projects/repository/commits/comments.rs`
   * `POST   /projects/:project/repository/commits/:sha/comments` `projects/repository/commits/comment.rs`
@@ -376,7 +377,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/repository/branches/:branch` https://gitlab.kitware.com/help/api/branches.md#delete-repository-branch
   * `GET    /projects/:project/repository/changelog` https://gitlab.kitware.com/help/api/repositories.md#generate-changelog-data
   * `POST   /projects/:project/repository/changelog` https://gitlab.kitware.com/help/api/repositories.md#add-changelog-data-to-a-changelog-file
-  * `POST   /projects/:project/repository/commits` https://gitlab.kitware.com/help/api/commits.md#create-a-commit-with-multiple-files-and-actions
   * `POST   /projects/:project/repository/commits/:sha/cherry_pick` https://gitlab.kitware.com/help/api/commits.md#cherry-pick-a-commit
   * `GET    /projects/:project/repository/commits/:sha/diff` https://gitlab.kitware.com/help/api/commits.md#get-the-diff-of-a-commit
   * `GET    /projects/:project/repository/commits/:sha/discussions` https://gitlab.kitware.com/help/api/commits.md#get-the-discussions-of-a-commit
