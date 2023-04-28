@@ -18,6 +18,7 @@ pub mod hooks;
 pub mod issues;
 pub mod members;
 pub mod milestones;
+pub mod packages;
 pub mod projects;
 mod share;
 pub mod subgroups;

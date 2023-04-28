@@ -24,6 +24,7 @@ These API endpoints have been implemented.
   * `DELETE /groups/:group/members/:member` `groups/members/remove.rs`
   * `PUT    /groups/:group/members/:member` `groups/members/edit.rs`
   * `POST   /groups/:group/milestones` `groups/milestones/create.rs`
+  * `GET    /groups/:group/packages`  `groups/packages/packages.rs`
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
   * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
   * `POST   /groups/:group/share` `groups/share.rs`
@@ -110,6 +111,10 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/merge_trains` `projects/merge_trains.rs`
   * `POST   /projects/:project/milestones` `projects/milestones/create.rs`
   * `GET    /projects/:project/packages` `projects/packages/packages.rs`
+  * `GET    /projects/:project/packages/:package` `projects/packages/get.rs`
+  * `DELETE /projects/:project/packages/:package` `projects/packages/delete.rs`
+  * `GET    /projects/:project/packages/:package/package_files` `projects/packages/package_files/package_files.rs`
+  * `DELETE /projects/:project/packages/:package/package_files/:package_file` `projects/packages/package_files/delete.rs`
   * `GET    /projects/:project/pipelines` `projects/pipelines/pipelines.rs`
   * `POST   /projects/:project/pipelines` `projects/pipelines/create.rs`
   * `GET    /projects/:project/pipelines/:pipeline` `projects/pipelines/pipeline.rs`
@@ -220,7 +225,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/milestones/:milestone/burndown_events` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-burndown-chart-events-for-a-single-milestone-starter
   * `GET    /groups/:group/milestones/:milestone/issues` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-issues-assigned-to-a-single-milestone
   * `GET    /groups/:group/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/group_milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
-  * `GET    /groups/:group/packages` https://gitlab.kitware.com/help/api/packages.md#within-a-group
   * `GET    /groups/:group/pending_members` https://gitlab.kitware.com/help/api/members.md#list-pending-members-of-a-group-and-its-subgroups-and-projects
   * `POST   /groups/:group/projects/:project` https://gitlab.kitware.com/help/api/groups.md#transfer-project-to-group
   * `GET    /groups/:group/provisioned_users` https://gitlab.kitware.com/help/api/groups.md#list-provisioned-users
@@ -352,10 +356,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
   * `POST   /projects/:project/milestones/:milestone/promote` https://gitlab.kitware.com/help/api/milestones.md#promote-project-milestone-to-a-group-milestone
   * `POST   /projects/:project/mirror/pull` https://gitlab.kitware.com/help/api/projects.md#start-the-pull-mirroring-process-for-a-project-starter
-  * `GET    /projects/:project/packages/:package` https://gitlab.kitware.com/help/api/packages.md#get-a-project-package
-  * `DELETE /projects/:project/packages/:package` https://gitlab.kitware.com/help/api/packages.md#delete-a-project-package
-  * `GET    /projects/:project/packages/:package/package_files` https://gitlab.kitware.com/help/api/packages.md#list-package-files
-  * `DELETE /projects/:project/packages/:package/package_files/:package_file` https://gitlab.kitware.com/help/api/packages.md#delete-a-package-file
   * `PATCH  /projects/:project/protected_branches/:branch` https://gitlab.kitware.com/help/api/protected_branches.md#require-code-owner-approvals-for-a-single-branch
   * `POST   /projects/:project/pipeline` https://gitlab.kitware.com/help/api/pipelines.md#create-a-new-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
