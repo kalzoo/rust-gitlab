@@ -10,8 +10,13 @@
 
 mod create;
 mod delete;
+mod file;
 mod file_raw;
 mod update;
+
+pub use self::file::File;
+pub use self::file::FileBuilder;
+pub use self::file::FileBuilderError;
 
 pub use self::create::CreateFile;
 pub use self::create::CreateFileBuilder;
