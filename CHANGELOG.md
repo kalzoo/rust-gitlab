@@ -1,4 +1,4 @@
-# v0.1511.1 (unreleased)
+# v0.1600.0
 
 ## Additions
   * Support for GET /projects/:id/repository/files/:file_path endpoint
