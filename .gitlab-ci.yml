@@ -11,6 +11,7 @@ stages:
     - build
     - test
     - advice
+    - publish
 
 .rust_minimum_mindeps:
     image: "rust:1.57"
@@ -361,3 +362,25 @@ mindeps-features:test:
         - mindeps-features:build
     needs:
         - mindeps-features:build
+
+publish:
+    extends:
+        - .rust_stable
+        - .cargo_publish_job
+        - .cargo_build_tags
+        - .run_automatically
+    dependencies: []
+    needs:
+        #- audit-mindeps:build
+        - audit-newest:build
+        - clippy:build
+        - clippy-features:build
+        - mindeps:test
+        - mindeps-features:test
+        - minimum:test
+        - minimum-features:test
+        - nightly:test
+        - nightly-features:test
+        - stable:test
+        - stable-features:test
+        - tarpaulin-features:test
