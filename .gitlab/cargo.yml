@@ -102,3 +102,14 @@
         paths:
             - .cargo-audit-db
     interruptible: true
+
+.cargo_publish_job:
+    stage: publish
+    environment:
+        name: publish
+    script:
+        - rustc --version
+        - cargo --version
+        - cargo publish --no-verify --token $CRATES_IO_TOKEN
+    variables:
+        IS_FOR_RELEASE: "true"
