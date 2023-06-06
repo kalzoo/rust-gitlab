@@ -20,7 +20,7 @@
         when: always
         reports:
             junit:
-                - junit.xml
+                - target/nextest/ci/junit.xml
 
 .cargo_coverage_artifacts:
     artifacts:
