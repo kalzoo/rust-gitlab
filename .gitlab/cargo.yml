@@ -65,8 +65,9 @@
     stage: test
     script:
         - *cargo_before_script
-        - .gitlab/ci/cargo2junit.sh
-        - cargo test --frozen $CARGO_FEATURES --all --verbose -- -Z unstable-options --format json --report-time | ./.gitlab/cargo2junit | tee junit.xml
+        - .gitlab/ci/cargo-nextest.sh
+        - export PATH=$PWD/.gitlab:$PATH
+        - cargo nextest run --profile ci $CARGO_FEATURES --frozen --all --verbose
     interruptible: true
 
 .cargo_tarpaulin_build_job:
