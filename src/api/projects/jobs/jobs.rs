@@ -109,7 +109,11 @@ impl<'a> Endpoint for Jobs<'a> {
     }
 }
 
-impl<'a> Pageable for Jobs<'a> {}
+impl<'a> Pageable for Jobs<'a> {
+    fn use_keyset_pagination(&self) -> bool {
+        true
+    }
+}
 
 #[cfg(test)]
 mod tests {

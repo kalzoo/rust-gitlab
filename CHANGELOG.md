@@ -4,6 +4,10 @@
 
   * `api::projects::registry::RepositoryTags` is now `Pageable`.
 
+## Changes
+
+  * `api::projects::Jobs` now supports keyset pagination.
+
 # v0.1600.1
 
   * CI updates to publish via CI.
