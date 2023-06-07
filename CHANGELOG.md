@@ -1,3 +1,9 @@
+# v0.1600.2 (unreleased)
+
+## Fixes
+
+  * `api::projects::registry::RepositoryTags` is now `Pageable`.
+
 # v0.1600.1
 
   * CI updates to publish via CI.

@@ -40,6 +40,8 @@ impl<'a> Endpoint for RepositoryTags<'a> {
     }
 }
 
+impl<'a> Pageable for RepositoryTags<'a> {}
+
 #[cfg(test)]
 mod tests {
     use crate::api::projects::registry::{RepositoryTags, RepositoryTagsBuilderError};
