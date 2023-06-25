@@ -27,7 +27,7 @@ client_api = [
 ]
 client_der = ["reqwest/native-tls", "client_api"]
 client_pem = ["reqwest/rustls-tls", "client_api"]
-minimal_versions = ["void", "openssl", "tempfile", "h2"]
+minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset"]
 
 [dependencies]
 base64 = "~0.13"
@@ -60,6 +60,8 @@ openssl = { version = "~0.10.55", optional = true }
 tempfile = { version = "^3.4.0", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0034
 h2 = { version = "0.3.17", optional = true }
+# Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0045
+memoffset = { version = "0.6.2", optional = true }
 
 [dev-dependencies]
 itertools = { version = "~0.10" }
