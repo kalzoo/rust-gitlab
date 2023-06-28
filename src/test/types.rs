@@ -549,7 +549,7 @@ fn check_project_a(project: &Project) {
     );
     assert_eq!(
         project.last_activity_at,
-        datetime((2023, 5, 26), (12, 48, 7, 823)),
+        datetime((2023, 6, 25), (20, 35, 49, 935)),
     );
 }
 
@@ -564,7 +564,7 @@ fn check_project_b(project: &Project) {
     assert_eq!(project.ci_config_path, None);
     assert_eq!(project.star_count, 18);
     assert_eq!(project.forks_count, 69);
-    assert_eq!(project.open_issues_count, Some(26));
+    assert_eq!(project.open_issues_count, Some(25));
     assert!(project.public_jobs);
     assert!(project.shared_with_groups.is_empty());
     assert_eq!(project.only_allow_merge_if_pipeline_succeeds, Some(false));
