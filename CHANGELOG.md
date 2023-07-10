@@ -1,3 +1,9 @@
+# v0.1601.1 (unreleased)
+
+## Additions
+
+  * Pipeline schedule API endpoints added.
+
 # v0.1601.0
 
 ## Fixes

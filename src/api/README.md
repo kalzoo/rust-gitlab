@@ -123,6 +123,17 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/pipelines/:pipeline/jobs` `projects/pipelines/jobs.rs`
   * `POST   /projects/:project/pipelines/:pipeline/retry` `projects/pipelines/retry.rs`
   * `GET    /projects/:project/pipelines/:pipeline/variables` `projects/pipelines/variables.rs`
+  * `GET    /projects/:project/pipeline_schedules` `projects/pipeline_schedules/schedules.rs`
+  * `POST   /projects/:project/pipeline_schedules` `projects/pipeline_schedules/create.rs`
+  * `GET    /projects/:project/pipeline_schedules/:id` `projects/pipeline_schedules/schedule.rs`
+  * `DELETE /projects/:project/pipeline_schedules/:id` `projects/pipeline_schedules/delete.rs`
+  * `PUT    /projects/:project/pipeline_schedules/:id` `projects/pipeline_schedules/edit.rs`
+  * `GET    /projects/:project/pipeline_schedules/:id/pipelines` `projects/pipeline_schedules/pipelines.rs`
+  * `POST   /projects/:project/pipeline_schedules/:id/play` `projects/pipeline_schedules/play.rs`
+  * `POST   /projects/:project/pipeline_schedules/:id/take_ownership` `projects/pipeline_schedules/take_ownership.rs`
+  * `POST   /projects/:project/pipeline_schedules/:id/variables` `projects/pipeline_schedules/variables/create.rs`
+  * `DELETE /projects/:project/pipeline_schedules/:id/variables/:key` `projects/pipeline_schedules/variables/delete.rs`
+  * `PUT    /projects/:project/pipeline_schedules/:id/variables/:key` `projects/pipeline_schedules/variables/edit.rs`
   * `GET    /projects/:project/protected_branches` `projects/protected_branches/protected_branches.rs`
   * `POST   /projects/:project/protected_branches` `projects/protected_branches/protect.rs`
   * `DELETE /projects/:project/protected_branches/*branch` `projects/protected_branches/unprotect.rs`
@@ -547,7 +558,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/pages.md
   * https://gitlab.kitware.com/help/api/pages_domains.md
   * https://gitlab.kitware.com/help/api/personal_access_tokens.md
-  * https://gitlab.kitware.com/help/api/pipeline_schedules.md
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
   * https://gitlab.kitware.com/help/api/project_aliases.md

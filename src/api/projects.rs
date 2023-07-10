@@ -23,6 +23,7 @@ pub mod merge_requests;
 pub mod merge_trains;
 pub mod milestones;
 pub mod packages;
+pub mod pipeline_schedules;
 pub mod pipelines;
 mod project;
 mod projects;
