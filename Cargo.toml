@@ -16,6 +16,7 @@ edition = "2018"
 [features]
 default = ["client_api"]
 client_api = [
+    "cron",
     "itertools",
     "percent-encoding",
     "reqwest",
@@ -31,6 +32,7 @@ minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset"]
 
 [dependencies]
 base64 = "~0.13"
+cron = { version = "~0.12", optional = true }
 derive_builder = "~0.11.2"
 itertools = { version = "~0.10", optional = true }
 log = "~0.4.6"
