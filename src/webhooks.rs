@@ -345,7 +345,10 @@ pub struct MergeRequestHookAttrs {
     /// The target project of the merge request.
     pub target: ProjectHookAttrs,
     pub last_commit: Option<CommitHookAttrs>,
+    /// Whether the merge request is a draft or not.
+    pub draft: bool,
     /// Whether the merge request is a work-in-progress or not.
+    #[deprecated(since = "0.1601.0", note = "Use the 'draft' member instead.")]
     pub work_in_progress: bool,
     /// The object ID of the merge commit which is currently being handled.
     pub in_progress_merge_commit_sha: Option<ObjectId>,

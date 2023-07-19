@@ -1789,6 +1789,8 @@ pub struct MergeRequest {
     pub title: String,
     /// The description of the merge request.
     pub description: Option<String>,
+    /// Whether the merge request is a draft or not.
+    pub draft: bool,
     /// The state of the merge request.
     pub state: MergeRequestState,
     /// When the merge request was created.
@@ -1826,6 +1828,7 @@ pub struct MergeRequest {
     /// The labels attached to the merge request.
     pub labels: Vec<String>,
     /// Whether the merge request is a work-in-progress or not.
+    #[deprecated(since = "0.1601.0", note = "Use the 'draft' member instead.")]
     pub work_in_progress: bool,
     /// Whether the merge request allows a maintainer to collaborate.
     pub allow_collaboration: Option<bool>,
@@ -1899,6 +1902,8 @@ pub struct MergeRequestChanges {
     pub title: String,
     /// The description of the merge request.
     pub description: Option<String>,
+    /// Whether the merge request is a draft or not.
+    pub draft: bool,
     /// The state of the merge request.
     pub state: MergeRequestState,
     /// When the merge request was created.
@@ -1936,6 +1941,7 @@ pub struct MergeRequestChanges {
     /// The labels attached to the merge request.
     pub labels: Vec<String>,
     /// Whether the merge request is a work-in-progress or not.
+    #[deprecated(since = "0.1601.0", note = "Use the 'draft' member instead.")]
     pub work_in_progress: bool,
     /// Whether the merge request allows a maintainer to collaborate.
     pub allow_collaboration: Option<bool>,
@@ -1992,6 +1998,7 @@ pub struct MergeRequestChanges {
 }
 
 impl From<MergeRequestChanges> for MergeRequest {
+    #[allow(deprecated)]
     fn from(mr: MergeRequestChanges) -> Self {
         MergeRequest {
             id: mr.id,
@@ -1999,6 +2006,7 @@ impl From<MergeRequestChanges> for MergeRequest {
             project_id: mr.project_id,
             title: mr.title,
             description: mr.description,
+            draft: mr.draft,
             state: mr.state,
             created_at: mr.created_at,
             updated_at: mr.updated_at,

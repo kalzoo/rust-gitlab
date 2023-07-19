@@ -314,7 +314,7 @@ fn check_merge_request_b(merge_request: &MergeRequest) {
         assert_eq!(oid.unwrap().value(), value);
     };
 
-    assert!(!merge_request.work_in_progress);
+    assert!(!merge_request.draft);
     assert_eq!(merge_request.allow_collaboration, None);
     assert_eq!(merge_request.allow_maintainer_to_push, None);
     assert!(merge_request.milestone.is_none());
