@@ -3,6 +3,11 @@
 ## Additions
 
   * Pipeline schedule API endpoints added.
+  * Introduce the `draft` field to all MergeRequest structs.
+
+## Changes
+
+  * Deprecate the `work_in_progress` field on all MergeRequest structs.
 
 # v0.1601.0
 
