@@ -274,6 +274,7 @@ instead of having to search the page for missing endpoints.
   * `PUT    /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
   * `DELETE /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#delete-an-environment
   * `POST   /projects/:project/environments/:environment/stop` https://gitlab.kitware.com/help/api/environments.md#stop-an-environment
+  * `POST   /projects/:project/environments/:environment/stop_stale` https://gitlab.kitware.com/help/api/environments.md#stop-stale-environments
   * `GET    /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#list-all-epic-notes
   * `GET    /projects/:project/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-epic-note
   * `POST   /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#create-new-epic-note
