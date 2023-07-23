@@ -422,6 +422,7 @@ instead of having to search the page for missing endpoints.
     Arguably this should be `POST /projects/:project/repository/delete_merged_branches`
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
+  * `GET    /projects/:project/share_locations` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-shareable-groups
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
   * `GET    /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
   * `POST   /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
@@ -446,6 +447,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/starrers` https://gitlab.kitware.com/help/api/projects.md#list-starrers-of-a-project
   * `GET    /projects/:project/storage` https://gitlab.kitware.com/help/api/projects.md#get-the-path-to-repository-storage
   * `PUT    /projects/:project/transfer` https://gitlab.kitware.com/help/api/projects.md#transfer-a-project-to-a-new-namespace
+  * `GET    /projects/:project/transfer_locations` https://gitlab.kitware.com/help/api/projects.md#get-groups-to-which-a-user-can-transfer-a-project
   * `POST   /projects/:project/unarchive` https://gitlab.kitware.com/help/api/projects.md#unarchive-a-project
   * `POST   /projects/:project/unstar` https://gitlab.kitware.com/help/api/projects.md#unstar-a-project
   * `POST   /projects/:project/uploads` https://gitlab.kitware.com/help/api/projects.md#upload-a-file
@@ -479,6 +481,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /users/:user/approve` https://gitlab.kitware.com/help/api/users.md#approve-user
   * `POST   /users/:user/ban` https://gitlab.kitware.com/help/api/users.md#ban-user
   * `POST   /users/:user/block` https://gitlab.kitware.com/help/api/users.md#block-user
+  * `GET    /users/:user/contributed_projects` https://gitlab.kitware.com/help/api/projects.md#list-projects-a-user-has-contributed-to
   * `POST   /users/:user/deactivate` https://gitlab.kitware.com/help/api/users.md#deactivate-user
   * `GET    /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails-for-user
   * `POST   /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#add-email-for-user
