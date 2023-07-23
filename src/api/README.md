@@ -373,6 +373,9 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/merge_requests/:merge_request/unsubscribe` https://gitlab.kitware.com/help/api/merge_requests.md#unsubscribe-from-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/versions` https://gitlab.kitware.com/help/api/merge_requests.md#get-mr-diff-versions
   * `GET    /projects/:project/merge_requests/:merge_request/versions/:version` https://gitlab.kitware.com/help/api/merge_requests.md#get-a-single-mr-diff-version
+  * `GET    /projects/:project/merge_trains/:target_branch` https://gitlab.kitware.com/help/api/merge_trains.md#list-merge-requests-in-a-merge-train
+  * `GET    /projects/:project/merge_trains/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_trains.md#get-the-status-of-a-merge-request-on-a-merge-train
+  * `POST   /projects/:project/merge_trains/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_trains.md#add-a-merge-request-to-a-merge-train
   * `GET    /projects/:project/milestones` https://gitlab.kitware.com/help/api/milestones.md#list-project-milestones
   * `GET    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#get-single-milestone
   * `PUT    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#edit-milestone
