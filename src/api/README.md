@@ -421,6 +421,7 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/repository/merged_branches` https://gitlab.kitware.com/help/api/branches.md#delete-merged-branches
     Arguably this should be `POST /projects/:project/repository/delete_merged_branches`
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
+  * `GET    /projects/:project/repository/tags/:tag/signature` https://gitlab.kitware.com/help/api/tags.md#get-x509-signature-of-a-tag
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
   * `GET    /projects/:project/share_locations` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-shareable-groups
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
