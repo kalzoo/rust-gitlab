@@ -523,6 +523,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/access_requests.md
   * https://gitlab.kitware.com/help/api/access_tokens.md
   * https://gitlab.kitware.com/help/api/admin_sidekiq_queues.md
+  * https://gitlab.kitware.com/help/api/alert_management_alerts.md
   * https://gitlab.kitware.com/help/api/appearance.md
   * https://gitlab.kitware.com/help/api/applications.md
   * https://gitlab.kitware.com/help/api/audit_events.md
@@ -530,12 +531,19 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/avatar.md
   * https://gitlab.kitware.com/help/api/boards.md
   * https://gitlab.kitware.com/help/api/broadcast_messages.md
+  * https://gitlab.kitware.com/help/api/bulk_imports.md
   * https://gitlab.kitware.com/help/api/cluster_agents.md
+  * https://gitlab.kitware.com/help/api/code_suggestions.md
+  * https://gitlab.kitware.com/help/api/container_registry.md
+    - only the bits about JWT stuff for Docker registry communication
   * https://gitlab.kitware.com/help/api/custom_attributes.md
+  * https://gitlab.kitware.com/help/api/database_migrations.md
   * https://gitlab.kitware.com/help/api/dependencies.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
   * https://gitlab.kitware.com/help/api/deploy_tokens.md
   * https://gitlab.kitware.com/help/api/deployments.md
+  * https://gitlab.kitware.com/help/api/dora/metrics.md
+  * https://gitlab.kitware.com/help/api/draft_notes.md
   * https://gitlab.kitware.com/help/api/epic_issues.md
   * https://gitlab.kitware.com/help/api/epic_links.md
   * https://gitlab.kitware.com/help/api/epics.md
@@ -547,15 +555,20 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/features.md
   * https://gitlab.kitware.com/help/api/freeze_periods.md
   * https://gitlab.kitware.com/help/api/geo_nodes.md
+  * https://gitlab.kitware.com/help/api/geo_sites.md
   * https://gitlab.kitware.com/help/api/group_access_tokens.md
   * https://gitlab.kitware.com/help/api/group_activity_analytics.md
   * https://gitlab.kitware.com/help/api/group_badges.md
   * https://gitlab.kitware.com/help/api/group_boards.md
   * https://gitlab.kitware.com/help/api/group_clusters.md (deprecated)
+  * https://gitlab.kitware.com/help/api/group_epic_boards.md
   * https://gitlab.kitware.com/help/api/group_import_export.md
   * https://gitlab.kitware.com/help/api/group_iterations.md
   * https://gitlab.kitware.com/help/api/group_labels.md
   * https://gitlab.kitware.com/help/api/group_level_variables.md
+  * https://gitlab.kitware.com/help/api/group_protected_branches.md
+  * https://gitlab.kitware.com/help/api/group_protected_environments.md
+  * https://gitlab.kitware.com/help/api/group_relations_export.md
   * https://gitlab.kitware.com/help/api/group_releases.md
   * https://gitlab.kitware.com/help/api/group_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/group_wikis.md
@@ -574,6 +587,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/lint.md
   * https://gitlab.kitware.com/help/api/managed_licenses.md
   * https://gitlab.kitware.com/help/api/markdown.md
+  * https://gitlab.kitware.com/help/api/member_roles.md
   * https://gitlab.kitware.com/help/api/merge_request_context_commits.md
   * https://gitlab.kitware.com/help/api/metadata.md
   * https://gitlab.kitware.com/help/api/metrics_dashboard_annotations.md
@@ -581,16 +595,23 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/namespaces.md
   * https://gitlab.kitware.com/help/api/notification_settings.md
   * https://gitlab.kitware.com/help/api/oauth2.md
+  * https://gitlab.kitware.com/help/api/packages/composer.md
+  * https://gitlab.kitware.com/help/api/packages/conan.md
   * https://gitlab.kitware.com/help/api/packages/debian_project_distributions.md
+  * https://gitlab.kitware.com/help/api/packages/debian.md
   * https://gitlab.kitware.com/help/api/pages.md
   * https://gitlab.kitware.com/help/api/pages_domains.md
   * https://gitlab.kitware.com/help/api/personal_access_tokens.md
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
+  * https://gitlab.kitware.com/help/api/product_analytics.md
+  * https://gitlab.kitware.com/help/api/project_access_tokens.md
   * https://gitlab.kitware.com/help/api/project_aliases.md
   * https://gitlab.kitware.com/help/api/project_badges.md
   * https://gitlab.kitware.com/help/api/project_clusters.md
   * https://gitlab.kitware.com/help/api/project_import_export.md
+  * https://gitlab.kitware.com/help/api/project_job_token_scopes.md
+  * https://gitlab.kitware.com/help/api/project_relations_export.md
   * https://gitlab.kitware.com/help/api/project_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/project_snippets.md
   * https://gitlab.kitware.com/help/api/project_statistics.md
@@ -600,18 +621,23 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/releases/links.md
   * https://gitlab.kitware.com/help/api/remote_mirrors.md
   * https://gitlab.kitware.com/help/api/repository_submodules.md
+  * https://gitlab.kitware.com/help/api/resource_groups.md
   * https://gitlab.kitware.com/help/api/resource_iteration_events.md
   * https://gitlab.kitware.com/help/api/resource_milestone_events.md
   * https://gitlab.kitware.com/help/api/resource_state_events.md
   * https://gitlab.kitware.com/help/api/resource_weight_events.md
   * https://gitlab.kitware.com/help/api/runners.md
+  * https://gitlab.kitware.com/help/api/saml.md
   * https://gitlab.kitware.com/help/api/scim.md
   * https://gitlab.kitware.com/help/api/search.md
+  * https://gitlab.kitware.com/help/api/search_admin.md
+  * https://gitlab.kitware.com/help/api/secure_files.md
   * https://gitlab.kitware.com/help/api/settings.md
   * https://gitlab.kitware.com/help/api/sidekiq_metrics.md
   * https://gitlab.kitware.com/help/api/snippet_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/snippets.md
   * https://gitlab.kitware.com/help/api/statistics.md
+  * https://gitlab.kitware.com/help/api/status_checks.md
   * https://gitlab.kitware.com/help/api/suggestions.md
   * https://gitlab.kitware.com/help/api/system_hooks.md
   * https://gitlab.kitware.com/help/api/templates/dockerfiles.md
