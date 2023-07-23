@@ -3,6 +3,7 @@
 ## Additions
 
   * Add `api::groups::BranchProtection::PushExceptInitial` protection rule.
+  * Support editing member rule IDs on group and project memberships.
 
 # v0.1602.0
 
