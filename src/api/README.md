@@ -385,6 +385,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
   * `POST   /projects/:project/milestones/:milestone/promote` https://gitlab.kitware.com/help/api/milestones.md#promote-project-milestone-to-a-group-milestone
   * `POST   /projects/:project/mirror/pull` https://gitlab.kitware.com/help/api/projects.md#start-the-pull-mirroring-process-for-a-project-starter
+  * `GET    /projects/:project/packages/:package/pipelines` https://gitlab.kitware.com/help/api/packages.md#list-package-pipelines
   * `PATCH  /projects/:project/protected_branches/:branch` https://gitlab.kitware.com/help/api/protected_branches.md#require-code-owner-approvals-for-a-single-branch
   * `POST   /projects/:project/pipeline` https://gitlab.kitware.com/help/api/pipelines.md#create-a-new-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
