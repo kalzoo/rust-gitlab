@@ -230,6 +230,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /groups/:group/members/:member/approve_all` https://gitlab.kitware.com/help/api/members.md#approve-all-pending-members-for-a-group
   * `POST   /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#set-override-flag-for-a-member-from-a-group
   * `DELETE /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#remove-override-for-a-member-from-a-group
+  * `PUT    /groups/:group/members/:member/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
   * `GET    /groups/:group/merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-group-merge-requests
   * `GET    /groups/:group/milestones` https://gitlab.kitware.com/help/api/group_milestones.md#list-group-milestones
   * `GET    /groups/:group/milestones/:milestone` https://gitlab.kitware.com/help/api/group_milestones.md#get-single-milestone
