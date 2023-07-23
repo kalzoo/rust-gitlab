@@ -457,8 +457,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
+  * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
-  * `POST   /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
+  * `PATCH  /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
   * `GET    /user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails
   * `POST   /user/emails` https://gitlab.kitware.com/help/api/users.md#add-email
   * `GET    /user/emails/:email` https://gitlab.kitware.com/help/api/users.md#single-email
@@ -471,14 +472,18 @@ instead of having to search the page for missing endpoints.
   * `POST   /user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key
   * `GET    /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#single-ssh-key
   * `DELETE /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-current-user
+  * `POST   /user/runners` https://gitlab.kitware.com/help/api/users.md#create-a-uunner
   * `GET    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preferences
   * `PUT    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preference-modification
   * `GET    /user/status` https://gitlab.kitware.com/help/api/users.md#user-status
   * `PUT    /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
+    Note that this clears `emoji`, `message`, and `clear_status_after` if they're not present. Prefer `PATCH`.
+  * `PATCH  /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
   * `POST   /users` https://gitlab.kitware.com/help/api/users.md#user-creation
   * `DELETE /users/:user` https://gitlab.kitware.com/help/api/users.md#user-deletion
   * `PUT    /users/:user` https://gitlab.kitware.com/help/api/users.md#user-modification
   * `POST   /users/:user/activate` https://gitlab.kitware.com/help/api/users.md#activate-user
+  * `GET    /users/:user/associations_count` https://gitlab.kitware.com/help/api/users.md#list-associations-count-for-user
   * `POST   /users/:user/approve` https://gitlab.kitware.com/help/api/users.md#approve-user
   * `POST   /users/:user/ban` https://gitlab.kitware.com/help/api/users.md#ban-user
   * `POST   /users/:user/block` https://gitlab.kitware.com/help/api/users.md#block-user
