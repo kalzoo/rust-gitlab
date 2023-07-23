@@ -1,3 +1,9 @@
+# v0.1602.1 (unreleased)
+
+## Additions
+
+  * Add `api::groups::BranchProtection::PushExceptInitial` protection rule.
+
 # v0.1602.0
 
 ## Additions
