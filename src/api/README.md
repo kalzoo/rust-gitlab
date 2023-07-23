@@ -200,9 +200,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group` https://gitlab.kitware.com/help/api/groups.md#remove-group
   * `GET    /groups/:group/avatar` https://gitlab.kitware.com/help/api/groups.md#download-a-group-avatar
   * `GET    /groups/:group/billable_members` https://gitlab.kitware.com/help/api/groups.md#list-all-billable-members-of-a-group
-  * `GET    /groups/:group/billable_members:user/memberships` https://gitlab.kitware.com/help/api/members.md#list-memberships-for-a-billable-member-of-a-group
-  * `DELETE /groups/:group/billable_members:user` https://gitlab.kitware.com/help/api/members.md#remove-a-billable-member-from-a-group
-  * `PUT    /groups/:group/billable_members:user/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
+  * `GET    /groups/:group/billable_members/:user/memberships` https://gitlab.kitware.com/help/api/members.md#list-memberships-for-a-billable-member-of-a-group
+  * `DELETE /groups/:group/billable_members/:user` https://gitlab.kitware.com/help/api/members.md#remove-a-billable-member-from-a-group
+  * `PUT    /groups/:group/billable_members/:user/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
   * `GET    /groups/:group/descendant_groups` https://gitlab.kitware.com/help/api/groups.md#list-a-groups-descendant-groups
   * `GET    /groups/:group/epics/:epic/discussions` https://gitlab.kitware.com/help/api/discussions.md#list-group-epic-discussion-items
   * `POST   /groups/:group/epics/:epic/discussions` https://gitlab.kitware.com/help/api/discussions.md#create-new-epic-thread
