@@ -388,6 +388,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/packages/:package/pipelines` https://gitlab.kitware.com/help/api/packages.md#list-package-pipelines
   * `PATCH  /projects/:project/protected_branches/:branch` https://gitlab.kitware.com/help/api/protected_branches.md#require-code-owner-approvals-for-a-single-branch
   * `POST   /projects/:project/pipeline` https://gitlab.kitware.com/help/api/pipelines.md#create-a-new-pipeline
+  * `GET    /projects/:project/pipeline/latest` https://gitlab.kitware.com/help/api/pipelines.md#get-the-latest-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
   * `GET    /projects/:project/pipelines/:pipeline/test_report` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report
   * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report-summary
