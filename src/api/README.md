@@ -338,7 +338,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/languages` https://gitlab.kitware.com/help/api/projects.md#languages
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
-  * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration
+  * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration (deprecated)
   * `POST   /projects/:project/merge_requests/:merge_request/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-merge-request-level-rules
   * `GET    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-a-single-merge-request-level-rule
   * `PUT    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#update-merge-request-level-rule
@@ -360,6 +360,8 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-award-emoji-for-a-comment
   * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
+  * `PUT    /projects/:project/merge_requests/:merge_request/reset_approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#reset-approvals-of-a-merge-request
+    This should probably be a `POST` event.
   * `POST   /projects/:project/merge_requests/:merge_request/reset_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#reset-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/reset_time_estimate` https://gitlab.kitware.com/help/api/merge_requests.md#reset-the-time-estimate-for-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/resource_label_events/:event` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-merge-request-label-event
