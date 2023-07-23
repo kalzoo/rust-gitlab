@@ -247,7 +247,14 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
+  * `GET    /groups/:group/saml_group_links` https://gitlab.kitware.com/help/api/groups.md#list-saml-group-links
+  * `GET    /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#get-saml-group-link
+  * `DELETE /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#delete-saml-group-link
+  * `POST   /groups/:group/service_accounts` https://gitlab.kitware.com/help/api/groups.md#create-service-account-user
+  * `POST   /groups/:group/service_accounts/:id/personal_access_tokens` https://gitlab.kitware.com/help/api/groups.md#create-personal-access-token-for-service-account-user
+  * `POST   /groups/:group/service_accounts/:id/personal_access_tokens/:token/rotate` https://gitlab.kitware.com/help/api/groups.md#rotate-a-personal-access-token-for-service-account-user
   * `POST   /groups/:group/transfer` https://gitlab.kitware.com/help/api/groups.md#transfer-a-group-to-a-new-parent-group-turn-a-subgroup-to-a-top-level-group
+  * `GET    /groups/:group/transfer_locations` https://gitlab.kitware.com/help/api/groups.md#get-groups-to-which-a-user-can-transfer-a-group
   * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
