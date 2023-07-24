@@ -71,29 +71,6 @@ impl<'a, 'b: 'a> ParamValue<'static> for &'b Labels<'a> {
 }
 
 #[derive(Debug, Clone)]
-pub(crate) enum Milestone<'a> {
-    None,
-    Any,
-    Named(Cow<'a, str>),
-}
-
-impl<'a> Milestone<'a> {
-    fn as_str(&self) -> &str {
-        match self {
-            Milestone::None => "None",
-            Milestone::Any => "Any",
-            Milestone::Named(name) => name.as_ref(),
-        }
-    }
-}
-
-impl<'a, 'b: 'a> ParamValue<'a> for &'b Milestone<'a> {
-    fn as_value(&self) -> Cow<'a, str> {
-        self.as_str().into()
-    }
-}
-
-#[derive(Debug, Clone)]
 pub(crate) enum ReactionEmoji<'a> {
     None,
     Any,
@@ -120,7 +97,7 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b ReactionEmoji<'a> {
 mod tests {
     use std::iter;
 
-    use super::{Labels, Milestone, NoteOrderBy, ReactionEmoji};
+    use super::{Labels, NoteOrderBy, ReactionEmoji};
 
     #[test]
     fn note_order_by_default() {
@@ -149,19 +126,6 @@ mod tests {
             (Labels::None, "None"),
             (Labels::AllOf(one_user), "one"),
             (Labels::AllOf(two_users), "one,two"),
-        ];
-
-        for (i, s) in items {
-            assert_eq!(i.as_str(), *s);
-        }
-    }
-
-    #[test]
-    fn milestone_as_str() {
-        let items = &[
-            (Milestone::Any, "Any"),
-            (Milestone::None, "None"),
-            (Milestone::Named("milestone".into()), "milestone"),
         ];
 
         for (i, s) in items {

@@ -301,11 +301,38 @@ impl ParamValue<'static> for IssueOrderBy {
     }
 }
 
+/// Filters available for issue milestones.
+#[derive(Debug, Clone)]
+pub enum IssueMilestone<'a> {
+    /// Issues without any milestone.
+    None,
+    /// Issues with any milestone.
+    Any,
+    /// Issues with a specific milestone.
+    Named(Cow<'a, str>),
+}
+
+impl<'a> IssueMilestone<'a> {
+    fn as_str(&self) -> &str {
+        match self {
+            IssueMilestone::None => "None",
+            IssueMilestone::Any => "Any",
+            IssueMilestone::Named(name) => name.as_ref(),
+        }
+    }
+}
+
+impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueMilestone<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        self.as_str().into()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::api::issues::{
-        IssueDueDateFilter, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType,
-        IssueWeight,
+        IssueDueDateFilter, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
+        IssueType, IssueWeight,
     };
 
     #[test]
@@ -408,6 +435,19 @@ mod tests {
             (IssueOrderBy::Weight, "weight"),
             #[allow(deprecated)]
             (IssueOrderBy::WeightFields, "weight"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_milestone_as_str() {
+        let items = &[
+            (IssueMilestone::Any, "Any"),
+            (IssueMilestone::None, "None"),
+            (IssueMilestone::Named("milestone".into()), "milestone"),
         ];
 
         for (i, s) in items {

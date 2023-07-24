@@ -12,13 +12,13 @@ use http::Method;
 
 use crate::api::{
     common::{CommaSeparatedList, NameOrId, SortOrder},
-    helpers::{Labels, Milestone, ReactionEmoji},
+    helpers::{Labels, ReactionEmoji},
     Endpoint, Pageable, QueryParams,
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope,
-    IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
+    IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a group.
@@ -47,8 +47,8 @@ pub struct GroupIssues<'a> {
     #[builder(default)]
     iteration: Option<IssueIteration<'a>>,
     /// Filter issues with a milestone.
-    #[builder(setter(name = "_milestone"), default, private)]
-    milestone: Option<Milestone<'a>>,
+    #[builder(default)]
+    milestone_id: Option<IssueMilestone<'a>>,
     /// Filter issues within a scope.
     #[builder(default)]
     scope: Option<IssueScope>,
@@ -171,13 +171,13 @@ impl<'a> GroupIssuesBuilder<'a> {
 
     /// Filter issues without a milestone.
     pub fn without_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::None));
+        self.milestone_id = Some(Some(IssueMilestone::None));
         self
     }
 
     /// Filter issues with any milestone.
     pub fn any_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::Any));
+        self.milestone_id = Some(Some(IssueMilestone::Any));
         self
     }
 
@@ -186,7 +186,7 @@ impl<'a> GroupIssuesBuilder<'a> {
     where
         M: Into<Cow<'a, str>>,
     {
-        self.milestone = Some(Some(Milestone::Named(milestone.into())));
+        self.milestone_id = Some(Some(IssueMilestone::Named(milestone.into())));
         self
     }
 
@@ -291,7 +291,7 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("state", self.state)
             .push_opt("labels", self.labels.as_ref())
             .push_opt("with_labels_details", self.with_labels_details)
-            .push_opt("milestone", self.milestone.as_ref())
+            .push_opt("milestone_id", self.milestone_id.as_ref())
             .push_opt("scope", self.scope)
             .push_opt("my_reaction_emoji", self.my_reaction_emoji.as_ref())
             .push_opt("non_archived", self.non_archived)
@@ -337,7 +337,7 @@ mod tests {
     use crate::api::common::SortOrder;
     use crate::api::issues::{
         groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueIteration,
-        IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+        IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -541,17 +541,17 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_milestone() {
+    fn endpoint_milestone_id() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("groups/simple%2Fgroup/issues")
-            .add_query_params(&[("milestone", "1.0")])
+            .add_query_params(&[("milestone_id", "1.0")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = GroupIssues::builder()
             .group("simple/group")
-            .milestone("1.0")
+            .milestone_id(IssueMilestone::Named("1.0".into()))
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

@@ -1,9 +1,21 @@
 # v0.1602.1 (unreleased)
 
+## Fixes
+
+  * Milestone filters for `api::issues::{Group,Project}Issues` now use the
+    proper query parameter (`milestone_id`).
+
 ## Additions
 
   * Add `api::groups::BranchProtection::PushExceptInitial` protection rule.
   * Support editing member rule IDs on group and project memberships.
+
+## Changes
+
+  * Deprecate
+    `api::issues::{Group,Project}Issues::{without_milestone,any_milestone,milestone}`
+    in preference for `milestone_id`. With new enumerations possible, using the
+    actual name for the parameter is best with the actual type exposed.
 
 # v0.1602.0
 

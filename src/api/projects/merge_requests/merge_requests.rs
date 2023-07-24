@@ -12,7 +12,7 @@ use derive_builder::Builder;
 
 use crate::api::common::{NameOrId, SortOrder, YesNo};
 use crate::api::endpoint_prelude::*;
-use crate::api::helpers::{Labels, Milestone, ReactionEmoji};
+use crate::api::helpers::{Labels, ReactionEmoji};
 use crate::api::ParamValue;
 
 /// Filters for merge request states.
@@ -224,6 +224,29 @@ impl ApprovedByIds {
     }
 }
 
+#[derive(Debug, Clone)]
+enum MergeRequestMilestone<'a> {
+    None,
+    Any,
+    Named(Cow<'a, str>),
+}
+
+impl<'a> MergeRequestMilestone<'a> {
+    fn as_str(&self) -> &str {
+        match self {
+            MergeRequestMilestone::None => "None",
+            MergeRequestMilestone::Any => "Any",
+            MergeRequestMilestone::Named(name) => name.as_ref(),
+        }
+    }
+}
+
+impl<'a, 'b: 'a> ParamValue<'a> for &'b MergeRequestMilestone<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        self.as_str().into()
+    }
+}
+
 /// Query for merge requests within a project.
 ///
 /// TODO: Negation (not) filters are not yet supported.
@@ -242,7 +265,7 @@ pub struct MergeRequests<'a> {
     state: Option<MergeRequestState>,
     /// Filter merge requests with a milestone title.
     #[builder(setter(name = "_milestone"), default, private)]
-    milestone: Option<Milestone<'a>>,
+    milestone: Option<MergeRequestMilestone<'a>>,
     /// The view of the merge request.
     ///
     /// This field can restrict the amount of data returned.
@@ -392,13 +415,13 @@ impl<'a> MergeRequestsBuilder<'a> {
 
     /// Filter merge requests without a milestone.
     pub fn without_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::None));
+        self.milestone = Some(Some(MergeRequestMilestone::None));
         self
     }
 
     /// Filter merge requests with any milestone.
     pub fn any_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::Any));
+        self.milestone = Some(Some(MergeRequestMilestone::Any));
         self
     }
 
@@ -407,7 +430,7 @@ impl<'a> MergeRequestsBuilder<'a> {
     where
         M: Into<Cow<'a, str>>,
     {
-        self.milestone = Some(Some(Milestone::Named(milestone.into())));
+        self.milestone = Some(Some(MergeRequestMilestone::Named(milestone.into())));
         self
     }
 
@@ -624,6 +647,8 @@ mod tests {
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
 
+    use super::MergeRequestMilestone;
+
     #[test]
     fn merge_request_state_as_str() {
         let items = &[
@@ -674,6 +699,22 @@ mod tests {
             (MergeRequestOrderBy::CreatedAt, "created_at"),
             (MergeRequestOrderBy::UpdatedAt, "updated_at"),
             (MergeRequestOrderBy::Title, "title"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn merge_request_milestone_as_str() {
+        let items = &[
+            (MergeRequestMilestone::Any, "Any"),
+            (MergeRequestMilestone::None, "None"),
+            (
+                MergeRequestMilestone::Named("milestone".into()),
+                "milestone",
+            ),
         ];
 
         for (i, s) in items {

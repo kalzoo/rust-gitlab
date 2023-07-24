@@ -12,14 +12,14 @@ use http::Method;
 
 use crate::api::{
     common::{CommaSeparatedList, NameOrId, SortOrder},
-    helpers::{Labels, Milestone, ReactionEmoji},
+    helpers::{Labels, ReactionEmoji},
     issues::IssueType,
     Endpoint, Pageable, QueryParams,
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope,
-    IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
+    IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a project.
@@ -48,8 +48,8 @@ pub struct ProjectIssues<'a> {
     #[builder(default)]
     iteration: Option<IssueIteration<'a>>,
     /// Filter issues with a milestone.
-    #[builder(setter(name = "_milestone"), default, private)]
-    milestone: Option<Milestone<'a>>,
+    #[builder(default)]
+    milestone_id: Option<IssueMilestone<'a>>,
     /// Filter issues within a scope.
     #[builder(default)]
     scope: Option<IssueScope>,
@@ -175,23 +175,26 @@ impl<'a> ProjectIssuesBuilder<'a> {
     }
 
     /// Filter issues without a milestone.
+    #[deprecated(since = "0.1602.1", note = "Use `milestone_id` instead.")]
     pub fn without_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::None));
+        self.milestone_id = Some(Some(IssueMilestone::None));
         self
     }
 
     /// Filter issues with any milestone.
+    #[deprecated(since = "0.1602.1", note = "Use `milestone_id` instead.")]
     pub fn any_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::Any));
+        self.milestone_id = Some(Some(IssueMilestone::Any));
         self
     }
 
     /// Filter issues with a given milestone.
+    #[deprecated(since = "0.1602.1", note = "Use `milestone_id` instead.")]
     pub fn milestone<M>(&mut self, milestone: M) -> &mut Self
     where
         M: Into<Cow<'a, str>>,
     {
-        self.milestone = Some(Some(Milestone::Named(milestone.into())));
+        self.milestone_id = Some(Some(IssueMilestone::Named(milestone.into())));
         self
     }
 
@@ -296,7 +299,7 @@ impl<'a> Endpoint for ProjectIssues<'a> {
             .push_opt("state", self.state)
             .push_opt("labels", self.labels.as_ref())
             .push_opt("with_labels_details", self.with_labels_details)
-            .push_opt("milestone", self.milestone.as_ref())
+            .push_opt("milestone_id", self.milestone_id.as_ref())
             .push_opt("scope", self.scope)
             .push_opt("my_reaction_emoji", self.my_reaction_emoji.as_ref())
             .push_opt("weight", self.weight)
@@ -343,8 +346,8 @@ mod tests {
     use crate::api::common::SortOrder;
     use crate::api::issues::{
         projects::ProjectIssues, projects::ProjectIssuesBuilderError, IssueDueDateFilter,
-        IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType,
-        IssueWeight,
+        IssueIteration, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
+        IssueType, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -548,17 +551,17 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_milestone() {
+    fn endpoint_milestone_id() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/issues")
-            .add_query_params(&[("milestone", "1.0")])
+            .add_query_params(&[("milestone_id", "Any")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = ProjectIssues::builder()
             .project("simple/project")
-            .milestone("1.0")
+            .milestone_id(IssueMilestone::Any)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
