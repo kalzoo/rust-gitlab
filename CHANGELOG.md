@@ -36,6 +36,7 @@
   * Support the `WaitingForResource` job scope when filtering jobs.
   * Support the `include_retried` field for project jobs.
   * Support filtering MRs by approver usernames.
+  * Support filtering MRs by whether they are approved or not.
 
 ## Changes
 

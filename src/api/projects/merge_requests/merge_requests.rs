@@ -315,6 +315,9 @@ pub struct MergeRequests<'a> {
     /// Filter merge requests by approvals.
     #[builder(setter(name = "_approved_by"), default, private)]
     approved_by: Option<ApprovedBy<'a>>,
+    /// Filter merge requests by approved state.
+    #[builder(default, setter(into))]
+    approved: Option<YesNo>,
     /// Filter merge requests by reviewers.
     #[builder(setter(into), default)]
     reviewer: Option<NameOrId<'a>>,
@@ -637,6 +640,7 @@ impl<'a> Endpoint for MergeRequests<'a> {
             .push_opt("updated_after", self.updated_after)
             .push_opt("updated_before", self.updated_before)
             .push_opt("scope", self.scope)
+            .push_opt("approved", self.approved)
             .push_opt("my_reaction_emoji", self.my_reaction_emoji.as_ref())
             .push_opt("source_branch", self.source_branch.as_ref())
             .push_opt("target_branch", self.target_branch.as_ref())
@@ -1276,6 +1280,23 @@ mod tests {
             .project("simple/project")
             .approved_by_username("thing1")
             .approved_by_usernames(["thing1", "thing2"].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_approved() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/merge_requests")
+            .add_query_params(&[("approved", "yes")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequests::builder()
+            .project("simple/project")
+            .approved(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
