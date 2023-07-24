@@ -42,6 +42,7 @@
   * Support IP restriction ranges when editing groups.
   * Support wiki access level when editing groups.
   * Support project download limit parameters when editing groups.
+  * Support filtering projects by last updated timestamps.
 
 ## Changes
 
