@@ -1,5 +1,12 @@
 # v0.1602.1 (unreleased)
 
+## Breaking changes
+
+  * `api::projects::protected_branches::ProtectBranch::allowed_to_unprotect` no
+    longer supports the `NoAccess` level as GitLab does not support it. Callers
+    need to update to use the `ProtectedAccessLevelWithAccess` set of levels
+    instead.
+
 ## Fixes
 
   * Milestone filters for `api::issues::{Group,Project}Issues` now use the

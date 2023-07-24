@@ -9,7 +9,7 @@ use std::collections::BTreeSet;
 
 use derive_builder::Builder;
 
-use crate::api::common::NameOrId;
+use crate::api::common::{NameOrId, ProtectedAccessLevelWithAccess};
 use crate::api::endpoint_prelude::*;
 use crate::api::ParamValue;
 
@@ -111,7 +111,7 @@ pub struct ProtectBranch<'a> {
     allowed_to_merge: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
     /// A discrete set of accesses allowed to unprotect the branch.
     #[builder(setter(name = "_allowed_to_unprotect"), default, private)]
-    allowed_to_unprotect: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
+    allowed_to_unprotect: BTreeSet<ProtectedAccess<ProtectedAccessLevelWithAccess>>,
     /// Whether code owner approval is required to merge.
     #[builder(default)]
     code_owner_approval_required: Option<bool>,
@@ -144,7 +144,7 @@ impl<'a> ProtectBranchBuilder<'a> {
     /// Add access to unprotect the branch.
     pub fn allowed_to_unprotect(
         &mut self,
-        access: ProtectedAccess<ProtectedAccessLevel>,
+        access: ProtectedAccess<ProtectedAccessLevelWithAccess>,
     ) -> &mut Self {
         self.allowed_to_unprotect
             .get_or_insert_with(BTreeSet::new)
@@ -196,7 +196,7 @@ mod tests {
 
     use http::Method;
 
-    use crate::api::common::ProtectedAccessLevel;
+    use crate::api::common::{ProtectedAccessLevel, ProtectedAccessLevelWithAccess};
     use crate::api::projects::protected_branches::{
         ProtectBranch, ProtectBranchBuilderError, ProtectedAccess,
     };
@@ -454,7 +454,9 @@ mod tests {
             .name("master")
             .allowed_to_unprotect(ProtectedAccess::User(1))
             .allowed_to_unprotect(ProtectedAccess::Group(1))
-            .allowed_to_unprotect(ProtectedAccess::Level(ProtectedAccessLevel::Developer))
+            .allowed_to_unprotect(ProtectedAccess::Level(
+                ProtectedAccessLevelWithAccess::Developer,
+            ))
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

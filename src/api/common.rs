@@ -316,6 +316,51 @@ impl ParamValue<'static> for ProtectedAccessLevel {
     }
 }
 
+/// Access levels for protected branches and tags.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum ProtectedAccessLevelWithAccess {
+    /// Developers and maintainers may perform the action.
+    Developer,
+    /// Maintainers may perform the action.
+    Maintainer,
+    /// Only administrators may perform the action.
+    Admin,
+}
+
+#[allow(clippy::derivable_impls)]
+impl Default for ProtectedAccessLevelWithAccess {
+    fn default() -> Self {
+        // XXX(rust-1.62): use `#[default]`
+        ProtectedAccessLevelWithAccess::Maintainer
+    }
+}
+
+impl From<ProtectedAccessLevelWithAccess> for ProtectedAccessLevel {
+    fn from(p: ProtectedAccessLevelWithAccess) -> Self {
+        match p {
+            ProtectedAccessLevelWithAccess::Developer => ProtectedAccessLevel::Developer,
+            ProtectedAccessLevelWithAccess::Maintainer => ProtectedAccessLevel::Maintainer,
+            ProtectedAccessLevelWithAccess::Admin => ProtectedAccessLevel::Admin,
+        }
+    }
+}
+
+impl ProtectedAccessLevelWithAccess {
+    fn as_str(self) -> &'static str {
+        match self {
+            ProtectedAccessLevelWithAccess::Developer => "30",
+            ProtectedAccessLevelWithAccess::Maintainer => "40",
+            ProtectedAccessLevelWithAccess::Admin => "60",
+        }
+    }
+}
+
+impl ParamValue<'static> for ProtectedAccessLevelWithAccess {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
 /// A comma-separated list of values.
 #[derive(Debug, Clone, Default)]
 pub struct CommaSeparatedList<T> {
@@ -398,8 +443,8 @@ mod tests {
     use std::iter;
 
     use crate::api::common::{
-        AccessLevel, CommaSeparatedList, EnableState, NameOrId, ProtectedAccessLevel, SortOrder,
-        VisibilityLevel, YesNo,
+        AccessLevel, CommaSeparatedList, EnableState, NameOrId, ProtectedAccessLevel,
+        ProtectedAccessLevelWithAccess, SortOrder, VisibilityLevel, YesNo,
     };
     use crate::api::params::ParamValue;
 
@@ -604,6 +649,69 @@ mod tests {
             (ProtectedAccessLevel::Maintainer, "40"),
             (ProtectedAccessLevel::Admin, "60"),
             (ProtectedAccessLevel::NoAccess, "0"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn protected_access_level_with_access_default() {
+        assert_eq!(
+            ProtectedAccessLevelWithAccess::default(),
+            ProtectedAccessLevelWithAccess::Maintainer,
+        );
+    }
+
+    #[test]
+    fn protected_access_level_with_access_ord() {
+        let items = &[
+            ProtectedAccessLevelWithAccess::Developer,
+            ProtectedAccessLevelWithAccess::Maintainer,
+            ProtectedAccessLevelWithAccess::Admin,
+        ];
+
+        for i in items {
+            // We are asserting that `Eq` is implemented.
+            #[allow(clippy::eq_op)]
+            {
+                assert_eq!(*i, *i);
+            }
+            assert_eq!(i.cmp(i), cmp::Ordering::Equal);
+
+            let mut expect = cmp::Ordering::Greater;
+            for j in items {
+                let is_same = i == j;
+                if is_same {
+                    expect = cmp::Ordering::Equal;
+                }
+                assert_eq!(i.cmp(j), expect);
+                if is_same {
+                    expect = cmp::Ordering::Less;
+                }
+            }
+
+            let mut expect = cmp::Ordering::Less;
+            for j in items.iter().rev() {
+                let is_same = i == j;
+                if is_same {
+                    expect = cmp::Ordering::Equal;
+                }
+                assert_eq!(i.cmp(j), expect);
+                if is_same {
+                    expect = cmp::Ordering::Greater;
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn protected_access_level_with_access_as_str() {
+        let items = &[
+            (ProtectedAccessLevelWithAccess::Developer, "30"),
+            (ProtectedAccessLevelWithAccess::Maintainer, "40"),
+            (ProtectedAccessLevelWithAccess::Admin, "60"),
         ];
 
         for (i, s) in items {
