@@ -11,23 +11,30 @@ use derive_builder::Builder;
 
 use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
+use crate::api::ParamValue;
 
 #[deprecated(note = "use `api/common/ProtectedAccessLevel` instead")]
 pub use crate::api::common::ProtectedAccessLevel;
 
 /// Granular protected access controls for branches.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ProtectedAccess {
+pub enum ProtectedAccess<T> {
     /// Give a specific user access.
     User(u64),
     /// Give a group access.
     Group(u64),
     /// Give access to anyone with at least an access level.
-    Level(ProtectedAccessLevel),
+    Level(T),
 }
 
-impl ProtectedAccess {
-    pub(crate) fn add_query(self, name: &str, params: &mut FormParams) {
+impl<'a, T> ProtectedAccess<T>
+where
+    T: ParamValue<'a>,
+{
+    pub(crate) fn add_query<'b>(self, name: &'b str, params: &mut FormParams<'b>)
+    where
+        'a: 'b,
+    {
         match self {
             ProtectedAccess::User(user) => {
                 params.push(format!("{}[][user_id]", name), user);
@@ -42,13 +49,19 @@ impl ProtectedAccess {
     }
 }
 
-impl PartialOrd for ProtectedAccess {
+impl<T> PartialOrd for ProtectedAccess<T>
+where
+    T: Ord,
+{
     fn partial_cmp(&self, rhs: &Self) -> Option<cmp::Ordering> {
         Some(self.cmp(rhs))
     }
 }
 
-impl Ord for ProtectedAccess {
+impl<T> Ord for ProtectedAccess<T>
+where
+    T: Ord,
+{
     fn cmp(&self, rhs: &Self) -> cmp::Ordering {
         match (self, rhs) {
             (Self::User(l), Self::User(r)) => l.cmp(r),
@@ -62,8 +75,8 @@ impl Ord for ProtectedAccess {
     }
 }
 
-impl From<ProtectedAccessLevel> for ProtectedAccess {
-    fn from(access: ProtectedAccessLevel) -> Self {
+impl<T> From<T> for ProtectedAccess<T> {
+    fn from(access: T) -> Self {
         ProtectedAccess::Level(access)
     }
 }
@@ -92,13 +105,13 @@ pub struct ProtectBranch<'a> {
     allow_force_push: Option<bool>,
     /// A discrete set of accesses allowed to push to the branch.
     #[builder(setter(name = "_allowed_to_push"), default, private)]
-    allowed_to_push: BTreeSet<ProtectedAccess>,
+    allowed_to_push: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
     /// A discrete set of accesses allowed to merge into the branch.
     #[builder(setter(name = "_allowed_to_merge"), default, private)]
-    allowed_to_merge: BTreeSet<ProtectedAccess>,
+    allowed_to_merge: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
     /// A discrete set of accesses allowed to unprotect the branch.
     #[builder(setter(name = "_allowed_to_unprotect"), default, private)]
-    allowed_to_unprotect: BTreeSet<ProtectedAccess>,
+    allowed_to_unprotect: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
     /// Whether code owner approval is required to merge.
     #[builder(default)]
     code_owner_approval_required: Option<bool>,
@@ -113,7 +126,7 @@ impl<'a> ProtectBranch<'a> {
 
 impl<'a> ProtectBranchBuilder<'a> {
     /// Add access to push to the branch.
-    pub fn allowed_to_push(&mut self, access: ProtectedAccess) -> &mut Self {
+    pub fn allowed_to_push(&mut self, access: ProtectedAccess<ProtectedAccessLevel>) -> &mut Self {
         self.allowed_to_push
             .get_or_insert_with(BTreeSet::new)
             .insert(access);
@@ -121,7 +134,7 @@ impl<'a> ProtectBranchBuilder<'a> {
     }
 
     /// Add access to merge into the branch.
-    pub fn allowed_to_merge(&mut self, access: ProtectedAccess) -> &mut Self {
+    pub fn allowed_to_merge(&mut self, access: ProtectedAccess<ProtectedAccessLevel>) -> &mut Self {
         self.allowed_to_merge
             .get_or_insert_with(BTreeSet::new)
             .insert(access);
@@ -129,7 +142,10 @@ impl<'a> ProtectBranchBuilder<'a> {
     }
 
     /// Add access to unprotect the branch.
-    pub fn allowed_to_unprotect(&mut self, access: ProtectedAccess) -> &mut Self {
+    pub fn allowed_to_unprotect(
+        &mut self,
+        access: ProtectedAccess<ProtectedAccessLevel>,
+    ) -> &mut Self {
         self.allowed_to_unprotect
             .get_or_insert_with(BTreeSet::new)
             .insert(access);

@@ -47,6 +47,9 @@
     should be used instead.
   * Deprecate `confidential` for issue notes. Use `internal` instead, but note
     that it is only available at note creation and cannot be edited later.
+  * `ProtectedAccess` is now a generic type in order to support different
+    fields with different available access levels. Most call sites should not
+    be affected.
 
 # v0.1602.0
 
