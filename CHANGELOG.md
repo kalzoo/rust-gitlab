@@ -49,6 +49,7 @@
     `feature flags`, `infrastructure`, and `monitor` project features.
   * Support setting and editing the
     `only_allow_merge_if_all_status_checks_passed` flag on projects.
+  * Support setting and editing group runner support on projects.
 
 ## Changes
 

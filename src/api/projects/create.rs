@@ -722,6 +722,9 @@ pub struct CreateProject<'a> {
     /// Whether the package repository is enabled or not.
     #[builder(default)]
     packages_enabled: Option<bool>,
+    /// Whether group runners are enabled for this project or not.
+    #[builder(default)]
+    group_runners_enabled: Option<bool>,
 
     /// Whether to enable issues or not.
     #[deprecated(note = "use `issues_access_level` instead")]
@@ -994,7 +997,8 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "group_with_project_templates_id",
                 self.group_with_project_templates_id,
             )
-            .push_opt("packages_enabled", self.packages_enabled);
+            .push_opt("packages_enabled", self.packages_enabled)
+            .push_opt("group_runners_enabled", self.group_runners_enabled);
 
         if let Some(policy) = self.container_expiration_policy_attributes.as_ref() {
             policy.add_query(&mut params);
@@ -2811,6 +2815,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .packages_enabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_group_runners_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&group_runners_enabled=false"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .group_runners_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

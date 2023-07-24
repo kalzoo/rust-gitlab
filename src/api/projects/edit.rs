@@ -255,6 +255,9 @@ pub struct EditProject<'a> {
     /// Whether the package repository is enabled or not.
     #[builder(default)]
     packages_enabled: Option<bool>,
+    /// Whether group runners are enabled for this project or not.
+    #[builder(default)]
+    group_runners_enabled: Option<bool>,
     /// Whether the service desk is enabled or not.
     #[builder(default)]
     service_desk_enabled: Option<bool>,
@@ -500,6 +503,7 @@ impl<'a> Endpoint for EditProject<'a> {
                 self.mirror_overwrites_diverged_branches,
             )
             .push_opt("packages_enabled", self.packages_enabled)
+            .push_opt("group_runners_enabled", self.group_runners_enabled)
             .push_opt("service_desk_enabled", self.service_desk_enabled)
             .push_opt("keep_latest_artifact", self.keep_latest_artifact)
             .push_opt("ci_separated_caches", self.ci_separated_caches);
@@ -2039,6 +2043,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .packages_enabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_group_runners_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("group_runners_enabled=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .group_runners_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
