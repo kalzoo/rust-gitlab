@@ -27,6 +27,11 @@ pub struct FileRaw<'a> {
     /// The ref to get a file from.
     #[builder(setter(into), default)]
     ref_: Option<Cow<'a, str>>,
+    /// If `true`, resolve LFS pointers to their backing data.
+    ///
+    /// If the file is not an LFS pointer it is ignored.
+    #[builder(default)]
+    lfs: Option<bool>,
 }
 
 impl<'a> FileRaw<'a> {
@@ -53,7 +58,9 @@ impl<'a> Endpoint for FileRaw<'a> {
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
 
-        params.push_opt("ref", self.ref_.as_ref());
+        params
+            .push_opt("ref", self.ref_.as_ref())
+            .push_opt("lfs", self.lfs);
 
         params
     }
@@ -128,6 +135,25 @@ mod tests {
             .project("simple/project")
             .file_path("path/to/file")
             .ref_("branch")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_lfs() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::GET)
+            .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile/raw")
+            .add_query_params(&[("lfs", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = FileRaw::builder()
+            .project("simple/project")
+            .file_path("path/to/file")
+            .lfs(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

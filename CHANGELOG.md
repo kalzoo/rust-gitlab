@@ -44,6 +44,7 @@
   * Support project download limit parameters when editing groups.
   * Support filtering projects by last updated timestamps.
   * Support skipping LDAP users when searching users.
+  * Support downloading raw file contents backed by LFS.
 
 ## Changes
 
