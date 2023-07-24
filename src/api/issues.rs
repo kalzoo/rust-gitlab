@@ -308,6 +308,10 @@ pub enum IssueMilestone<'a> {
     None,
     /// Issues with any milestone.
     Any,
+    /// Issues with milestones with upcoming due dates.
+    Upcoming,
+    /// Issues with milestones that have started.
+    Started,
     /// Issues with a specific milestone.
     Named(Cow<'a, str>),
 }
@@ -317,6 +321,8 @@ impl<'a> IssueMilestone<'a> {
         match self {
             IssueMilestone::None => "None",
             IssueMilestone::Any => "Any",
+            IssueMilestone::Upcoming => "Upcoming",
+            IssueMilestone::Started => "Started",
             IssueMilestone::Named(name) => name.as_ref(),
         }
     }
@@ -447,6 +453,8 @@ mod tests {
         let items = &[
             (IssueMilestone::Any, "Any"),
             (IssueMilestone::None, "None"),
+            (IssueMilestone::Upcoming, "Upcoming"),
+            (IssueMilestone::Started, "Started"),
             (IssueMilestone::Named("milestone".into()), "milestone"),
         ];
 
