@@ -4,7 +4,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 
 use derive_builder::Builder;
 
@@ -58,7 +58,7 @@ pub struct GroupSubgroups<'a> {
 
     /// Skip the group IDs passed
     #[builder(setter(name = "_skip_groups"), default, private)]
-    skip_groups: HashSet<u64>,
+    skip_groups: BTreeSet<u64>,
 
     /// Show all the groups you have access to (defaults to false
     /// for authenticated users, true for admin);
@@ -103,7 +103,7 @@ impl<'a> GroupSubgroupsBuilder<'a> {
     /// Filter results by skipping the given group ID.
     pub fn skip_group(&mut self, group_id: u64) -> &mut Self {
         self.skip_groups
-            .get_or_insert_with(HashSet::new)
+            .get_or_insert_with(BTreeSet::new)
             .insert(group_id);
         self
     }
@@ -114,7 +114,7 @@ impl<'a> GroupSubgroupsBuilder<'a> {
         I: Iterator<Item = u64>,
     {
         self.skip_groups
-            .get_or_insert_with(HashSet::new)
+            .get_or_insert_with(BTreeSet::new)
             .extend(iter);
         self
     }

@@ -4,7 +4,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 
 use derive_builder::Builder;
 
@@ -24,7 +24,7 @@ pub struct GroupMembers<'a> {
     query: Option<Cow<'a, str>>,
     /// A search string to filter members by.
     #[builder(setter(name = "_user_ids"), default, private)]
-    user_ids: HashSet<u64>,
+    user_ids: BTreeSet<u64>,
 }
 
 impl<'a> GroupMembers<'a> {
@@ -38,7 +38,7 @@ impl<'a> GroupMembersBuilder<'a> {
     /// Filter results by the given user ID.
     pub fn user_id(&mut self, user_id: u64) -> &mut Self {
         self.user_ids
-            .get_or_insert_with(HashSet::new)
+            .get_or_insert_with(BTreeSet::new)
             .insert(user_id);
         self
     }
@@ -48,7 +48,7 @@ impl<'a> GroupMembersBuilder<'a> {
     where
         I: Iterator<Item = u64>,
     {
-        self.user_ids.get_or_insert_with(HashSet::new).extend(iter);
+        self.user_ids.get_or_insert_with(BTreeSet::new).extend(iter);
         self
     }
 }
