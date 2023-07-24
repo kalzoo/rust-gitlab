@@ -333,7 +333,7 @@ pub struct MergeRequests<'a> {
     /// Filter merge requests by WIP state
     #[builder(setter(into), default)]
     wip: Option<YesNo>,
-    /// Filter merge requests by deployed environment status.
+    /// Filter merge requests by deployed environment.
     #[builder(setter(into), default)]
     environment: Option<Cow<'a, str>>,
     /// Filter merge requests by those deployed after a point in time.
