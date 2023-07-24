@@ -14,6 +14,7 @@
   * Support `show_seat_info` parameter when listing memberships.
   * Support `None` and `Any` epic filters for project issues.
   * Support epic filters for group issues.
+  * Support filtering project and group issues by health status.
 
 ## Changes
 

@@ -18,8 +18,8 @@ use crate::api::{
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueEpic, IssueIteration, IssueMilestone, IssueOrderBy,
-    IssueScope, IssueSearchScope, IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueIteration, IssueMilestone,
+    IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a project.
@@ -95,6 +95,9 @@ pub struct ProjectIssues<'a> {
     /// Filter by issue type.
     #[builder(default)]
     issue_type: Option<IssueType>,
+    /// Filter by issue health status.
+    #[builder(default)]
+    health_status: Option<IssueHealthStatus>,
 
     // TODO: How best to support this parameter?
     // not
@@ -313,6 +316,7 @@ impl<'a> Endpoint for ProjectIssues<'a> {
             .push_opt("due_date", self.due_date)
             .push_opt("epic_id", self.epic_id)
             .push_opt("issue_type", self.issue_type)
+            .push_opt("health_status", self.health_status)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -346,8 +350,8 @@ mod tests {
     use crate::api::common::SortOrder;
     use crate::api::issues::{
         projects::ProjectIssues, projects::ProjectIssuesBuilderError, IssueDueDateFilter,
-        IssueIteration, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
-        IssueType, IssueWeight,
+        IssueHealthStatus, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
+        IssueSearchScope, IssueState, IssueType, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -924,6 +928,23 @@ mod tests {
         let endpoint = ProjectIssues::builder()
             .project("simple/project")
             .issue_type(IssueType::Incident)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_health_status() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/issues")
+            .add_query_params(&[("health_status", "at_risk")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = ProjectIssues::builder()
+            .project("simple/project")
+            .health_status(IssueHealthStatus::AtRisk)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

@@ -131,6 +131,40 @@ impl ParamValue<'static> for IssueEpic {
     }
 }
 
+/// Health statuses of issues.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IssueHealthStatus {
+    /// Issues with any health status.
+    Any,
+    /// Issues without a health status.
+    None,
+    /// Issues that are on track.
+    OnTrack,
+    /// Issues that need attention.
+    NeedsAttention,
+    /// Issues that are at risk.
+    AtRisk,
+}
+
+impl IssueHealthStatus {
+    fn as_str(self) -> &'static str {
+        match self {
+            IssueHealthStatus::Any => "Any",
+            IssueHealthStatus::None => "None",
+            IssueHealthStatus::OnTrack => "on_track",
+            IssueHealthStatus::NeedsAttention => "needs_attention",
+            IssueHealthStatus::AtRisk => "at_risk",
+        }
+    }
+}
+
+impl ParamValue<'static> for IssueHealthStatus {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
 /// Filter values for issue iteration values.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IssueIteration<'a> {
@@ -371,8 +405,8 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueMilestone<'a> {
 #[cfg(test)]
 mod tests {
     use crate::api::issues::{
-        IssueDueDateFilter, IssueEpic, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope,
-        IssueState, IssueType, IssueWeight,
+        IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueMilestone, IssueOrderBy, IssueScope,
+        IssueSearchScope, IssueState, IssueType, IssueWeight,
     };
 
     #[test]
@@ -415,6 +449,19 @@ mod tests {
             (IssueEpic::None, "None"),
             (IssueEpic::Any, "Any"),
             (IssueEpic::Id(4), "4"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_health_status_as_str() {
+        let items = &[
+            (IssueHealthStatus::OnTrack, "on_track"),
+            (IssueHealthStatus::NeedsAttention, "needs_attention"),
+            (IssueHealthStatus::AtRisk, "at_risk"),
         ];
 
         for (i, s) in items {

@@ -17,8 +17,8 @@ use crate::api::{
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueEpic, IssueIteration, IssueMilestone, IssueOrderBy,
-    IssueScope, IssueSearchScope, IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueIteration, IssueMilestone,
+    IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a group.
@@ -93,6 +93,9 @@ pub struct GroupIssues<'a> {
     /// Filter by epic ID.
     #[builder(default)]
     epic_id: Option<IssueEpic>,
+    /// Filter by issue health status.
+    #[builder(default)]
+    health_status: Option<IssueHealthStatus>,
 
     // TODO: How best to support this parameter?
     // not
@@ -308,6 +311,7 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("confidential", self.confidential)
             .push_opt("due_date", self.due_date)
             .push_opt("epic_id", self.epic_id)
+            .push_opt("health_status", self.health_status)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -341,8 +345,8 @@ mod tests {
     use crate::api::common::SortOrder;
     use crate::api::issues::{
         groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueEpic,
-        IssueIteration, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
-        IssueWeight,
+        IssueHealthStatus, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
+        IssueSearchScope, IssueState, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -489,6 +493,23 @@ mod tests {
         let endpoint = GroupIssues::builder()
             .group("simple/group")
             .epic_id(IssueEpic::Id(4))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_health_status() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("health_status", "at_risk")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .health_status(IssueHealthStatus::AtRisk)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
