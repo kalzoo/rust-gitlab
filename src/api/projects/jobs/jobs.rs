@@ -60,6 +60,7 @@ impl ParamValue<'static> for JobScope {
 
 /// Query for jobs within a project.
 #[derive(Debug, Builder, Clone)]
+#[builder(setter(strip_option))]
 pub struct Jobs<'a> {
     /// The project to query for jobs.
     #[builder(setter(into))]
@@ -68,6 +69,9 @@ pub struct Jobs<'a> {
     /// The scopes to filter jobs by.
     #[builder(setter(name = "_scopes"), default, private)]
     scopes: HashSet<JobScope>,
+    /// Include retried jobs.
+    #[builder(default)]
+    include_retried: Option<bool>,
 }
 
 impl<'a> Jobs<'a> {
@@ -106,7 +110,9 @@ impl<'a> Endpoint for Jobs<'a> {
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
 
-        params.extend(self.scopes.iter().map(|&value| ("scope[]", value)));
+        params
+            .extend(self.scopes.iter().map(|&value| ("scope[]", value)))
+            .push_opt("include_retried", self.include_retried);
 
         params
     }
@@ -179,6 +185,23 @@ mod tests {
             .project(1)
             .scope(JobScope::Created)
             .scopes([JobScope::Created, JobScope::Success].iter().cloned())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_include_retried() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/1/jobs")
+            .add_query_params(&[("include_retried", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Jobs::builder()
+            .project(1)
+            .include_retried(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

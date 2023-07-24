@@ -27,6 +27,7 @@
   * Support filtering branches by regex.
   * Support setting the `internal` flag for created issue and MR notes.
   * Support the `WaitingForResource` job scope when filtering jobs.
+  * Support the `include_retried` field for project jobs.
 
 ## Changes
 
