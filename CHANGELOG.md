@@ -24,6 +24,7 @@
     variables.
   * Support sorting tags by version number.
   * Support filtering commits by author.
+  * Support filtering branches by regex.
 
 ## Changes
 

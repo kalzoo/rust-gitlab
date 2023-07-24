@@ -19,6 +19,11 @@ pub struct Branches<'a> {
     /// Filter branches by a search query.
     #[builder(setter(into), default)]
     search: Option<Cow<'a, str>>,
+    /// Filter branches matching an [`re2`][re2] regular expression.
+    ///
+    /// [re2]: https://github.com/google/re2/wiki/Syntax
+    #[builder(setter(into), default)]
+    regex: Option<Cow<'a, str>>,
 }
 
 impl<'a> Branches<'a> {
@@ -40,7 +45,9 @@ impl<'a> Endpoint for Branches<'a> {
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
 
-        params.push_opt("search", self.search.as_ref());
+        params
+            .push_opt("search", self.search.as_ref())
+            .push_opt("regex", self.regex.as_ref());
 
         params
     }
@@ -92,6 +99,23 @@ mod tests {
         let endpoint = Branches::builder()
             .project("simple/project")
             .search("query")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_regex() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/repository/branches")
+            .add_query_params(&[("regex", "query")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Branches::builder()
+            .project("simple/project")
+            .regex("query")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
