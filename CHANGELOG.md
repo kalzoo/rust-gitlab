@@ -19,6 +19,7 @@
   * Support sorting issue results by their title.
   * Support filtering group issues by their type.
   * Support filtering out external users when listing users.
+  * Support setting and editing the `raw` flag on project CI variables.
 
 ## Changes
 

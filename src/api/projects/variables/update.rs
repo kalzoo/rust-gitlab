@@ -32,6 +32,9 @@ pub struct UpdateProjectVariable<'a> {
     /// Whether the variable is masked.
     #[builder(default)]
     masked: Option<bool>,
+    /// Whether the variable is treated as a raw string.
+    #[builder(default)]
+    raw: Option<bool>,
     /// The environment scope of the variable.
     #[builder(setter(into), default)]
     environment_scope: Option<Cow<'a, str>>,
@@ -69,6 +72,7 @@ impl<'a> Endpoint for UpdateProjectVariable<'a> {
             .push_opt("variable_type", self.variable_type)
             .push_opt("protected", self.protected)
             .push_opt("masked", self.masked)
+            .push_opt("raw", self.raw)
             .push_opt("environment_scope", self.environment_scope.as_ref());
 
         if let Some(filter) = self.filter.as_ref() {
@@ -214,6 +218,27 @@ mod tests {
             .key("testkey")
             .value("testvalue")
             .masked(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_raw() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/variables/testkey")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("value=testvalue", "&raw=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = UpdateProjectVariable::builder()
+            .project("simple/project")
+            .key("testkey")
+            .value("testvalue")
+            .raw(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
