@@ -18,7 +18,7 @@ use crate::api::{
 
 use super::{
     Assignee, IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueIteration, IssueMilestone,
-    IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+    IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType, IssueWeight,
 };
 
 /// Query for issues within a group.
@@ -93,6 +93,9 @@ pub struct GroupIssues<'a> {
     /// Filter by epic ID.
     #[builder(default)]
     epic_id: Option<IssueEpic>,
+    /// Filter by issue type.
+    #[builder(default)]
+    issue_type: Option<IssueType>,
     /// Filter by issue health status.
     #[builder(default)]
     health_status: Option<IssueHealthStatus>,
@@ -311,6 +314,7 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("confidential", self.confidential)
             .push_opt("due_date", self.due_date)
             .push_opt("epic_id", self.epic_id)
+            .push_opt("issue_type", self.issue_type)
             .push_opt("health_status", self.health_status)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
@@ -346,7 +350,7 @@ mod tests {
     use crate::api::issues::{
         groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueEpic,
         IssueHealthStatus, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
-        IssueSearchScope, IssueState, IssueWeight,
+        IssueSearchScope, IssueState, IssueType, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -493,6 +497,23 @@ mod tests {
         let endpoint = GroupIssues::builder()
             .group("simple/group")
             .epic_id(IssueEpic::Id(4))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_type() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("issue_type", "incident")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .issue_type(IssueType::Incident)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
