@@ -18,8 +18,8 @@ use crate::api::{
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
-    IssueSearchScope, IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueEpic, IssueIteration, IssueMilestone, IssueOrderBy,
+    IssueScope, IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a project.
@@ -90,8 +90,8 @@ pub struct ProjectIssues<'a> {
     #[builder(default)]
     due_date: Option<IssueDueDateFilter>,
     /// Filter by epic ID.
-    #[builder(default)]
-    epic_id: Option<u64>,
+    #[builder(setter(into), default)]
+    epic_id: Option<IssueEpic>,
     /// Filter by issue type.
     #[builder(default)]
     issue_type: Option<IssueType>,

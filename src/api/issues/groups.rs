@@ -17,8 +17,8 @@ use crate::api::{
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
-    IssueSearchScope, IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueEpic, IssueIteration, IssueMilestone, IssueOrderBy,
+    IssueScope, IssueSearchScope, IssueState, IssueWeight,
 };
 
 /// Query for issues within a group.
@@ -90,6 +90,9 @@ pub struct GroupIssues<'a> {
     /// Filter issues by due date.
     #[builder(default)]
     due_date: Option<IssueDueDateFilter>,
+    /// Filter by epic ID.
+    #[builder(default)]
+    epic_id: Option<IssueEpic>,
 
     // TODO: How best to support this parameter?
     // not
@@ -304,6 +307,7 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("updated_before", self.updated_before)
             .push_opt("confidential", self.confidential)
             .push_opt("due_date", self.due_date)
+            .push_opt("epic_id", self.epic_id)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -336,8 +340,9 @@ mod tests {
 
     use crate::api::common::SortOrder;
     use crate::api::issues::{
-        groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueIteration,
-        IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+        groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueEpic,
+        IssueIteration, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
+        IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -467,6 +472,23 @@ mod tests {
         let endpoint = GroupIssues::builder()
             .group("simple/group")
             .with_labels_details(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_epic_id() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("epic_id", "4")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .epic_id(IssueEpic::Id(4))
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

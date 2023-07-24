@@ -12,6 +12,8 @@
   * Support `Upcoming` and `Started` milestone queries for issues.
   * Support `skip_users` in group and project member list queries.
   * Support `show_seat_info` parameter when listing memberships.
+  * Support `None` and `Any` epic filters for project issues.
+  * Support epic filters for group issues.
 
 ## Changes
 

@@ -97,6 +97,40 @@ impl ParamValue<'static> for IssueType {
     }
 }
 
+/// Filter values by epic status.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IssueEpic {
+    /// Issues without any epic.
+    None,
+    /// Issues with any epic association.
+    Any,
+    /// Issues with a given epic (by ID).
+    Id(u64),
+}
+
+impl IssueEpic {
+    fn as_str(self) -> Cow<'static, str> {
+        match self {
+            IssueEpic::None => "None".into(),
+            IssueEpic::Any => "Any".into(),
+            IssueEpic::Id(id) => format!("{}", id).into(),
+        }
+    }
+}
+
+impl From<u64> for IssueEpic {
+    fn from(id: u64) -> Self {
+        Self::Id(id)
+    }
+}
+
+impl ParamValue<'static> for IssueEpic {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str()
+    }
+}
+
 /// Filter values for issue iteration values.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IssueIteration<'a> {
@@ -337,8 +371,8 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueMilestone<'a> {
 #[cfg(test)]
 mod tests {
     use crate::api::issues::{
-        IssueDueDateFilter, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope, IssueState,
-        IssueType, IssueWeight,
+        IssueDueDateFilter, IssueEpic, IssueMilestone, IssueOrderBy, IssueScope, IssueSearchScope,
+        IssueState, IssueType, IssueWeight,
     };
 
     #[test]
@@ -359,6 +393,28 @@ mod tests {
             (IssueScope::CreatedByMe, "created_by_me"),
             (IssueScope::AssignedToMe, "assigned_to_me"),
             (IssueScope::All, "all"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_epic_from_u64() {
+        let items = &[(IssueEpic::Id(4), 4.into())];
+
+        for (i, s) in items {
+            assert_eq!(i, s);
+        }
+    }
+
+    #[test]
+    fn issue_epic_as_str() {
+        let items = &[
+            (IssueEpic::None, "None"),
+            (IssueEpic::Any, "Any"),
+            (IssueEpic::Id(4), "4"),
         ];
 
         for (i, s) in items {
