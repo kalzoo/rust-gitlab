@@ -45,6 +45,8 @@
   * Support filtering projects by last updated timestamps.
   * Support skipping LDAP users when searching users.
   * Support downloading raw file contents backed by LFS.
+  * Support setting and editing access levels for `releases`, `environments`,
+    `feature flags`, `infrastructure`, and `monitor` project features.
 
 ## Changes
 
@@ -69,6 +71,7 @@
     be affected.
   * Deprecate `build_coverage_regex` when creating and editing a project. This
     setting is now set via `.gitlab-ci.yml` rather than at the project-level.
+  * Deprecate `operations_access_level` for more granular feature selections.
 
 # v0.1602.0
 

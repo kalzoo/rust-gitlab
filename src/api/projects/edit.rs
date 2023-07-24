@@ -66,6 +66,10 @@ pub struct EditProject<'a> {
     pages_access_level: Option<FeatureAccessLevelPublic>,
     /// Set the access level for operations features.
     #[builder(default)]
+    #[deprecated(
+        since = "0.1602.1",
+        note = "Use `releases`, `environments`, `feature_flags`, `infrastructure`, and `monitor` access levels instead"
+    )]
     operations_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for requirements features.
     #[builder(default)]
@@ -76,6 +80,21 @@ pub struct EditProject<'a> {
     /// Set the access level for security and compliance features.
     #[builder(default)]
     security_and_compliance_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for release access.
+    #[builder(default)]
+    releases_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for environment access.
+    #[builder(default)]
+    environments_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for feature flag access.
+    #[builder(default)]
+    feature_flags_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for infrastructure access.
+    #[builder(default)]
+    infrastructure_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for monitoring access.
+    #[builder(default)]
+    monitor_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
@@ -362,13 +381,23 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt("wiki_access_level", self.wiki_access_level)
             .push_opt("snippets_access_level", self.snippets_access_level)
             .push_opt("pages_access_level", self.pages_access_level)
-            .push_opt("operations_access_level", self.operations_access_level)
             .push_opt("requirements_access_level", self.requirements_access_level)
             .push_opt("analytics_access_level", self.analytics_access_level)
             .push_opt(
                 "security_and_compliance_access_level",
                 self.security_and_compliance_access_level,
             )
+            .push_opt("releases_access_level", self.releases_access_level)
+            .push_opt("environments_access_level", self.environments_access_level)
+            .push_opt(
+                "feature_flags_access_level",
+                self.feature_flags_access_level,
+            )
+            .push_opt(
+                "infrastructure_access_level",
+                self.infrastructure_access_level,
+            )
+            .push_opt("monitor_access_level", self.monitor_access_level)
             .push_opt("emails_disabled", self.emails_disabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
@@ -484,6 +513,7 @@ impl<'a> Endpoint for EditProject<'a> {
                     "container_registry_enabled",
                     self.container_registry_enabled,
                 )
+                .push_opt("operations_access_level", self.operations_access_level)
                 .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
                 .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
@@ -783,6 +813,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_operations_access_level() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -853,6 +884,101 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .security_and_compliance_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_releases_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("releases_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .releases_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_environments_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("environments_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .environments_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_feature_flags_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("feature_flags_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .feature_flags_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_infrastructure_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("infrastructure_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .infrastructure_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_monitor_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("monitor_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .monitor_access_level(FeatureAccessLevel::Private)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
