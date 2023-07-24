@@ -12,6 +12,7 @@ use crate::api::groups::{
     BranchProtection, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
     SubgroupCreationAccessLevel,
 };
+use crate::api::projects::FeatureAccessLevel;
 use crate::api::ParamValue;
 
 /// Access levels for creating a project within a group.
@@ -126,6 +127,9 @@ pub struct EditGroup<'a> {
     /// A set of IP addresses or IP ranges that are allowed to access the group.
     #[builder(setter(name = "_ip_restriction_ranges"), default, private)]
     ip_restriction_ranges: Option<CommaSeparatedList<Cow<'a, str>>>,
+    /// The wiki access level.
+    #[builder(default)]
+    wiki_access_level: Option<FeatureAccessLevel>,
 }
 
 impl<'a> EditGroup<'a> {
@@ -213,7 +217,8 @@ impl<'a> Endpoint for EditGroup<'a> {
                 "prevent_forking_outside_group",
                 self.prevent_forking_outside_group,
             )
-            .push_opt("ip_restriction_ranges", self.ip_restriction_ranges.as_ref());
+            .push_opt("ip_restriction_ranges", self.ip_restriction_ranges.as_ref())
+            .push_opt("wiki_access_level", self.wiki_access_level);
 
         params.into_body()
     }
@@ -228,6 +233,7 @@ mod tests {
         BranchProtection, EditGroup, EditGroupBuilderError, GroupProjectCreationAccessLevel,
         SharedRunnersMinutesLimit, SharedRunnersSetting, SubgroupCreationAccessLevel,
     };
+    use crate::api::projects::FeatureAccessLevel;
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
 
@@ -746,6 +752,25 @@ mod tests {
             .group("simple/group")
             .ip_restriction_range("10.0.0.0/8")
             .ip_restriction_ranges(["192.168.1.1", "192.168.1.128/7"].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_wiki_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("wiki_access_level=disabled")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .wiki_access_level(FeatureAccessLevel::Disabled)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

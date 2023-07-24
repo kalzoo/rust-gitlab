@@ -40,6 +40,7 @@
   * Support setting `merge_commit_template` when creating a project.
   * Support setting `mr_default_target_self` when creating a project.
   * Support IP restriction ranges when editing groups.
+  * Support wiki access level when editing groups.
 
 ## Changes
 
