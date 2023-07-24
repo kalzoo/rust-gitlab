@@ -660,6 +660,7 @@ pub struct CreateProject<'a> {
     repository_storage: Option<Cow<'a, str>>,
     /// How many approvals are required before allowing merges.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Use merge request approvals APIs instead.")]
     approvals_before_merge: Option<u64>,
     /// The classification label of the project.
     #[builder(setter(into), default)]
@@ -931,7 +932,6 @@ impl<'a> Endpoint for CreateProject<'a> {
                 self.auto_devops_deploy_strategy,
             )
             .push_opt("repository_storage", self.repository_storage.as_ref())
-            .push_opt("approvals_before_merge", self.approvals_before_merge)
             .push_opt(
                 "external_authorization_classification_label",
                 self.external_authorization_classification_label.as_ref(),
@@ -963,7 +963,8 @@ impl<'a> Endpoint for CreateProject<'a> {
                 .push_opt(
                     "container_registry_enabled",
                     self.container_registry_enabled,
-                );
+                )
+                .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
 
         params.into_body()
@@ -2411,6 +2412,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_approvals_before_merge() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)

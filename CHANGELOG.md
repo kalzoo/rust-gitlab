@@ -39,6 +39,9 @@
   * Deprecate MR note creation and editing with `merge_request_diff_sha`
     fields. The documentation had a typo and it is only supported when creating
     an MR note. Use `merge_request_diff_head_sha` instead.
+  * Deprecate `approvals_before_merge` in project creation and editing and MR
+    creation. MR approval rules APIs (currently no bindings are provided)
+    should be used instead.
 
 # v0.1602.0
 

@@ -95,6 +95,7 @@ pub struct CreateMergeRequest<'a> {
     ///
     /// Note that this must be more than the project limit (if present).
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Use merge request approvals APIs instead.")]
     approvals_before_merge: Option<u64>,
     /// Whether to remove the source branch once merged or not.
     #[builder(default)]
@@ -244,7 +245,6 @@ impl<'a> Endpoint for CreateMergeRequest<'a> {
             .push_opt("target_project_id", self.target_project_id)
             .push_opt("milestone_id", self.milestone_id)
             .push_opt("labels", self.labels.as_ref())
-            .push_opt("approvals_before_merge", self.approvals_before_merge)
             .push_opt("remove_source_branch", self.remove_source_branch)
             .push_opt("allow_collaboration", self.allow_collaboration)
             .push_opt("squash", self.squash);
@@ -258,7 +258,9 @@ impl<'a> Endpoint for CreateMergeRequest<'a> {
 
         #[allow(deprecated)]
         {
-            params.push_opt("allow_maintainer_to_push", self.allow_maintainer_to_push);
+            params
+                .push_opt("allow_maintainer_to_push", self.allow_maintainer_to_push)
+                .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
 
         params.into_body()
@@ -637,6 +639,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_approvals_before_merge() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
