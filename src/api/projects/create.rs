@@ -605,6 +605,9 @@ pub struct CreateProject<'a> {
     /// Whether merge trains are enabled.
     #[builder(default)]
     merge_trains_enabled: Option<bool>,
+    /// Whether MRs default to targing this project or the upstream project.
+    #[builder(default)]
+    mr_default_target_self: Option<bool>,
     /// The squash option for the project.
     #[builder(default)]
     squash_option: Option<SquashOption>,
@@ -909,6 +912,7 @@ impl<'a> Endpoint for CreateProject<'a> {
             .push_opt("merge_method", self.merge_method)
             .push_opt("merge_pipelines_enabled", self.merge_pipelines_enabled)
             .push_opt("merge_trains_enabled", self.merge_trains_enabled)
+            .push_opt("mr_default_target_self", self.mr_default_target_self)
             .push_opt("squash_option", self.squash_option)
             .push_opt(
                 "autoclose_referenced_issues",
@@ -2109,6 +2113,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .merge_trains_enabled(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_mr_default_target_self() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&mr_default_target_self=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .mr_default_target_self(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

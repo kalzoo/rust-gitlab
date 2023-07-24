@@ -38,6 +38,7 @@
   * Support filtering MRs by approver usernames.
   * Support filtering MRs by whether they are approved or not.
   * Support setting `merge_commit_template` when creating a project.
+  * Support setting `mr_default_target_self` when creating a project.
 
 ## Changes
 
