@@ -28,6 +28,9 @@ pub struct GroupMembers<'a> {
     /// Skip certain user results.
     #[builder(setter(name = "_skip_users"), default, private)]
     skip_users: BTreeSet<u64>,
+    /// Show seat information for users.
+    #[builder(default)]
+    show_seat_info: Option<bool>,
 }
 
 impl<'a> GroupMembers<'a> {
@@ -90,7 +93,8 @@ impl<'a> Endpoint for GroupMembers<'a> {
         params
             .push_opt("query", self.query.as_ref())
             .extend(self.user_ids.iter().map(|&value| ("user_ids[]", value)))
-            .extend(self.skip_users.iter().map(|&value| ("skip_users[]", value)));
+            .extend(self.skip_users.iter().map(|&value| ("skip_users[]", value)))
+            .push_opt("show_seat_info", self.show_seat_info);
 
         params
     }
@@ -178,6 +182,23 @@ mod tests {
             .group("group/subgroup")
             .skip_user(1)
             .skip_users([1, 2].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_show_seat_info() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/group%2Fsubgroup/members")
+            .add_query_params(&[("show_seat_info", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupMembers::builder()
+            .group("group/subgroup")
+            .show_seat_info(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
