@@ -504,7 +504,7 @@ pub struct CreateProject<'a> {
     namespace_id: Option<u64>,
     /// The default branch of the new project.
     ///
-    /// Defaults to `master`.
+    /// Defaults to `main`. Requires `initialize_with_readme` to be `true`.
     #[builder(setter(into), default)]
     default_branch: Option<Cow<'a, str>>,
     /// The description of the new project.
@@ -577,6 +577,8 @@ pub struct CreateProject<'a> {
     #[builder(default)]
     visibility: Option<VisibilityLevel>,
     /// A URL to import the repository from.
+    ///
+    /// Mutually exclusive with `initialize_with_readme`.
     #[builder(setter(into), default)]
     import_url: Option<Cow<'a, str>>,
     /// Whether job results are visible to non-project members or not.
@@ -672,6 +674,8 @@ pub struct CreateProject<'a> {
     #[builder(default)]
     mirror_trigger_builds: Option<bool>,
     /// Initialize the project with a readme.
+    ///
+    /// Mutually exclusive with `import_url`.
     #[builder(default)]
     initialize_with_readme: Option<bool>,
     /// The name of a template project to use.
