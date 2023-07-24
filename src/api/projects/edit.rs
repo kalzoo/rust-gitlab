@@ -253,6 +253,9 @@ pub struct EditProject<'a> {
     /// Whether the mirror overwrites diverged branches in this project or not.
     #[builder(default)]
     mirror_overwrites_diverged_branches: Option<bool>,
+    /// Regular expression for branches to mirror.
+    #[builder(setter(into), default)]
+    mirror_branch_regex: Option<Cow<'a, str>>,
     /// Whether the package repository is enabled or not.
     #[builder(default)]
     packages_enabled: Option<bool>,
@@ -503,6 +506,7 @@ impl<'a> Endpoint for EditProject<'a> {
                 "mirror_overwrites_diverged_branches",
                 self.mirror_overwrites_diverged_branches,
             )
+            .push_opt("mirror_branch_regex", self.mirror_branch_regex.as_ref())
             .push_opt("packages_enabled", self.packages_enabled)
             .push_opt("group_runners_enabled", self.group_runners_enabled)
             .push_opt("service_desk_enabled", self.service_desk_enabled)
@@ -2025,6 +2029,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .mirror_overwrites_diverged_branches(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_mirror_branch_regex() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("mirror_branch_regex=main")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .mirror_branch_regex("main")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

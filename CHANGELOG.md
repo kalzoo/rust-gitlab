@@ -50,6 +50,7 @@
   * Support setting and editing the
     `only_allow_merge_if_all_status_checks_passed` flag on projects.
   * Support setting and editing group runner support on projects.
+  * Support editing `mirror_branch_regex` on projects.
 
 ## Changes
 
