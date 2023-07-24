@@ -36,6 +36,9 @@
     provided, the repository's `HEAD` commit will be used.
   * Deprecate including `tags` and `tags_count` in project registry repository
     queries. Removed in GitLab 15.0.
+  * Deprecate MR note creation and editing with `merge_request_diff_sha`
+    fields. The documentation had a typo and it is only supported when creating
+    an MR note. Use `merge_request_diff_head_sha` instead.
 
 # v0.1602.0
 
