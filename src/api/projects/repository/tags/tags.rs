@@ -17,6 +17,8 @@ pub enum TagsOrderBy {
     Name,
     /// Commits are returned in topological order.
     Updated,
+    /// Commits are returned in version sort order.
+    Version,
 }
 
 impl TagsOrderBy {
@@ -24,6 +26,7 @@ impl TagsOrderBy {
         match self {
             TagsOrderBy::Name => "name",
             TagsOrderBy::Updated => "updated",
+            TagsOrderBy::Version => "version",
         }
     }
 }
@@ -109,6 +112,7 @@ mod tests {
         let items = &[
             (TagsOrderBy::Name, "name"),
             (TagsOrderBy::Updated, "updated"),
+            (TagsOrderBy::Version, "version"),
         ];
 
         for (i, s) in items {

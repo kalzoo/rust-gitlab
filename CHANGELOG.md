@@ -22,6 +22,7 @@
   * Support setting and editing the `raw` flag on project CI variables.
   * Support setting and editing the `description` field on project CI
     variables.
+  * Support sorting tags by version number.
 
 ## Changes
 
