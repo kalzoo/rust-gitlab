@@ -37,6 +37,7 @@
   * Support the `include_retried` field for project jobs.
   * Support filtering MRs by approver usernames.
   * Support filtering MRs by whether they are approved or not.
+  * Support setting `merge_commit_template` when creating a project.
 
 ## Changes
 

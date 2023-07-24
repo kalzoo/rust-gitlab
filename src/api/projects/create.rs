@@ -593,6 +593,9 @@ pub struct CreateProject<'a> {
     /// Whether all discussions must be resolved before merges are allowed.
     #[builder(default)]
     only_allow_merge_if_all_discussions_are_resolved: Option<bool>,
+    /// The template for merge commit messages.
+    #[builder(setter(into), default)]
+    merge_commit_template: Option<Cow<'a, str>>,
     /// The merge method to use for the project.
     #[builder(default)]
     merge_method: Option<MergeMethod>,
@@ -902,6 +905,7 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "only_allow_merge_if_all_discussions_are_resolved",
                 self.only_allow_merge_if_all_discussions_are_resolved,
             )
+            .push_opt("merge_commit_template", self.merge_commit_template.as_ref())
             .push_opt("merge_method", self.merge_method)
             .push_opt("merge_pipelines_enabled", self.merge_pipelines_enabled)
             .push_opt("merge_trains_enabled", self.merge_trains_enabled)
@@ -2029,6 +2033,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .only_allow_merge_if_all_discussions_are_resolved(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_merge_commit_template() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&merge_commit_template=template"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .merge_commit_template("template")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
