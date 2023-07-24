@@ -4,6 +4,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use std::collections::BTreeSet;
+use std::time::Duration;
+
 use derive_builder::Builder;
 
 use crate::api::common::{CommaSeparatedList, NameOrId, VisibilityLevel};
@@ -130,6 +133,40 @@ pub struct EditGroup<'a> {
     /// The wiki access level.
     #[builder(default)]
     wiki_access_level: Option<FeatureAccessLevel>,
+
+    /// Maximum number of unique projects a user can download before being banned.
+    ///
+    /// Only supported on top-level groups.
+    #[builder(default)]
+    unique_project_download_limit: Option<u64>,
+    /// The window (in seconds) where downloads will be counted.
+    ///
+    /// Only supported on top-level groups.
+    #[builder(default)]
+    unique_project_download_limit_interval: Option<Duration>,
+    /// List of usernames excluded from the download limit.
+    ///
+    /// Only supported on top-level groups.
+    #[builder(
+        setter(name = "_unique_project_download_limit_allowlist"),
+        default,
+        private
+    )]
+    unique_project_download_limit_allowlist: BTreeSet<Cow<'a, str>>,
+    /// List of user IDs that are emailed when a download limit is exceeded.
+    ///
+    /// Only supported on top-level groups.
+    #[builder(
+        setter(name = "_unique_project_download_limit_alertlist"),
+        default,
+        private
+    )]
+    unique_project_download_limit_alertlist: BTreeSet<u64>,
+    /// Ban users from the group when they exceed the download limit.
+    ///
+    /// Only supported on top-level groups.
+    #[builder(default)]
+    auto_ban_user_on_excessive_projects_download: Option<bool>,
 }
 
 impl<'a> EditGroup<'a> {
@@ -162,6 +199,48 @@ impl<'a> EditGroupBuilder<'a> {
             .get_or_insert(None)
             .get_or_insert_with(CommaSeparatedList::new)
             .extend(iter.map(Into::into));
+        self
+    }
+
+    /// A username excluded from the download limit.
+    pub fn unique_project_download_limit_allow<A>(&mut self, allow: A) -> &mut Self
+    where
+        A: Into<Cow<'a, str>>,
+    {
+        self.unique_project_download_limit_allowlist
+            .get_or_insert_with(BTreeSet::new)
+            .insert(allow.into());
+        self
+    }
+
+    /// List of usernames excluded from the download limit.
+    pub fn unique_project_download_limit_allow_users<I, A>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = A>,
+        A: Into<Cow<'a, str>>,
+    {
+        self.unique_project_download_limit_allowlist
+            .get_or_insert_with(BTreeSet::new)
+            .extend(iter.map(Into::into));
+        self
+    }
+
+    /// A user ID that is emailed when a download limit is exceeded.
+    pub fn unique_project_download_limit_alert(&mut self, alert: u64) -> &mut Self {
+        self.unique_project_download_limit_alertlist
+            .get_or_insert_with(BTreeSet::new)
+            .insert(alert);
+        self
+    }
+
+    /// List of user IDs that are emailed when a download limit is exceeded.
+    pub fn unique_project_download_limit_alert_users<I>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = u64>,
+    {
+        self.unique_project_download_limit_alertlist
+            .get_or_insert_with(BTreeSet::new)
+            .extend(iter);
         self
     }
 }
@@ -218,7 +297,30 @@ impl<'a> Endpoint for EditGroup<'a> {
                 self.prevent_forking_outside_group,
             )
             .push_opt("ip_restriction_ranges", self.ip_restriction_ranges.as_ref())
-            .push_opt("wiki_access_level", self.wiki_access_level);
+            .push_opt("wiki_access_level", self.wiki_access_level)
+            .push_opt(
+                "unique_project_download_limit",
+                self.unique_project_download_limit,
+            )
+            .push_opt(
+                "unique_project_download_limit_interval_in_seconds",
+                self.unique_project_download_limit_interval
+                    .map(|interval| interval.as_secs()),
+            )
+            .extend(
+                self.unique_project_download_limit_allowlist
+                    .iter()
+                    .map(|value| ("unique_project_download_limit_allowlist[]", value)),
+            )
+            .extend(
+                self.unique_project_download_limit_alertlist
+                    .iter()
+                    .map(|&value| ("unique_project_download_limit_alertlist[]", value)),
+            )
+            .push_opt(
+                "auto_ban_user_on_excessive_projects_download",
+                self.auto_ban_user_on_excessive_projects_download,
+            );
 
         params.into_body()
     }
@@ -226,6 +328,8 @@ impl<'a> Endpoint for EditGroup<'a> {
 
 #[cfg(test)]
 mod tests {
+    use std::time::Duration;
+
     use http::Method;
 
     use crate::api::common::VisibilityLevel;
@@ -771,6 +875,109 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .wiki_access_level(FeatureAccessLevel::Disabled)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unique_project_download_limit() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("unique_project_download_limit=100")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .unique_project_download_limit(100)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unique_project_download_limit_interval_in_seconds() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("unique_project_download_limit_interval_in_seconds=3600")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .unique_project_download_limit_interval(Duration::from_secs(3600))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unique_project_download_limit_allowlist() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "unique_project_download_limit_allowlist%5B%5D=auditor",
+                "&unique_project_download_limit_allowlist%5B%5D=robot",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .unique_project_download_limit_allow("robot")
+            .unique_project_download_limit_allow_users(["robot", "auditor"].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unique_project_download_limit_alertlist() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "unique_project_download_limit_alertlist%5B%5D=1",
+                "&unique_project_download_limit_alertlist%5B%5D=2",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .unique_project_download_limit_alert(2)
+            .unique_project_download_limit_alert_users([2, 1].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_auto_ban_user_on_excessive_projects_download() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("auto_ban_user_on_excessive_projects_download=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .auto_ban_user_on_excessive_projects_download(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

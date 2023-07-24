@@ -41,6 +41,7 @@
   * Support setting `mr_default_target_self` when creating a project.
   * Support IP restriction ranges when editing groups.
   * Support wiki access level when editing groups.
+  * Support project download limit parameters when editing groups.
 
 ## Changes
 
