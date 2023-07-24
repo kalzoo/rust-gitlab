@@ -15,6 +15,7 @@
   * Support `None` and `Any` epic filters for project issues.
   * Support epic filters for group issues.
   * Support filtering project and group issues by health status.
+  * Support `Any`, `Today`, and `Tomorrow` issue due date filters.
 
 ## Changes
 

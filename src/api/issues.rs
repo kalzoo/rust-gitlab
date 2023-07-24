@@ -280,6 +280,12 @@ impl ParamValue<'static> for IssueSearchScope {
 pub enum IssueDueDateFilter {
     /// Issues without a due date.
     None,
+    /// Issues with any a due date.
+    Any,
+    /// Issues due today.
+    Today,
+    /// Issues due tomorrow.
+    Tomorrow,
     /// Issues due this week.
     ThisWeek,
     /// Issues due this month.
@@ -294,6 +300,9 @@ impl IssueDueDateFilter {
     fn as_str(self) -> &'static str {
         match self {
             IssueDueDateFilter::None => "0",
+            IssueDueDateFilter::Any => "any",
+            IssueDueDateFilter::Today => "today",
+            IssueDueDateFilter::Tomorrow => "tomorrow",
             IssueDueDateFilter::ThisWeek => "week",
             IssueDueDateFilter::ThisMonth => "month",
             IssueDueDateFilter::BetweenTwoWeeksAgoAndNextMonth => {
@@ -511,6 +520,9 @@ mod tests {
     fn issue_due_date_filter_as_str() {
         let items = &[
             (IssueDueDateFilter::None, "0"),
+            (IssueDueDateFilter::Any, "any"),
+            (IssueDueDateFilter::Today, "today"),
+            (IssueDueDateFilter::Tomorrow, "tomorrow"),
             (IssueDueDateFilter::ThisWeek, "week"),
             (IssueDueDateFilter::ThisMonth, "month"),
             (
