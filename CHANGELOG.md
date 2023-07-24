@@ -25,6 +25,7 @@
   * Support sorting tags by version number.
   * Support filtering commits by author.
   * Support filtering branches by regex.
+  * Support setting the `internal` flag for created issue and MR notes.
 
 ## Changes
 
@@ -42,6 +43,8 @@
   * Deprecate `approvals_before_merge` in project creation and editing and MR
     creation. MR approval rules APIs (currently no bindings are provided)
     should be used instead.
+  * Deprecate `confidential` for issue notes. Use `internal` instead, but note
+    that it is only available at note creation and cannot be edited later.
 
 # v0.1602.0
 

@@ -25,7 +25,11 @@ pub struct CreateIssueNote<'a> {
 
     /// Whether to create a confidential note or not.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "renamed to `internal`")]
     confidential: Option<bool>,
+    /// Whether to create an internal note or not.
+    #[builder(default)]
+    internal: Option<bool>,
     /// The creation date of the note.
     ///
     /// Requires administrator or owner permissions.
@@ -54,8 +58,15 @@ impl<'a> Endpoint for CreateIssueNote<'a> {
 
         params
             .push("body", self.body.as_ref())
-            .push_opt("confidential", self.confidential)
+            .push_opt("internal", self.internal)
             .push_opt("created_at", self.created_at);
+
+        #[allow(deprecated)]
+        {
+            if self.internal.is_none() {
+                params.push_opt("confidential", self.confidential);
+            }
+        }
 
         params.into_body()
     }
@@ -137,6 +148,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_confidential() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -152,6 +164,27 @@ mod tests {
             .issue(1)
             .body("body")
             .confidential(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_internal() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/issues/1/notes")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("body=body", "&internal=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateIssueNote::builder()
+            .project("simple/project")
+            .issue(1)
+            .body("body")
+            .internal(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
