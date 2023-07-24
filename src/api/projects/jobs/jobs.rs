@@ -29,6 +29,8 @@ pub enum JobScope {
     Canceled,
     /// Skipped jobs.
     Skipped,
+    /// Jobs waiting for a resource.
+    WaitingForResource,
     /// Awaiting manual triggering.
     Manual,
 }
@@ -44,6 +46,7 @@ impl JobScope {
             JobScope::Success => "success",
             JobScope::Canceled => "canceled",
             JobScope::Skipped => "skipped",
+            JobScope::WaitingForResource => "waiting_for_resource",
             JobScope::Manual => "manual",
         }
     }
@@ -131,6 +134,7 @@ mod tests {
             (JobScope::Success, "success"),
             (JobScope::Canceled, "canceled"),
             (JobScope::Skipped, "skipped"),
+            (JobScope::WaitingForResource, "waiting_for_resource"),
             (JobScope::Manual, "manual"),
         ];
 

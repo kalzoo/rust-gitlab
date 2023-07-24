@@ -26,6 +26,7 @@
   * Support filtering commits by author.
   * Support filtering branches by regex.
   * Support setting the `internal` flag for created issue and MR notes.
+  * Support the `WaitingForResource` job scope when filtering jobs.
 
 ## Changes
 
