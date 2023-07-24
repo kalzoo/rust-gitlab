@@ -10,6 +10,7 @@
   * Add `api::groups::BranchProtection::PushExceptInitial` protection rule.
   * Support editing member rule IDs on group and project memberships.
   * Support `Upcoming` and `Started` milestone queries for issues.
+  * Support `skip_users` in group and project member list queries.
 
 ## Changes
 
