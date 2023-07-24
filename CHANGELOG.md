@@ -34,6 +34,8 @@
     actual name for the parameter is best with the actual type exposed.
   * The `ref` parameter for raw file contents is no longer required. If not
     provided, the repository's `HEAD` commit will be used.
+  * Deprecate including `tags` and `tags_count` in project registry repository
+    queries. Removed in GitLab 15.0.
 
 # v0.1602.0
 

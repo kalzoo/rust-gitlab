@@ -19,9 +19,11 @@ pub struct Repositories<'a> {
 
     /// Include tags for each repository in response.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Removed in GitLab 15.0")]
     tags: Option<bool>,
     /// Include tags_count for each repository in response.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Removed in GitLab 15.0")]
     tags_count: Option<bool>,
 }
 
@@ -44,9 +46,12 @@ impl<'a> Endpoint for Repositories<'a> {
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
 
-        params
-            .push_opt("tags", self.tags)
-            .push_opt("tags_count", self.tags_count);
+        #[allow(deprecated)]
+        {
+            params
+                .push_opt("tags", self.tags)
+                .push_opt("tags_count", self.tags_count);
+        }
 
         params
     }
@@ -87,6 +92,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tags() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/registry/repositories")
@@ -104,6 +110,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tags_count() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/registry/repositories")
