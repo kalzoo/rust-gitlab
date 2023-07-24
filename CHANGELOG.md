@@ -47,6 +47,8 @@
   * Support downloading raw file contents backed by LFS.
   * Support setting and editing access levels for `releases`, `environments`,
     `feature flags`, `infrastructure`, and `monitor` project features.
+  * Support setting and editing the
+    `only_allow_merge_if_all_status_checks_passed` flag on projects.
 
 ## Changes
 

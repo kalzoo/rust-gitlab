@@ -136,6 +136,9 @@ pub struct EditProject<'a> {
     /// Whether all discussions must be resolved before merges are allowed.
     #[builder(default)]
     only_allow_merge_if_all_discussions_are_resolved: Option<bool>,
+    /// If `true`, merge requests may not be merged unless all status checks are passing.
+    #[builder(default)]
+    only_allow_merge_if_all_status_checks_passed: Option<bool>,
     /// The merge commit template.
     #[builder(setter(into), default)]
     merge_commit_template: Option<Cow<'a, str>>,
@@ -423,6 +426,10 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt(
                 "only_allow_merge_if_all_discussions_are_resolved",
                 self.only_allow_merge_if_all_discussions_are_resolved,
+            )
+            .push_opt(
+                "only_allow_merge_if_all_status_checks_passed",
+                self.only_allow_merge_if_all_status_checks_passed,
             )
             .push_opt("merge_commit_template", self.merge_commit_template.as_ref())
             .push_opt(
@@ -1362,6 +1369,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .only_allow_merge_if_all_discussions_are_resolved(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_only_allow_merge_if_all_status_checks_passed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("only_allow_merge_if_all_status_checks_passed=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .only_allow_merge_if_all_status_checks_passed(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

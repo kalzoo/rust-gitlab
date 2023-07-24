@@ -612,6 +612,9 @@ pub struct CreateProject<'a> {
     /// Whether all discussions must be resolved before merges are allowed.
     #[builder(default)]
     only_allow_merge_if_all_discussions_are_resolved: Option<bool>,
+    /// If `true`, merge requests may not be merged unless all status checks are passing.
+    #[builder(default)]
+    only_allow_merge_if_all_status_checks_passed: Option<bool>,
     /// The template for merge commit messages.
     #[builder(setter(into), default)]
     merge_commit_template: Option<Cow<'a, str>>,
@@ -937,6 +940,10 @@ impl<'a> Endpoint for CreateProject<'a> {
             .push_opt(
                 "only_allow_merge_if_all_discussions_are_resolved",
                 self.only_allow_merge_if_all_discussions_are_resolved,
+            )
+            .push_opt(
+                "only_allow_merge_if_all_status_checks_passed",
+                self.only_allow_merge_if_all_status_checks_passed,
             )
             .push_opt("merge_commit_template", self.merge_commit_template.as_ref())
             .push_opt("merge_method", self.merge_method)
@@ -2164,6 +2171,28 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .only_allow_merge_if_all_discussions_are_resolved(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_only_allow_merge_if_all_status_checks_passed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&only_allow_merge_if_all_status_checks_passed=false",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .only_allow_merge_if_all_status_checks_passed(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
