@@ -151,6 +151,9 @@ pub struct Users<'a> {
     /// If provided, only return users created by the given SAML provider ID.
     #[builder(default)]
     saml_provider_id: Option<u64>,
+    /// If set, skip LDAP user lookups.
+    #[builder(default)]
+    skip_ldap: Option<bool>,
 }
 
 impl<'a> Users<'a> {
@@ -221,7 +224,8 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("exclude_internal", self.exclude_internal)
             .push_opt("exclude_external", self.exclude_external)
             .push_opt("admins", self.admins)
-            .push_opt("saml_provider_id", self.saml_provider_id);
+            .push_opt("saml_provider_id", self.saml_provider_id)
+            .push_opt("skip_ldap", self.skip_ldap);
 
         if let Some(value) = self.external_provider.as_ref() {
             params
@@ -584,6 +588,19 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Users::builder().saml_provider_id(2).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_skip_ldap() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("users")
+            .add_query_params(&[("skip_ldap", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Users::builder().skip_ldap(true).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 }
