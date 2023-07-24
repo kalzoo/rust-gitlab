@@ -202,23 +202,31 @@ impl ApproverIds {
 }
 
 #[derive(Debug, Clone)]
-enum ApprovedByIds {
+enum ApprovedBy<'a> {
     Any,
     None,
-    AllOf(BTreeSet<u64>),
+    AllOfIds(BTreeSet<u64>),
+    AllOfUsernames(BTreeSet<Cow<'a, str>>),
 }
 
-impl ApprovedByIds {
-    fn add_params<'a>(&'a self, params: &mut QueryParams<'a>) {
+impl<'a> ApprovedBy<'a> {
+    fn add_params<'b>(&'b self, params: &mut QueryParams<'b>) {
         match self {
-            ApprovedByIds::Any => {
+            ApprovedBy::Any => {
                 params.push("approved_by_ids", "Any");
             },
-            ApprovedByIds::None => {
+            ApprovedBy::None => {
                 params.push("approved_by_ids", "None");
             },
-            ApprovedByIds::AllOf(ids) => {
+            ApprovedBy::AllOfIds(ids) => {
                 params.extend(ids.iter().map(|&id| ("approved_by_ids[]", id)));
+            },
+            ApprovedBy::AllOfUsernames(usernames) => {
+                params.extend(
+                    usernames
+                        .iter()
+                        .map(|username| ("approved_by_usernames[]", username)),
+                );
             },
         }
     }
@@ -305,8 +313,8 @@ pub struct MergeRequests<'a> {
     #[builder(setter(name = "_approver_ids"), default, private)]
     approver_ids: Option<ApproverIds>,
     /// Filter merge requests by approvals.
-    #[builder(setter(name = "_approved_by_ids"), default, private)]
-    approved_by_ids: Option<ApprovedByIds>,
+    #[builder(setter(name = "_approved_by"), default, private)]
+    approved_by: Option<ApprovedBy<'a>>,
     /// Filter merge requests by reviewers.
     #[builder(setter(into), default)]
     reviewer: Option<NameOrId<'a>>,
@@ -495,42 +503,83 @@ impl<'a> MergeRequestsBuilder<'a> {
 
     /// Filter merge requests without approvals.
     pub fn no_approvals(&mut self) -> &mut Self {
-        self.approved_by_ids = Some(Some(ApprovedByIds::None));
+        self.approved_by = Some(Some(ApprovedBy::None));
         self
     }
 
     /// Filter merge requests with any approvals.
     pub fn any_approvals(&mut self) -> &mut Self {
-        self.approved_by_ids = Some(Some(ApprovedByIds::Any));
+        self.approved_by = Some(Some(ApprovedBy::Any));
         self
     }
 
     /// Filter merge requests approved by a specific user (by ID).
+    ///
+    /// Note: Mutually exclusive to querying by usernames.
     pub fn approved_by_id(&mut self, approved_by: u64) -> &mut Self {
-        let approved_by_ids =
-            if let Some(Some(ApprovedByIds::AllOf(mut set))) = self.approved_by_ids.take() {
-                set.insert(approved_by);
-                set
-            } else {
-                [approved_by].iter().copied().collect()
-            };
-        self.approved_by_ids = Some(Some(ApprovedByIds::AllOf(approved_by_ids)));
+        let approved_by = if let Some(Some(ApprovedBy::AllOfIds(mut set))) = self.approved_by.take()
+        {
+            set.insert(approved_by);
+            set
+        } else {
+            [approved_by].iter().copied().collect()
+        };
+        self.approved_by = Some(Some(ApprovedBy::AllOfIds(approved_by)));
         self
     }
 
     /// Filter merge requests approved by a specific set of users (by ID).
+    ///
+    /// Note: Mutually exclusive to querying by usernames.
     pub fn approved_by_ids<I>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = u64>,
     {
         let approved_by_ids =
-            if let Some(Some(ApprovedByIds::AllOf(mut set))) = self.approved_by_ids.take() {
+            if let Some(Some(ApprovedBy::AllOfIds(mut set))) = self.approved_by.take() {
                 set.extend(iter);
                 set
             } else {
                 iter.collect()
             };
-        self.approved_by_ids = Some(Some(ApprovedByIds::AllOf(approved_by_ids)));
+        self.approved_by = Some(Some(ApprovedBy::AllOfIds(approved_by_ids)));
+        self
+    }
+
+    /// Filter merge requests approved by a specific user (by username).
+    ///
+    /// Note: Mutually exclusive to querying by IDs.
+    pub fn approved_by_username<U>(&mut self, username: U) -> &mut Self
+    where
+        U: Into<Cow<'a, str>>,
+    {
+        let approved_by_usernames =
+            if let Some(Some(ApprovedBy::AllOfUsernames(mut set))) = self.approved_by.take() {
+                set.insert(username.into());
+                set
+            } else {
+                [username.into()].iter().cloned().collect()
+            };
+        self.approved_by = Some(Some(ApprovedBy::AllOfUsernames(approved_by_usernames)));
+        self
+    }
+
+    /// Filter merge requests approved by a specific set of users (by username).
+    ///
+    /// Note: Mutually exclusive to querying by IDs.
+    pub fn approved_by_usernames<I, U>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = U>,
+        U: Into<Cow<'a, str>>,
+    {
+        let approved_by_usernames =
+            if let Some(Some(ApprovedBy::AllOfUsernames(mut set))) = self.approved_by.take() {
+                set.extend(iter.map(Into::into));
+                set
+            } else {
+                iter.map(Into::into).collect()
+            };
+        self.approved_by = Some(Some(ApprovedBy::AllOfUsernames(approved_by_usernames)));
         self
     }
 
@@ -615,8 +664,8 @@ impl<'a> Endpoint for MergeRequests<'a> {
         if let Some(approver_ids) = self.approver_ids.as_ref() {
             approver_ids.add_params(&mut params);
         }
-        if let Some(approved_by_ids) = self.approved_by_ids.as_ref() {
-            approved_by_ids.add_params(&mut params);
+        if let Some(approved_by) = self.approved_by.as_ref() {
+            approved_by.add_params(&mut params);
         }
         if let Some(reviewer) = self.reviewer.as_ref() {
             match reviewer {
@@ -1194,7 +1243,7 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_approved_by() {
+    fn endpoint_approved_by_ids() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/merge_requests")
             .add_query_params(&[("approved_by_ids[]", "1"), ("approved_by_ids[]", "2")])
@@ -1206,6 +1255,27 @@ mod tests {
             .project("simple/project")
             .approved_by_id(1)
             .approved_by_ids([1, 2].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_approved_by_usernames() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/merge_requests")
+            .add_query_params(&[
+                ("approved_by_usernames[]", "thing1"),
+                ("approved_by_usernames[]", "thing2"),
+            ])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequests::builder()
+            .project("simple/project")
+            .approved_by_username("thing1")
+            .approved_by_usernames(["thing1", "thing2"].iter().copied())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
