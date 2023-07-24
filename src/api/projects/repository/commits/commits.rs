@@ -65,6 +65,9 @@ pub struct Commits<'a> {
     /// Only return commits which affect a given path.
     #[builder(default, setter(into))]
     path: Option<Cow<'a, str>>,
+    /// Search for commits by commit author.
+    #[builder(default, setter(into))]
+    author: Option<Cow<'a, str>>,
     /// If true, return every commit from the repository.
     #[builder(default)]
     all: Option<bool>,
@@ -106,6 +109,7 @@ impl<'a> Endpoint for Commits<'a> {
             .push_opt("since", self.since)
             .push_opt("until", self.until)
             .push_opt("path", self.path.as_ref())
+            .push_opt("author", self.author.as_ref())
             .push_opt("all", self.all)
             .push_opt("with_stats", self.with_stats)
             .push_opt("first_parent", self.first_parent)
@@ -232,6 +236,23 @@ mod tests {
         let endpoint = Commits::builder()
             .project("simple/project")
             .path("path/to/file")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_author() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/repository/commits")
+            .add_query_params(&[("author", "Git Developer")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Commits::builder()
+            .project("simple/project")
+            .author("Git Developer")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
