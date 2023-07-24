@@ -195,6 +195,7 @@ pub struct EditProject<'a> {
     topics: BTreeSet<Cow<'a, str>>,
     // TODO: Figure out how to actually use this.
     // avatar   mixed   no  Image file for avatar of the project
+    // empty string is "delete avatar"
     // avatar: ???,
     /// The default Git strategy for CI jobs of the project.
     #[builder(default)]
