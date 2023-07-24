@@ -17,6 +17,9 @@ pub struct Branches<'a> {
     #[builder(setter(into))]
     project: NameOrId<'a>,
     /// Filter branches by a search query.
+    ///
+    /// The `^` and `$` anchors are supported to search for "starts with" and "ends with"
+    /// operators.
     #[builder(setter(into), default)]
     search: Option<Cow<'a, str>>,
     /// Filter branches matching an [`re2`][re2] regular expression.
