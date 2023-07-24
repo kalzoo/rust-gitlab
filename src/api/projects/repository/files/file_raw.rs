@@ -14,6 +14,7 @@ use crate::api::endpoint_prelude::*;
 /// Note: This endpoint returns raw data, so [`crate::api::raw`] is recommended to avoid the normal
 /// JSON parsing present in the typical endpoint handling.
 #[derive(Debug, Builder, Clone)]
+#[builder(setter(strip_option))]
 pub struct FileRaw<'a> {
     /// The project to get a file within.
     #[builder(setter(into))]
@@ -24,8 +25,8 @@ pub struct FileRaw<'a> {
     #[builder(setter(into))]
     file_path: Cow<'a, str>,
     /// The ref to get a file from.
-    #[builder(setter(into))]
-    ref_: Cow<'a, str>,
+    #[builder(setter(into), default)]
+    ref_: Option<Cow<'a, str>>,
 }
 
 impl<'a> FileRaw<'a> {
@@ -52,7 +53,7 @@ impl<'a> Endpoint for FileRaw<'a> {
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
 
-        params.push("ref", &self.ref_);
+        params.push_opt("ref", self.ref_.as_ref());
 
         params
     }
@@ -76,7 +77,6 @@ mod tests {
     fn project_is_required() {
         let err = FileRaw::builder()
             .file_path("new/file")
-            .ref_("master")
             .build()
             .unwrap_err();
         crate::test::assert_missing_field!(err, FileRawBuilderError, "project");
@@ -84,22 +84,8 @@ mod tests {
 
     #[test]
     fn file_path_is_required() {
-        let err = FileRaw::builder()
-            .project(1)
-            .ref_("master")
-            .build()
-            .unwrap_err();
+        let err = FileRaw::builder().project(1).build().unwrap_err();
         crate::test::assert_missing_field!(err, FileRawBuilderError, "file_path");
-    }
-
-    #[test]
-    fn ref_is_required() {
-        let err = FileRaw::builder()
-            .project(1)
-            .file_path("new/file")
-            .build()
-            .unwrap_err();
-        crate::test::assert_missing_field!(err, FileRawBuilderError, "ref_");
     }
 
     #[test]
@@ -107,13 +93,29 @@ mod tests {
         FileRaw::builder()
             .project(1)
             .file_path("new/file")
-            .ref_("master")
             .build()
             .unwrap();
     }
 
     #[test]
     fn endpoint() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::GET)
+            .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile/raw")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = FileRaw::builder()
+            .project("simple/project")
+            .file_path("path/to/file")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ref() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::GET)
             .endpoint("projects/simple%2Fproject/repository/files/path%2Fto%2Ffile/raw")

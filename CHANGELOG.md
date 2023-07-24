@@ -19,6 +19,8 @@
     `api::issues::{Group,Project}Issues::{without_milestone,any_milestone,milestone}`
     in preference for `milestone_id`. With new enumerations possible, using the
     actual name for the parameter is best with the actual type exposed.
+  * The `ref` parameter for raw file contents is no longer required. If not
+    provided, the repository's `HEAD` commit will be used.
 
 # v0.1602.0
 
