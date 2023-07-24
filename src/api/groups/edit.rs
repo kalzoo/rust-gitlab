@@ -6,7 +6,7 @@
 
 use derive_builder::Builder;
 
-use crate::api::common::{NameOrId, VisibilityLevel};
+use crate::api::common::{CommaSeparatedList, NameOrId, VisibilityLevel};
 use crate::api::endpoint_prelude::*;
 use crate::api::groups::{
     BranchProtection, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
@@ -123,12 +123,42 @@ pub struct EditGroup<'a> {
     /// When enabled, users cannot fork projects from this group to other namespaces.
     #[builder(default)]
     prevent_forking_outside_group: Option<bool>,
+    /// A set of IP addresses or IP ranges that are allowed to access the group.
+    #[builder(setter(name = "_ip_restriction_ranges"), default, private)]
+    ip_restriction_ranges: Option<CommaSeparatedList<Cow<'a, str>>>,
 }
 
 impl<'a> EditGroup<'a> {
     /// Create a builder for the endpoint.
     pub fn builder() -> EditGroupBuilder<'a> {
         EditGroupBuilder::default()
+    }
+}
+
+impl<'a> EditGroupBuilder<'a> {
+    /// An IP address or IP range that is allowed to access the group.
+    pub fn ip_restriction_range<R>(&mut self, range: R) -> &mut Self
+    where
+        R: Into<Cow<'a, str>>,
+    {
+        self.ip_restriction_ranges
+            .get_or_insert(None)
+            .get_or_insert_with(CommaSeparatedList::new)
+            .push(range.into());
+        self
+    }
+
+    /// A set of IP addresses or IP ranges that are allowed to access the group.
+    pub fn ip_restriction_ranges<I, R>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = R>,
+        R: Into<Cow<'a, str>>,
+    {
+        self.ip_restriction_ranges
+            .get_or_insert(None)
+            .get_or_insert_with(CommaSeparatedList::new)
+            .extend(iter.map(Into::into));
+        self
     }
 }
 
@@ -182,7 +212,8 @@ impl<'a> Endpoint for EditGroup<'a> {
             .push_opt(
                 "prevent_forking_outside_group",
                 self.prevent_forking_outside_group,
-            );
+            )
+            .push_opt("ip_restriction_ranges", self.ip_restriction_ranges.as_ref());
 
         params.into_body()
     }
@@ -695,6 +726,26 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .prevent_forking_outside_group(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ip_restriction_ranges() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ip_restriction_ranges=10.0.0.0%2F8%2C192.168.1.1%2C192.168.1.128%2F7")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .ip_restriction_range("10.0.0.0/8")
+            .ip_restriction_ranges(["192.168.1.1", "192.168.1.128/7"].iter().copied())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
