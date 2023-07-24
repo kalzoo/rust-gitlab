@@ -651,6 +651,7 @@ pub struct CreateProject<'a> {
     auto_cancel_pending_pipelines: Option<EnableState>,
     /// The default regular expression to use for build coverage extraction.
     #[builder(setter(into), default)]
+    #[deprecated(since = "0.1602.1", note = "removed upstream")]
     build_coverage_regex: Option<Cow<'a, str>>,
     /// The path to the GitLab CI configuration file within the repository.
     ///
@@ -936,7 +937,6 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "auto_cancel_pending_pipelines",
                 self.auto_cancel_pending_pipelines,
             )
-            .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
             .push_opt("ci_config_path", self.ci_config_path.as_ref())
             .push_opt("auto_devops_enabled", self.auto_devops_enabled)
             .push_opt(
@@ -976,6 +976,7 @@ impl<'a> Endpoint for CreateProject<'a> {
                     "container_registry_enabled",
                     self.container_registry_enabled,
                 )
+                .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
                 .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
 
@@ -2367,6 +2368,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_build_coverage_regex() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)

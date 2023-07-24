@@ -61,6 +61,8 @@
   * `ProtectedAccess` is now a generic type in order to support different
     fields with different available access levels. Most call sites should not
     be affected.
+  * Deprecate `build_coverage_regex` when creating and editing a project. This
+    setting is now set via `.gitlab-ci.yml` rather than at the project-level.
 
 # v0.1602.0
 
