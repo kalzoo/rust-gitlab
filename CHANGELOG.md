@@ -51,6 +51,10 @@
     `only_allow_merge_if_all_status_checks_passed` flag on projects.
   * Support setting and editing group runner support on projects.
   * Support editing `mirror_branch_regex` on projects.
+  * Support editing `ci_allow_fork_pipelines_to_run_in_parent_project`,
+    `enforce_auth_checks_on_uploads`, `issue_branch_template`,
+    `allow_pipeline_trigger_approve_deployment`, and
+    `ci_forward_deployment_rollback_allowed` settings on projects.
 
 ## Changes
 

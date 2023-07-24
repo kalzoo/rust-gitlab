@@ -271,6 +271,21 @@ pub struct EditProject<'a> {
     /// Whether to or not caches should be separated based on branch protection status or not.
     #[builder(default)]
     ci_separated_caches: Option<bool>,
+    /// Whether to allow pipelines for MRs from forks to run in this project or not.
+    #[builder(default)]
+    ci_allow_fork_pipelines_to_run_in_parent_project: Option<bool>,
+    /// Whether to enforce authorization checks on uploads or not.
+    #[builder(default)]
+    enforce_auth_checks_on_uploads: Option<bool>,
+    /// The template for branch names when starting based on an issue.
+    #[builder(setter(into), default)]
+    issue_branch_template: Option<Cow<'a, str>>,
+    /// Whether to allow triggered pipelines to approve deployments or not.
+    #[builder(default)]
+    allow_pipeline_trigger_approve_deployment: Option<bool>,
+    /// Whether environments can be rolled back or not.
+    #[builder(default)]
+    ci_forward_deployment_rollback_allowed: Option<bool>,
 
     /// Whether to enable issues or not.
     #[deprecated(note = "use `issues_access_level` instead")]
@@ -511,7 +526,24 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt("group_runners_enabled", self.group_runners_enabled)
             .push_opt("service_desk_enabled", self.service_desk_enabled)
             .push_opt("keep_latest_artifact", self.keep_latest_artifact)
-            .push_opt("ci_separated_caches", self.ci_separated_caches);
+            .push_opt("ci_separated_caches", self.ci_separated_caches)
+            .push_opt(
+                "ci_allow_fork_pipelines_to_run_in_parent_project",
+                self.ci_allow_fork_pipelines_to_run_in_parent_project,
+            )
+            .push_opt(
+                "enforce_auth_checks_on_uploads",
+                self.enforce_auth_checks_on_uploads,
+            )
+            .push_opt("issue_branch_template", self.issue_branch_template.as_ref())
+            .push_opt(
+                "allow_pipeline_trigger_approve_deployment",
+                self.allow_pipeline_trigger_approve_deployment,
+            )
+            .push_opt(
+                "ci_forward_deployment_rollback_allowed",
+                self.ci_forward_deployment_rollback_allowed,
+            );
 
         if let Some(policy) = self.container_expiration_policy_attributes.as_ref() {
             policy.add_query(&mut params);
@@ -2143,6 +2175,101 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .ci_separated_caches(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ci_allow_fork_pipelines_to_run_in_parent_project() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ci_allow_fork_pipelines_to_run_in_parent_project=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .ci_allow_fork_pipelines_to_run_in_parent_project(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_enforce_auth_checks_on_uploads() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("enforce_auth_checks_on_uploads=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .enforce_auth_checks_on_uploads(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_branch_template() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("issue_branch_template=issue%2F%25d")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .issue_branch_template("issue/%d")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_allow_pipeline_trigger_approve_deployment() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("allow_pipeline_trigger_approve_deployment=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .allow_pipeline_trigger_approve_deployment(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ci_forward_deployment_rollback_allowed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ci_forward_deployment_rollback_allowed=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .ci_forward_deployment_rollback_allowed(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
