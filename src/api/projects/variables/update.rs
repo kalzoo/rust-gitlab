@@ -41,6 +41,9 @@ pub struct UpdateProjectVariable<'a> {
     /// Filters to apply to the returned variables.
     #[builder(default)]
     filter: Option<ProjectVariableFilter<'a>>,
+    /// The description of the variable.
+    #[builder(setter(into), default)]
+    description: Option<Cow<'a, str>>,
 }
 
 impl<'a> UpdateProjectVariable<'a> {
@@ -73,7 +76,8 @@ impl<'a> Endpoint for UpdateProjectVariable<'a> {
             .push_opt("protected", self.protected)
             .push_opt("masked", self.masked)
             .push_opt("raw", self.raw)
-            .push_opt("environment_scope", self.environment_scope.as_ref());
+            .push_opt("environment_scope", self.environment_scope.as_ref())
+            .push_opt("description", self.description.as_ref());
 
         if let Some(filter) = self.filter.as_ref() {
             filter.add_query(&mut params);
@@ -289,6 +293,27 @@ mod tests {
                     .build()
                     .unwrap(),
             )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_description() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject/variables/testkey")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("value=testvalue", "&description=desc"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = UpdateProjectVariable::builder()
+            .project("simple/project")
+            .key("testkey")
+            .value("testvalue")
+            .description("desc")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
