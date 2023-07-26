@@ -3837,6 +3837,7 @@
   "require_two_factor_authentication": false,
   "share_with_group_lock": false,
   "shared_projects": [],
+  "shared_runners_setting": "enabled",
   "shared_with_groups": [],
   "subgroup_creation_level": "owner",
   "two_factor_grace_period": 48,
