@@ -25,6 +25,9 @@ pub struct EditGroupMember<'a> {
     /// When the user's access expires.
     #[builder(default)]
     expires_at: Option<NaiveDate>,
+    /// The ID of a member role.
+    #[builder(default)]
+    member_role_id: Option<u64>,
 }
 
 impl<'a> EditGroupMember<'a> {
@@ -49,7 +52,8 @@ impl<'a> Endpoint for EditGroupMember<'a> {
         params
             .push("user_id", self.user)
             .push("access_level", self.access_level.as_u64())
-            .push_opt("expires_at", self.expires_at);
+            .push_opt("expires_at", self.expires_at)
+            .push_opt("member_role_id", self.member_role_id);
 
         params.into_body()
     }
@@ -151,6 +155,31 @@ mod tests {
             .user(1)
             .access_level(AccessLevel::Developer)
             .expires_at(NaiveDate::from_ymd_opt(2020, 1, 1).unwrap())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_member_role_id() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/group%2Fsubgroup/members/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "user_id=1",
+                "&access_level=30",
+                "&member_role_id=1",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroupMember::builder()
+            .group("group/subgroup")
+            .user(1)
+            .access_level(AccessLevel::Developer)
+            .member_role_id(1)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

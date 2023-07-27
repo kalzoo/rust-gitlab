@@ -66,6 +66,10 @@ pub struct EditProject<'a> {
     pages_access_level: Option<FeatureAccessLevelPublic>,
     /// Set the access level for operations features.
     #[builder(default)]
+    #[deprecated(
+        since = "0.1602.1",
+        note = "Use `releases`, `environments`, `feature_flags`, `infrastructure`, and `monitor` access levels instead"
+    )]
     operations_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for requirements features.
     #[builder(default)]
@@ -76,6 +80,21 @@ pub struct EditProject<'a> {
     /// Set the access level for security and compliance features.
     #[builder(default)]
     security_and_compliance_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for release access.
+    #[builder(default)]
+    releases_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for environment access.
+    #[builder(default)]
+    environments_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for feature flag access.
+    #[builder(default)]
+    feature_flags_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for infrastructure access.
+    #[builder(default)]
+    infrastructure_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for monitoring access.
+    #[builder(default)]
+    monitor_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
@@ -117,6 +136,9 @@ pub struct EditProject<'a> {
     /// Whether all discussions must be resolved before merges are allowed.
     #[builder(default)]
     only_allow_merge_if_all_discussions_are_resolved: Option<bool>,
+    /// If `true`, merge requests may not be merged unless all status checks are passing.
+    #[builder(default)]
+    only_allow_merge_if_all_status_checks_passed: Option<bool>,
     /// The merge commit template.
     #[builder(setter(into), default)]
     merge_commit_template: Option<Cow<'a, str>>,
@@ -173,6 +195,7 @@ pub struct EditProject<'a> {
     topics: BTreeSet<Cow<'a, str>>,
     // TODO: Figure out how to actually use this.
     // avatar   mixed   no  Image file for avatar of the project
+    // empty string is "delete avatar"
     // avatar: ???,
     /// The default Git strategy for CI jobs of the project.
     #[builder(default)]
@@ -186,6 +209,7 @@ pub struct EditProject<'a> {
     auto_cancel_pending_pipelines: Option<EnableState>,
     /// The default regular expression to use for build coverage extraction.
     #[builder(setter(into), default)]
+    #[deprecated(since = "0.1602.1", note = "removed upstream")]
     build_coverage_regex: Option<Cow<'a, str>>,
     /// The path to the GitLab CI configuration file within the repository.
     ///
@@ -209,6 +233,7 @@ pub struct EditProject<'a> {
     repository_storage: Option<Cow<'a, str>>,
     /// How many approvals are required before allowing merges.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Use merge request approvals APIs instead.")]
     approvals_before_merge: Option<u64>,
     /// The classification label of the project.
     #[builder(setter(into), default)]
@@ -228,9 +253,15 @@ pub struct EditProject<'a> {
     /// Whether the mirror overwrites diverged branches in this project or not.
     #[builder(default)]
     mirror_overwrites_diverged_branches: Option<bool>,
+    /// Regular expression for branches to mirror.
+    #[builder(setter(into), default)]
+    mirror_branch_regex: Option<Cow<'a, str>>,
     /// Whether the package repository is enabled or not.
     #[builder(default)]
     packages_enabled: Option<bool>,
+    /// Whether group runners are enabled for this project or not.
+    #[builder(default)]
+    group_runners_enabled: Option<bool>,
     /// Whether the service desk is enabled or not.
     #[builder(default)]
     service_desk_enabled: Option<bool>,
@@ -240,6 +271,21 @@ pub struct EditProject<'a> {
     /// Whether to or not caches should be separated based on branch protection status or not.
     #[builder(default)]
     ci_separated_caches: Option<bool>,
+    /// Whether to allow pipelines for MRs from forks to run in this project or not.
+    #[builder(default)]
+    ci_allow_fork_pipelines_to_run_in_parent_project: Option<bool>,
+    /// Whether to enforce authorization checks on uploads or not.
+    #[builder(default)]
+    enforce_auth_checks_on_uploads: Option<bool>,
+    /// The template for branch names when starting based on an issue.
+    #[builder(setter(into), default)]
+    issue_branch_template: Option<Cow<'a, str>>,
+    /// Whether to allow triggered pipelines to approve deployments or not.
+    #[builder(default)]
+    allow_pipeline_trigger_approve_deployment: Option<bool>,
+    /// Whether environments can be rolled back or not.
+    #[builder(default)]
+    ci_forward_deployment_rollback_allowed: Option<bool>,
 
     /// Whether to enable issues or not.
     #[deprecated(note = "use `issues_access_level` instead")]
@@ -360,13 +406,23 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt("wiki_access_level", self.wiki_access_level)
             .push_opt("snippets_access_level", self.snippets_access_level)
             .push_opt("pages_access_level", self.pages_access_level)
-            .push_opt("operations_access_level", self.operations_access_level)
             .push_opt("requirements_access_level", self.requirements_access_level)
             .push_opt("analytics_access_level", self.analytics_access_level)
             .push_opt(
                 "security_and_compliance_access_level",
                 self.security_and_compliance_access_level,
             )
+            .push_opt("releases_access_level", self.releases_access_level)
+            .push_opt("environments_access_level", self.environments_access_level)
+            .push_opt(
+                "feature_flags_access_level",
+                self.feature_flags_access_level,
+            )
+            .push_opt(
+                "infrastructure_access_level",
+                self.infrastructure_access_level,
+            )
+            .push_opt("monitor_access_level", self.monitor_access_level)
             .push_opt("emails_disabled", self.emails_disabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
@@ -392,6 +448,10 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt(
                 "only_allow_merge_if_all_discussions_are_resolved",
                 self.only_allow_merge_if_all_discussions_are_resolved,
+            )
+            .push_opt(
+                "only_allow_merge_if_all_status_checks_passed",
+                self.only_allow_merge_if_all_status_checks_passed,
             )
             .push_opt("merge_commit_template", self.merge_commit_template.as_ref())
             .push_opt(
@@ -434,7 +494,6 @@ impl<'a> Endpoint for EditProject<'a> {
                 "auto_cancel_pending_pipelines",
                 self.auto_cancel_pending_pipelines,
             )
-            .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
             .push_opt("ci_config_path", self.ci_config_path.as_ref())
             .push_opt("ci_default_git_depth", self.ci_default_git_depth)
             .push_opt(
@@ -447,7 +506,6 @@ impl<'a> Endpoint for EditProject<'a> {
                 self.auto_devops_deploy_strategy,
             )
             .push_opt("repository_storage", self.repository_storage.as_ref())
-            .push_opt("approvals_before_merge", self.approvals_before_merge)
             .push_opt(
                 "external_authorization_classification_label",
                 self.external_authorization_classification_label.as_ref(),
@@ -463,10 +521,29 @@ impl<'a> Endpoint for EditProject<'a> {
                 "mirror_overwrites_diverged_branches",
                 self.mirror_overwrites_diverged_branches,
             )
+            .push_opt("mirror_branch_regex", self.mirror_branch_regex.as_ref())
             .push_opt("packages_enabled", self.packages_enabled)
+            .push_opt("group_runners_enabled", self.group_runners_enabled)
             .push_opt("service_desk_enabled", self.service_desk_enabled)
             .push_opt("keep_latest_artifact", self.keep_latest_artifact)
-            .push_opt("ci_separated_caches", self.ci_separated_caches);
+            .push_opt("ci_separated_caches", self.ci_separated_caches)
+            .push_opt(
+                "ci_allow_fork_pipelines_to_run_in_parent_project",
+                self.ci_allow_fork_pipelines_to_run_in_parent_project,
+            )
+            .push_opt(
+                "enforce_auth_checks_on_uploads",
+                self.enforce_auth_checks_on_uploads,
+            )
+            .push_opt("issue_branch_template", self.issue_branch_template.as_ref())
+            .push_opt(
+                "allow_pipeline_trigger_approve_deployment",
+                self.allow_pipeline_trigger_approve_deployment,
+            )
+            .push_opt(
+                "ci_forward_deployment_rollback_allowed",
+                self.ci_forward_deployment_rollback_allowed,
+            );
 
         if let Some(policy) = self.container_expiration_policy_attributes.as_ref() {
             policy.add_query(&mut params);
@@ -483,7 +560,10 @@ impl<'a> Endpoint for EditProject<'a> {
                 .push_opt(
                     "container_registry_enabled",
                     self.container_registry_enabled,
-                );
+                )
+                .push_opt("operations_access_level", self.operations_access_level)
+                .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
+                .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
 
         params.into_body()
@@ -781,6 +861,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_operations_access_level() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -851,6 +932,101 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .security_and_compliance_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_releases_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("releases_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .releases_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_environments_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("environments_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .environments_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_feature_flags_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("feature_flags_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .feature_flags_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_infrastructure_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("infrastructure_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .infrastructure_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_monitor_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("monitor_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .monitor_access_level(FeatureAccessLevel::Private)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -1240,6 +1416,25 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_only_allow_merge_if_all_status_checks_passed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("only_allow_merge_if_all_status_checks_passed=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .only_allow_merge_if_all_status_checks_passed(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_merge_commit_template() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1623,6 +1818,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_build_coverage_regex() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1756,6 +1952,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_approvals_before_merge() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1870,6 +2067,25 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_mirror_branch_regex() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("mirror_branch_regex=main")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .mirror_branch_regex("main")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_packages_enabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1883,6 +2099,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .packages_enabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_group_runners_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("group_runners_enabled=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .group_runners_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -1940,6 +2175,101 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .ci_separated_caches(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ci_allow_fork_pipelines_to_run_in_parent_project() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ci_allow_fork_pipelines_to_run_in_parent_project=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .ci_allow_fork_pipelines_to_run_in_parent_project(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_enforce_auth_checks_on_uploads() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("enforce_auth_checks_on_uploads=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .enforce_auth_checks_on_uploads(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_branch_template() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("issue_branch_template=issue%2F%25d")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .issue_branch_template("issue/%d")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_allow_pipeline_trigger_approve_deployment() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("allow_pipeline_trigger_approve_deployment=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .allow_pipeline_trigger_approve_deployment(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_ci_forward_deployment_rollback_allowed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("ci_forward_deployment_rollback_allowed=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .ci_forward_deployment_rollback_allowed(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

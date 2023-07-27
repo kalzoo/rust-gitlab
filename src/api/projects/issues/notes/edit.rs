@@ -26,6 +26,10 @@ pub struct EditIssueNote<'a> {
     body: Cow<'a, str>,
     /// The confidential flag of the note.
     #[builder(default)]
+    #[deprecated(
+        since = "0.1602.1",
+        note = "Confidentiality of notes cannot be edited anymore"
+    )]
     confidential: Option<bool>,
 }
 
@@ -52,9 +56,12 @@ impl<'a> Endpoint for EditIssueNote<'a> {
     fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
         let mut params = FormParams::default();
 
-        params
-            .push("body", self.body.as_ref())
-            .push_opt("confidential", self.confidential);
+        params.push("body", self.body.as_ref());
+
+        #[allow(deprecated)]
+        {
+            params.push_opt("confidential", self.confidential);
+        }
 
         params.into_body()
     }
@@ -151,6 +158,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_confidential() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)

@@ -2,7 +2,7 @@
 
 This document categorizes the APIs as they pertain to this crate.
 
-Last synced: 13.9.0-pre (29cc646679b927158b3315dbc6c5af39524fd6ec)
+Last synced: v16.3.0-pre (f3609f7f676a1676270be26b0e8efde1fa4ea674)
 
 # Implemented
 
@@ -200,9 +200,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group` https://gitlab.kitware.com/help/api/groups.md#remove-group
   * `GET    /groups/:group/avatar` https://gitlab.kitware.com/help/api/groups.md#download-a-group-avatar
   * `GET    /groups/:group/billable_members` https://gitlab.kitware.com/help/api/groups.md#list-all-billable-members-of-a-group
-  * `GET    /groups/:group/billable_members:user/memberships` https://gitlab.kitware.com/help/api/members.md#list-memberships-for-a-billable-member-of-a-group
-  * `DELETE /groups/:group/billable_members:user` https://gitlab.kitware.com/help/api/members.md#remove-a-billable-member-from-a-group
-  * `PUT    /groups/:group/billable_members:user/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
+  * `GET    /groups/:group/billable_members/:user/memberships` https://gitlab.kitware.com/help/api/members.md#list-memberships-for-a-billable-member-of-a-group
+  * `DELETE /groups/:group/billable_members/:user` https://gitlab.kitware.com/help/api/members.md#remove-a-billable-member-from-a-group
+  * `PUT    /groups/:group/billable_members/:user/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
   * `GET    /groups/:group/descendant_groups` https://gitlab.kitware.com/help/api/groups.md#list-a-groups-descendant-groups
   * `GET    /groups/:group/epics/:epic/discussions` https://gitlab.kitware.com/help/api/discussions.md#list-group-epic-discussion-items
   * `POST   /groups/:group/epics/:epic/discussions` https://gitlab.kitware.com/help/api/discussions.md#create-new-epic-thread
@@ -230,6 +230,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /groups/:group/members/:member/approve_all` https://gitlab.kitware.com/help/api/members.md#approve-all-pending-members-for-a-group
   * `POST   /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#set-override-flag-for-a-member-from-a-group
   * `DELETE /groups/:group/members/:member/override` https://gitlab.kitware.com/help/api/members.md#remove-override-for-a-member-from-a-group
+  * `PUT    /groups/:group/members/:member/state` https://gitlab.kitware.com/help/api/members.md#change-membership-state-of-a-user-in-a-group
   * `GET    /groups/:group/merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-group-merge-requests
   * `GET    /groups/:group/milestones` https://gitlab.kitware.com/help/api/group_milestones.md#list-group-milestones
   * `GET    /groups/:group/milestones/:milestone` https://gitlab.kitware.com/help/api/group_milestones.md#get-single-milestone
@@ -247,7 +248,14 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
+  * `GET    /groups/:group/saml_group_links` https://gitlab.kitware.com/help/api/groups.md#list-saml-group-links
+  * `GET    /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#get-saml-group-link
+  * `DELETE /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#delete-saml-group-link
+  * `POST   /groups/:group/service_accounts` https://gitlab.kitware.com/help/api/groups.md#create-service-account-user
+  * `POST   /groups/:group/service_accounts/:id/personal_access_tokens` https://gitlab.kitware.com/help/api/groups.md#create-personal-access-token-for-service-account-user
+  * `POST   /groups/:group/service_accounts/:id/personal_access_tokens/:token/rotate` https://gitlab.kitware.com/help/api/groups.md#rotate-a-personal-access-token-for-service-account-user
   * `POST   /groups/:group/transfer` https://gitlab.kitware.com/help/api/groups.md#transfer-a-group-to-a-new-parent-group-turn-a-subgroup-to-a-top-level-group
+  * `GET    /groups/:group/transfer_locations` https://gitlab.kitware.com/help/api/groups.md#get-groups-to-which-a-user-can-transfer-a-group
   * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
@@ -274,6 +282,7 @@ instead of having to search the page for missing endpoints.
   * `PUT    /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
   * `DELETE /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#delete-an-environment
   * `POST   /projects/:project/environments/:environment/stop` https://gitlab.kitware.com/help/api/environments.md#stop-an-environment
+  * `POST   /projects/:project/environments/:environment/stop_stale` https://gitlab.kitware.com/help/api/environments.md#stop-stale-environments
   * `GET    /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#list-all-epic-notes
   * `GET    /projects/:project/epics/:epic/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-epic-note
   * `POST   /projects/:project/epics/:epic/notes` https://gitlab.kitware.com/help/api/notes.md#create-new-epic-note
@@ -283,15 +292,15 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/fork` https://gitlab.kitware.com/help/api/projects.md#delete-an-existing-forked-from-relationship
   * `POST   /projects/:project/fork/:from` https://gitlab.kitware.com/help/api/projects.md#create-a-forked-fromto-relation-between-existing-projects
   * `GET    /projects/:project/forks` https://gitlab.kitware.com/help/api/projects.md#list-forks-of-a-project
-  * `GET    /projects/:project/groups` https://gitlab.kitware.com/help/api/projects.md#list-projects-groups
+  * `GET    /projects/:project/groups` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-groups
   * `POST   /projects/:project/housekeeping` https://gitlab.kitware.com/help/api/projects.md#start-the-housekeeping-task-for-a-project
   * `POST   /projects/:project/import_project_members/:project2` https://gitlab.kitware.com/help/api/projects.md#import-project-members
   * `DELETE /projects/:project/issues/:issue` https://gitlab.kitware.com/help/api/issues.md#delete-an-issue
   * `POST   /projects/:project/issues/:issue/add_spent_time` https://gitlab.kitware.com/help/api/issues.md#add-spent-time-for-an-issue
-  * `GET    /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
-  * `POST   /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
-  * `GET    /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-award-emoji
-  * `DELETE /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji
+  * `GET    /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-emoji-reactions
+  * `POST   /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#add-a-new-emoji-reaction
+  * `GET    /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-emoji-reaction
+  * `DELETE /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-emoji-reaction
   * `POST   /projects/:project/issues/:issue/clone` https://gitlab.kitware.com/help/api/issues.md#clone-an-issue
   * `GET    /projects/:project/issues/:issue/discussions` https://gitlab.kitware.com/help/api/discussions.md#list-project-issue-discussion-items
   * `POST   /projects/:project/issues/:issue/discussions` https://gitlab.kitware.com/help/api/discussions.md#create-new-issue-thread
@@ -301,10 +310,10 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/issues/:issue/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-an-issue-thread-note
   * `GET    /projects/:project/issues/:issue/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-issue-note
   * `DELETE /projects/:project/issues/:issue/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-an-issue-note
-  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-a-comments-award-emoji
-  * `POST   /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji-on-a-comment
-  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-award-emoji-for-a-comment
-  * `DELETE /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
+  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-a-comments-emoji-reactions
+  * `POST   /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#add-reactions-to-comments
+  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-emoji-reaction-for-a-comment
+  * `DELETE /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-emoji-reaction-from-a-comment
   * `GET    /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#list-metric-images
   * `POST   /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#upload-metric-image
   * `PUT    /projects/:project/issues/:issue/metric_images/:metric_image` https://gitlab.kitware.com/help/api/issues.md#update-metric-image
@@ -329,7 +338,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/languages` https://gitlab.kitware.com/help/api/projects.md#languages
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
-  * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration
+  * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration (deprecated)
   * `POST   /projects/:project/merge_requests/:merge_request/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-merge-request-level-rules
   * `GET    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-a-single-merge-request-level-rule
   * `PUT    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#update-merge-request-level-rule
@@ -338,6 +347,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-award-emoji
   * `DELETE /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji
   * `POST   /projects/:project/merge_requests/:merge_request/cancel_merge_when_pipeline_succeeds` https://gitlab.kitware.com/help/api/merge_requests.md#cancel-merge-when-pipeline-succeeds
+  * `GET    /projects/:project/merge_requests/:merge_request/diffs` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-request-diffs
   * `GET    /projects/:project/merge_requests/:merge_request/discussions/:discussion` https://gitlab.kitware.com/help/api/discussions.md#get-single-merge-request-discussion-item
   * `PUT    /projects/:project/merge_requests/:merge_request/discussions/:discussion` https://gitlab.kitware.com/help/api/discussions.md#resolve-a-merge-request-thread
   * `POST   /projects/:project/merge_requests/:merge_request/discussions/:discussion/notes` https://gitlab.kitware.com/help/api/discussions.md#add-note-to-existing-merge-request-thread
@@ -350,9 +360,12 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-award-emoji-for-a-comment
   * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
+  * `PUT    /projects/:project/merge_requests/:merge_request/reset_approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#reset-approvals-of-a-merge-request
+    This should probably be a `POST` event.
   * `POST   /projects/:project/merge_requests/:merge_request/reset_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#reset-spent-time-for-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/reset_time_estimate` https://gitlab.kitware.com/help/api/merge_requests.md#reset-the-time-estimate-for-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/resource_label_events/:event` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-merge-request-label-event
+  * `GET    /projects/:project/merge_requests/:merge_request/reviewers` https://gitlab.kitware.com/help/api/resource_label_events.md#get-single-mr-reviewers
   * `POST   /projects/:project/merge_requests/:merge_request/subscribe` https://gitlab.kitware.com/help/api/merge_requests.md#subscribe-to-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/time_estimate` https://gitlab.kitware.com/help/api/merge_requests.md#set-a-time-estimate-for-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/time_stats` https://gitlab.kitware.com/help/api/merge_requests.md#get-time-tracking-stats
@@ -360,6 +373,9 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/merge_requests/:merge_request/unsubscribe` https://gitlab.kitware.com/help/api/merge_requests.md#unsubscribe-from-a-merge-request
   * `GET    /projects/:project/merge_requests/:merge_request/versions` https://gitlab.kitware.com/help/api/merge_requests.md#get-mr-diff-versions
   * `GET    /projects/:project/merge_requests/:merge_request/versions/:version` https://gitlab.kitware.com/help/api/merge_requests.md#get-a-single-mr-diff-version
+  * `GET    /projects/:project/merge_trains/:target_branch` https://gitlab.kitware.com/help/api/merge_trains.md#list-merge-requests-in-a-merge-train
+  * `GET    /projects/:project/merge_trains/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_trains.md#get-the-status-of-a-merge-request-on-a-merge-train
+  * `POST   /projects/:project/merge_trains/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_trains.md#add-a-merge-request-to-a-merge-train
   * `GET    /projects/:project/milestones` https://gitlab.kitware.com/help/api/milestones.md#list-project-milestones
   * `GET    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#get-single-milestone
   * `PUT    /projects/:project/milestones/:milestone` https://gitlab.kitware.com/help/api/milestones.md#edit-milestone
@@ -369,8 +385,10 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/milestones/:milestone/merge_requests` https://gitlab.kitware.com/help/api/milestones.md#get-all-merge-requests-assigned-to-a-single-milestone
   * `POST   /projects/:project/milestones/:milestone/promote` https://gitlab.kitware.com/help/api/milestones.md#promote-project-milestone-to-a-group-milestone
   * `POST   /projects/:project/mirror/pull` https://gitlab.kitware.com/help/api/projects.md#start-the-pull-mirroring-process-for-a-project-starter
+  * `GET    /projects/:project/packages/:package/pipelines` https://gitlab.kitware.com/help/api/packages.md#list-package-pipelines
   * `PATCH  /projects/:project/protected_branches/:branch` https://gitlab.kitware.com/help/api/protected_branches.md#require-code-owner-approvals-for-a-single-branch
   * `POST   /projects/:project/pipeline` https://gitlab.kitware.com/help/api/pipelines.md#create-a-new-pipeline
+  * `GET    /projects/:project/pipeline/latest` https://gitlab.kitware.com/help/api/pipelines.md#get-the-latest-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
   * `GET    /projects/:project/pipelines/:pipeline/test_report` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report
   * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report-summary
@@ -403,7 +421,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/repository/merged_branches` https://gitlab.kitware.com/help/api/branches.md#delete-merged-branches
     Arguably this should be `POST /projects/:project/repository/delete_merged_branches`
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
+  * `GET    /projects/:project/repository/tags/:tag/signature` https://gitlab.kitware.com/help/api/tags.md#get-x509-signature-of-a-tag
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
+  * `GET    /projects/:project/share_locations` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-shareable-groups
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
   * `GET    /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
   * `POST   /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#award-a-new-emoji
@@ -428,6 +448,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/starrers` https://gitlab.kitware.com/help/api/projects.md#list-starrers-of-a-project
   * `GET    /projects/:project/storage` https://gitlab.kitware.com/help/api/projects.md#get-the-path-to-repository-storage
   * `PUT    /projects/:project/transfer` https://gitlab.kitware.com/help/api/projects.md#transfer-a-project-to-a-new-namespace
+  * `GET    /projects/:project/transfer_locations` https://gitlab.kitware.com/help/api/projects.md#get-groups-to-which-a-user-can-transfer-a-project
   * `POST   /projects/:project/unarchive` https://gitlab.kitware.com/help/api/projects.md#unarchive-a-project
   * `POST   /projects/:project/unstar` https://gitlab.kitware.com/help/api/projects.md#unstar-a-project
   * `POST   /projects/:project/uploads` https://gitlab.kitware.com/help/api/projects.md#upload-a-file
@@ -436,8 +457,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
+  * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
-  * `POST   /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
+  * `PATCH  /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
   * `GET    /user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails
   * `POST   /user/emails` https://gitlab.kitware.com/help/api/users.md#add-email
   * `GET    /user/emails/:email` https://gitlab.kitware.com/help/api/users.md#single-email
@@ -450,17 +472,22 @@ instead of having to search the page for missing endpoints.
   * `POST   /user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key
   * `GET    /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#single-ssh-key
   * `DELETE /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-current-user
+  * `POST   /user/runners` https://gitlab.kitware.com/help/api/users.md#create-a-uunner
   * `GET    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preferences
   * `PUT    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preference-modification
   * `GET    /user/status` https://gitlab.kitware.com/help/api/users.md#user-status
   * `PUT    /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
+    Note that this clears `emoji`, `message`, and `clear_status_after` if they're not present. Prefer `PATCH`.
+  * `PATCH  /user/status` https://gitlab.kitware.com/help/api/users.md#set-user-status
   * `POST   /users` https://gitlab.kitware.com/help/api/users.md#user-creation
   * `DELETE /users/:user` https://gitlab.kitware.com/help/api/users.md#user-deletion
   * `PUT    /users/:user` https://gitlab.kitware.com/help/api/users.md#user-modification
   * `POST   /users/:user/activate` https://gitlab.kitware.com/help/api/users.md#activate-user
+  * `GET    /users/:user/associations_count` https://gitlab.kitware.com/help/api/users.md#list-associations-count-for-user
   * `POST   /users/:user/approve` https://gitlab.kitware.com/help/api/users.md#approve-user
   * `POST   /users/:user/ban` https://gitlab.kitware.com/help/api/users.md#ban-user
   * `POST   /users/:user/block` https://gitlab.kitware.com/help/api/users.md#block-user
+  * `GET    /users/:user/contributed_projects` https://gitlab.kitware.com/help/api/projects.md#list-projects-a-user-has-contributed-to
   * `POST   /users/:user/deactivate` https://gitlab.kitware.com/help/api/users.md#deactivate-user
   * `GET    /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#list-emails-for-user
   * `POST   /users/:user/emails` https://gitlab.kitware.com/help/api/users.md#add-email-for-user
@@ -496,6 +523,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/access_requests.md
   * https://gitlab.kitware.com/help/api/access_tokens.md
   * https://gitlab.kitware.com/help/api/admin_sidekiq_queues.md
+  * https://gitlab.kitware.com/help/api/alert_management_alerts.md
   * https://gitlab.kitware.com/help/api/appearance.md
   * https://gitlab.kitware.com/help/api/applications.md
   * https://gitlab.kitware.com/help/api/audit_events.md
@@ -503,12 +531,19 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/avatar.md
   * https://gitlab.kitware.com/help/api/boards.md
   * https://gitlab.kitware.com/help/api/broadcast_messages.md
+  * https://gitlab.kitware.com/help/api/bulk_imports.md
   * https://gitlab.kitware.com/help/api/cluster_agents.md
+  * https://gitlab.kitware.com/help/api/code_suggestions.md
+  * https://gitlab.kitware.com/help/api/container_registry.md
+    - only the bits about JWT stuff for Docker registry communication
   * https://gitlab.kitware.com/help/api/custom_attributes.md
+  * https://gitlab.kitware.com/help/api/database_migrations.md
   * https://gitlab.kitware.com/help/api/dependencies.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
   * https://gitlab.kitware.com/help/api/deploy_tokens.md
   * https://gitlab.kitware.com/help/api/deployments.md
+  * https://gitlab.kitware.com/help/api/dora/metrics.md
+  * https://gitlab.kitware.com/help/api/draft_notes.md
   * https://gitlab.kitware.com/help/api/epic_issues.md
   * https://gitlab.kitware.com/help/api/epic_links.md
   * https://gitlab.kitware.com/help/api/epics.md
@@ -520,15 +555,20 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/features.md
   * https://gitlab.kitware.com/help/api/freeze_periods.md
   * https://gitlab.kitware.com/help/api/geo_nodes.md
+  * https://gitlab.kitware.com/help/api/geo_sites.md
   * https://gitlab.kitware.com/help/api/group_access_tokens.md
   * https://gitlab.kitware.com/help/api/group_activity_analytics.md
   * https://gitlab.kitware.com/help/api/group_badges.md
   * https://gitlab.kitware.com/help/api/group_boards.md
   * https://gitlab.kitware.com/help/api/group_clusters.md (deprecated)
+  * https://gitlab.kitware.com/help/api/group_epic_boards.md
   * https://gitlab.kitware.com/help/api/group_import_export.md
   * https://gitlab.kitware.com/help/api/group_iterations.md
   * https://gitlab.kitware.com/help/api/group_labels.md
   * https://gitlab.kitware.com/help/api/group_level_variables.md
+  * https://gitlab.kitware.com/help/api/group_protected_branches.md
+  * https://gitlab.kitware.com/help/api/group_protected_environments.md
+  * https://gitlab.kitware.com/help/api/group_relations_export.md
   * https://gitlab.kitware.com/help/api/group_releases.md
   * https://gitlab.kitware.com/help/api/group_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/group_wikis.md
@@ -547,6 +587,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/lint.md
   * https://gitlab.kitware.com/help/api/managed_licenses.md
   * https://gitlab.kitware.com/help/api/markdown.md
+  * https://gitlab.kitware.com/help/api/member_roles.md
   * https://gitlab.kitware.com/help/api/merge_request_context_commits.md
   * https://gitlab.kitware.com/help/api/metadata.md
   * https://gitlab.kitware.com/help/api/metrics_dashboard_annotations.md
@@ -554,16 +595,23 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/namespaces.md
   * https://gitlab.kitware.com/help/api/notification_settings.md
   * https://gitlab.kitware.com/help/api/oauth2.md
+  * https://gitlab.kitware.com/help/api/packages/composer.md
+  * https://gitlab.kitware.com/help/api/packages/conan.md
   * https://gitlab.kitware.com/help/api/packages/debian_project_distributions.md
+  * https://gitlab.kitware.com/help/api/packages/debian.md
   * https://gitlab.kitware.com/help/api/pages.md
   * https://gitlab.kitware.com/help/api/pages_domains.md
   * https://gitlab.kitware.com/help/api/personal_access_tokens.md
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
+  * https://gitlab.kitware.com/help/api/product_analytics.md
+  * https://gitlab.kitware.com/help/api/project_access_tokens.md
   * https://gitlab.kitware.com/help/api/project_aliases.md
   * https://gitlab.kitware.com/help/api/project_badges.md
   * https://gitlab.kitware.com/help/api/project_clusters.md
   * https://gitlab.kitware.com/help/api/project_import_export.md
+  * https://gitlab.kitware.com/help/api/project_job_token_scopes.md
+  * https://gitlab.kitware.com/help/api/project_relations_export.md
   * https://gitlab.kitware.com/help/api/project_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/project_snippets.md
   * https://gitlab.kitware.com/help/api/project_statistics.md
@@ -573,18 +621,23 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/releases/links.md
   * https://gitlab.kitware.com/help/api/remote_mirrors.md
   * https://gitlab.kitware.com/help/api/repository_submodules.md
+  * https://gitlab.kitware.com/help/api/resource_groups.md
   * https://gitlab.kitware.com/help/api/resource_iteration_events.md
   * https://gitlab.kitware.com/help/api/resource_milestone_events.md
   * https://gitlab.kitware.com/help/api/resource_state_events.md
   * https://gitlab.kitware.com/help/api/resource_weight_events.md
   * https://gitlab.kitware.com/help/api/runners.md
+  * https://gitlab.kitware.com/help/api/saml.md
   * https://gitlab.kitware.com/help/api/scim.md
   * https://gitlab.kitware.com/help/api/search.md
+  * https://gitlab.kitware.com/help/api/search_admin.md
+  * https://gitlab.kitware.com/help/api/secure_files.md
   * https://gitlab.kitware.com/help/api/settings.md
   * https://gitlab.kitware.com/help/api/sidekiq_metrics.md
   * https://gitlab.kitware.com/help/api/snippet_repository_storage_moves.md
   * https://gitlab.kitware.com/help/api/snippets.md
   * https://gitlab.kitware.com/help/api/statistics.md
+  * https://gitlab.kitware.com/help/api/status_checks.md
   * https://gitlab.kitware.com/help/api/suggestions.md
   * https://gitlab.kitware.com/help/api/system_hooks.md
   * https://gitlab.kitware.com/help/api/templates/dockerfiles.md

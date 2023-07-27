@@ -97,6 +97,74 @@ impl ParamValue<'static> for IssueType {
     }
 }
 
+/// Filter values by epic status.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IssueEpic {
+    /// Issues without any epic.
+    None,
+    /// Issues with any epic association.
+    Any,
+    /// Issues with a given epic (by ID).
+    Id(u64),
+}
+
+impl IssueEpic {
+    fn as_str(self) -> Cow<'static, str> {
+        match self {
+            IssueEpic::None => "None".into(),
+            IssueEpic::Any => "Any".into(),
+            IssueEpic::Id(id) => format!("{}", id).into(),
+        }
+    }
+}
+
+impl From<u64> for IssueEpic {
+    fn from(id: u64) -> Self {
+        Self::Id(id)
+    }
+}
+
+impl ParamValue<'static> for IssueEpic {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str()
+    }
+}
+
+/// Health statuses of issues.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IssueHealthStatus {
+    /// Issues with any health status.
+    Any,
+    /// Issues without a health status.
+    None,
+    /// Issues that are on track.
+    OnTrack,
+    /// Issues that need attention.
+    NeedsAttention,
+    /// Issues that are at risk.
+    AtRisk,
+}
+
+impl IssueHealthStatus {
+    fn as_str(self) -> &'static str {
+        match self {
+            IssueHealthStatus::Any => "Any",
+            IssueHealthStatus::None => "None",
+            IssueHealthStatus::OnTrack => "on_track",
+            IssueHealthStatus::NeedsAttention => "needs_attention",
+            IssueHealthStatus::AtRisk => "at_risk",
+        }
+    }
+}
+
+impl ParamValue<'static> for IssueHealthStatus {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
 /// Filter values for issue iteration values.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IssueIteration<'a> {
@@ -212,6 +280,12 @@ impl ParamValue<'static> for IssueSearchScope {
 pub enum IssueDueDateFilter {
     /// Issues without a due date.
     None,
+    /// Issues with any a due date.
+    Any,
+    /// Issues due today.
+    Today,
+    /// Issues due tomorrow.
+    Tomorrow,
     /// Issues due this week.
     ThisWeek,
     /// Issues due this month.
@@ -226,6 +300,9 @@ impl IssueDueDateFilter {
     fn as_str(self) -> &'static str {
         match self {
             IssueDueDateFilter::None => "0",
+            IssueDueDateFilter::Any => "any",
+            IssueDueDateFilter::Today => "today",
+            IssueDueDateFilter::Tomorrow => "tomorrow",
             IssueDueDateFilter::ThisWeek => "week",
             IssueDueDateFilter::ThisMonth => "month",
             IssueDueDateFilter::BetweenTwoWeeksAgoAndNextMonth => {
@@ -265,6 +342,8 @@ pub enum IssueOrderBy {
     Popularity,
     /// Sort by weight.
     Weight,
+    /// Sort by type.
+    Title,
     /// Sort by weight.
     #[deprecated(note = "use `Weight` instead (`gitlab` crate typo)")]
     WeightFields,
@@ -289,6 +368,7 @@ impl IssueOrderBy {
             IssueOrderBy::LabelPriority => "label_priority",
             IssueOrderBy::MilestoneDue => "milestone_due",
             IssueOrderBy::Popularity => "popularity",
+            IssueOrderBy::Title => "title",
             #[allow(deprecated)]
             IssueOrderBy::Weight | IssueOrderBy::WeightFields => "weight",
         }
@@ -301,11 +381,44 @@ impl ParamValue<'static> for IssueOrderBy {
     }
 }
 
+/// Filters available for issue milestones.
+#[derive(Debug, Clone)]
+pub enum IssueMilestone<'a> {
+    /// Issues without any milestone.
+    None,
+    /// Issues with any milestone.
+    Any,
+    /// Issues with milestones with upcoming due dates.
+    Upcoming,
+    /// Issues with milestones that have started.
+    Started,
+    /// Issues with a specific milestone.
+    Named(Cow<'a, str>),
+}
+
+impl<'a> IssueMilestone<'a> {
+    fn as_str(&self) -> &str {
+        match self {
+            IssueMilestone::None => "None",
+            IssueMilestone::Any => "Any",
+            IssueMilestone::Upcoming => "Upcoming",
+            IssueMilestone::Started => "Started",
+            IssueMilestone::Named(name) => name.as_ref(),
+        }
+    }
+}
+
+impl<'a, 'b: 'a> ParamValue<'a> for &'b IssueMilestone<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        self.as_str().into()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::api::issues::{
-        IssueDueDateFilter, IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType,
-        IssueWeight,
+        IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueMilestone, IssueOrderBy, IssueScope,
+        IssueSearchScope, IssueState, IssueType, IssueWeight,
     };
 
     #[test]
@@ -326,6 +439,41 @@ mod tests {
             (IssueScope::CreatedByMe, "created_by_me"),
             (IssueScope::AssignedToMe, "assigned_to_me"),
             (IssueScope::All, "all"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_epic_from_u64() {
+        let items = &[(IssueEpic::Id(4), 4.into())];
+
+        for (i, s) in items {
+            assert_eq!(i, s);
+        }
+    }
+
+    #[test]
+    fn issue_epic_as_str() {
+        let items = &[
+            (IssueEpic::None, "None"),
+            (IssueEpic::Any, "Any"),
+            (IssueEpic::Id(4), "4"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_health_status_as_str() {
+        let items = &[
+            (IssueHealthStatus::OnTrack, "on_track"),
+            (IssueHealthStatus::NeedsAttention, "needs_attention"),
+            (IssueHealthStatus::AtRisk, "at_risk"),
         ];
 
         for (i, s) in items {
@@ -375,6 +523,9 @@ mod tests {
     fn issue_due_date_filter_as_str() {
         let items = &[
             (IssueDueDateFilter::None, "0"),
+            (IssueDueDateFilter::Any, "any"),
+            (IssueDueDateFilter::Today, "today"),
+            (IssueDueDateFilter::Tomorrow, "tomorrow"),
             (IssueDueDateFilter::ThisWeek, "week"),
             (IssueDueDateFilter::ThisMonth, "month"),
             (
@@ -406,8 +557,24 @@ mod tests {
             (IssueOrderBy::MilestoneDue, "milestone_due"),
             (IssueOrderBy::Popularity, "popularity"),
             (IssueOrderBy::Weight, "weight"),
+            (IssueOrderBy::Title, "title"),
             #[allow(deprecated)]
             (IssueOrderBy::WeightFields, "weight"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn issue_milestone_as_str() {
+        let items = &[
+            (IssueMilestone::Any, "Any"),
+            (IssueMilestone::None, "None"),
+            (IssueMilestone::Upcoming, "Upcoming"),
+            (IssueMilestone::Started, "Started"),
+            (IssueMilestone::Named("milestone".into()), "milestone"),
         ];
 
         for (i, s) in items {

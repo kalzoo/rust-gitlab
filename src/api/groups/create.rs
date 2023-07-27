@@ -73,6 +73,8 @@ pub enum BranchProtection {
     /// Developers may accept merge requests; maintainers may push, force push, and accept merge
     /// requests.
     Push,
+    /// Like `Push` except that developers may push to an empty repository.
+    PushExceptInitial,
 }
 
 impl BranchProtection {
@@ -82,6 +84,7 @@ impl BranchProtection {
             BranchProtection::Partial => "1",
             BranchProtection::Full => "2",
             BranchProtection::Push => "3",
+            BranchProtection::PushExceptInitial => "4",
         }
     }
 }
@@ -293,6 +296,7 @@ mod tests {
             (BranchProtection::Partial, "1"),
             (BranchProtection::Full, "2"),
             (BranchProtection::Push, "3"),
+            (BranchProtection::PushExceptInitial, "4"),
         ];
 
         for (i, s) in items {

@@ -12,7 +12,7 @@ use derive_builder::Builder;
 
 use crate::api::common::{NameOrId, SortOrder, YesNo};
 use crate::api::endpoint_prelude::*;
-use crate::api::helpers::{Labels, Milestone, ReactionEmoji};
+use crate::api::helpers::{Labels, ReactionEmoji};
 use crate::api::ParamValue;
 
 /// Filters for merge request states.
@@ -202,25 +202,56 @@ impl ApproverIds {
 }
 
 #[derive(Debug, Clone)]
-enum ApprovedByIds {
+enum ApprovedBy<'a> {
     Any,
     None,
-    AllOf(BTreeSet<u64>),
+    AllOfIds(BTreeSet<u64>),
+    AllOfUsernames(BTreeSet<Cow<'a, str>>),
 }
 
-impl ApprovedByIds {
-    fn add_params<'a>(&'a self, params: &mut QueryParams<'a>) {
+impl<'a> ApprovedBy<'a> {
+    fn add_params<'b>(&'b self, params: &mut QueryParams<'b>) {
         match self {
-            ApprovedByIds::Any => {
+            ApprovedBy::Any => {
                 params.push("approved_by_ids", "Any");
             },
-            ApprovedByIds::None => {
+            ApprovedBy::None => {
                 params.push("approved_by_ids", "None");
             },
-            ApprovedByIds::AllOf(ids) => {
+            ApprovedBy::AllOfIds(ids) => {
                 params.extend(ids.iter().map(|&id| ("approved_by_ids[]", id)));
             },
+            ApprovedBy::AllOfUsernames(usernames) => {
+                params.extend(
+                    usernames
+                        .iter()
+                        .map(|username| ("approved_by_usernames[]", username)),
+                );
+            },
         }
+    }
+}
+
+#[derive(Debug, Clone)]
+enum MergeRequestMilestone<'a> {
+    None,
+    Any,
+    Named(Cow<'a, str>),
+}
+
+impl<'a> MergeRequestMilestone<'a> {
+    fn as_str(&self) -> &str {
+        match self {
+            MergeRequestMilestone::None => "None",
+            MergeRequestMilestone::Any => "Any",
+            MergeRequestMilestone::Named(name) => name.as_ref(),
+        }
+    }
+}
+
+impl<'a, 'b: 'a> ParamValue<'a> for &'b MergeRequestMilestone<'a> {
+    fn as_value(&self) -> Cow<'a, str> {
+        self.as_str().into()
     }
 }
 
@@ -242,7 +273,7 @@ pub struct MergeRequests<'a> {
     state: Option<MergeRequestState>,
     /// Filter merge requests with a milestone title.
     #[builder(setter(name = "_milestone"), default, private)]
-    milestone: Option<Milestone<'a>>,
+    milestone: Option<MergeRequestMilestone<'a>>,
     /// The view of the merge request.
     ///
     /// This field can restrict the amount of data returned.
@@ -282,8 +313,11 @@ pub struct MergeRequests<'a> {
     #[builder(setter(name = "_approver_ids"), default, private)]
     approver_ids: Option<ApproverIds>,
     /// Filter merge requests by approvals.
-    #[builder(setter(name = "_approved_by_ids"), default, private)]
-    approved_by_ids: Option<ApprovedByIds>,
+    #[builder(setter(name = "_approved_by"), default, private)]
+    approved_by: Option<ApprovedBy<'a>>,
+    /// Filter merge requests by approved state.
+    #[builder(default, setter(into))]
+    approved: Option<YesNo>,
     /// Filter merge requests by reviewers.
     #[builder(setter(into), default)]
     reviewer: Option<NameOrId<'a>>,
@@ -299,7 +333,7 @@ pub struct MergeRequests<'a> {
     /// Filter merge requests by WIP state
     #[builder(setter(into), default)]
     wip: Option<YesNo>,
-    /// Filter merge requests by deployed environment status.
+    /// Filter merge requests by deployed environment.
     #[builder(setter(into), default)]
     environment: Option<Cow<'a, str>>,
     /// Filter merge requests by those deployed after a point in time.
@@ -392,13 +426,13 @@ impl<'a> MergeRequestsBuilder<'a> {
 
     /// Filter merge requests without a milestone.
     pub fn without_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::None));
+        self.milestone = Some(Some(MergeRequestMilestone::None));
         self
     }
 
     /// Filter merge requests with any milestone.
     pub fn any_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::Any));
+        self.milestone = Some(Some(MergeRequestMilestone::Any));
         self
     }
 
@@ -407,7 +441,7 @@ impl<'a> MergeRequestsBuilder<'a> {
     where
         M: Into<Cow<'a, str>>,
     {
-        self.milestone = Some(Some(Milestone::Named(milestone.into())));
+        self.milestone = Some(Some(MergeRequestMilestone::Named(milestone.into())));
         self
     }
 
@@ -472,42 +506,83 @@ impl<'a> MergeRequestsBuilder<'a> {
 
     /// Filter merge requests without approvals.
     pub fn no_approvals(&mut self) -> &mut Self {
-        self.approved_by_ids = Some(Some(ApprovedByIds::None));
+        self.approved_by = Some(Some(ApprovedBy::None));
         self
     }
 
     /// Filter merge requests with any approvals.
     pub fn any_approvals(&mut self) -> &mut Self {
-        self.approved_by_ids = Some(Some(ApprovedByIds::Any));
+        self.approved_by = Some(Some(ApprovedBy::Any));
         self
     }
 
     /// Filter merge requests approved by a specific user (by ID).
+    ///
+    /// Note: Mutually exclusive to querying by usernames.
     pub fn approved_by_id(&mut self, approved_by: u64) -> &mut Self {
-        let approved_by_ids =
-            if let Some(Some(ApprovedByIds::AllOf(mut set))) = self.approved_by_ids.take() {
-                set.insert(approved_by);
-                set
-            } else {
-                [approved_by].iter().copied().collect()
-            };
-        self.approved_by_ids = Some(Some(ApprovedByIds::AllOf(approved_by_ids)));
+        let approved_by = if let Some(Some(ApprovedBy::AllOfIds(mut set))) = self.approved_by.take()
+        {
+            set.insert(approved_by);
+            set
+        } else {
+            [approved_by].iter().copied().collect()
+        };
+        self.approved_by = Some(Some(ApprovedBy::AllOfIds(approved_by)));
         self
     }
 
     /// Filter merge requests approved by a specific set of users (by ID).
+    ///
+    /// Note: Mutually exclusive to querying by usernames.
     pub fn approved_by_ids<I>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = u64>,
     {
         let approved_by_ids =
-            if let Some(Some(ApprovedByIds::AllOf(mut set))) = self.approved_by_ids.take() {
+            if let Some(Some(ApprovedBy::AllOfIds(mut set))) = self.approved_by.take() {
                 set.extend(iter);
                 set
             } else {
                 iter.collect()
             };
-        self.approved_by_ids = Some(Some(ApprovedByIds::AllOf(approved_by_ids)));
+        self.approved_by = Some(Some(ApprovedBy::AllOfIds(approved_by_ids)));
+        self
+    }
+
+    /// Filter merge requests approved by a specific user (by username).
+    ///
+    /// Note: Mutually exclusive to querying by IDs.
+    pub fn approved_by_username<U>(&mut self, username: U) -> &mut Self
+    where
+        U: Into<Cow<'a, str>>,
+    {
+        let approved_by_usernames =
+            if let Some(Some(ApprovedBy::AllOfUsernames(mut set))) = self.approved_by.take() {
+                set.insert(username.into());
+                set
+            } else {
+                [username.into()].iter().cloned().collect()
+            };
+        self.approved_by = Some(Some(ApprovedBy::AllOfUsernames(approved_by_usernames)));
+        self
+    }
+
+    /// Filter merge requests approved by a specific set of users (by username).
+    ///
+    /// Note: Mutually exclusive to querying by IDs.
+    pub fn approved_by_usernames<I, U>(&mut self, iter: I) -> &mut Self
+    where
+        I: Iterator<Item = U>,
+        U: Into<Cow<'a, str>>,
+    {
+        let approved_by_usernames =
+            if let Some(Some(ApprovedBy::AllOfUsernames(mut set))) = self.approved_by.take() {
+                set.extend(iter.map(Into::into));
+                set
+            } else {
+                iter.map(Into::into).collect()
+            };
+        self.approved_by = Some(Some(ApprovedBy::AllOfUsernames(approved_by_usernames)));
         self
     }
 
@@ -565,6 +640,7 @@ impl<'a> Endpoint for MergeRequests<'a> {
             .push_opt("updated_after", self.updated_after)
             .push_opt("updated_before", self.updated_before)
             .push_opt("scope", self.scope)
+            .push_opt("approved", self.approved)
             .push_opt("my_reaction_emoji", self.my_reaction_emoji.as_ref())
             .push_opt("source_branch", self.source_branch.as_ref())
             .push_opt("target_branch", self.target_branch.as_ref())
@@ -592,8 +668,8 @@ impl<'a> Endpoint for MergeRequests<'a> {
         if let Some(approver_ids) = self.approver_ids.as_ref() {
             approver_ids.add_params(&mut params);
         }
-        if let Some(approved_by_ids) = self.approved_by_ids.as_ref() {
-            approved_by_ids.add_params(&mut params);
+        if let Some(approved_by) = self.approved_by.as_ref() {
+            approved_by.add_params(&mut params);
         }
         if let Some(reviewer) = self.reviewer.as_ref() {
             match reviewer {
@@ -623,6 +699,8 @@ mod tests {
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
+
+    use super::MergeRequestMilestone;
 
     #[test]
     fn merge_request_state_as_str() {
@@ -674,6 +752,22 @@ mod tests {
             (MergeRequestOrderBy::CreatedAt, "created_at"),
             (MergeRequestOrderBy::UpdatedAt, "updated_at"),
             (MergeRequestOrderBy::Title, "title"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn merge_request_milestone_as_str() {
+        let items = &[
+            (MergeRequestMilestone::Any, "Any"),
+            (MergeRequestMilestone::None, "None"),
+            (
+                MergeRequestMilestone::Named("milestone".into()),
+                "milestone",
+            ),
         ];
 
         for (i, s) in items {
@@ -1153,7 +1247,7 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_approved_by() {
+    fn endpoint_approved_by_ids() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("projects/simple%2Fproject/merge_requests")
             .add_query_params(&[("approved_by_ids[]", "1"), ("approved_by_ids[]", "2")])
@@ -1165,6 +1259,44 @@ mod tests {
             .project("simple/project")
             .approved_by_id(1)
             .approved_by_ids([1, 2].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_approved_by_usernames() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/merge_requests")
+            .add_query_params(&[
+                ("approved_by_usernames[]", "thing1"),
+                ("approved_by_usernames[]", "thing2"),
+            ])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequests::builder()
+            .project("simple/project")
+            .approved_by_username("thing1")
+            .approved_by_usernames(["thing1", "thing2"].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_approved() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/merge_requests")
+            .add_query_params(&[("approved", "yes")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequests::builder()
+            .project("simple/project")
+            .approved(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

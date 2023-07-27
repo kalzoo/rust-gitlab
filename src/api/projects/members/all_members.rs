@@ -50,6 +50,9 @@ pub struct AllProjectMembers<'a> {
     /// A search string to filter members by.
     #[builder(setter(name = "_user_ids"), default, private)]
     user_ids: BTreeSet<u64>,
+    /// Show seat information for users.
+    #[builder(default)]
+    show_seat_info: Option<bool>,
     /// Filter results by member state.
     #[builder(default)]
     state: Option<ProjectMemberState>,
@@ -96,6 +99,7 @@ impl<'a> Endpoint for AllProjectMembers<'a> {
         params
             .push_opt("query", self.query.as_ref())
             .extend(self.user_ids.iter().map(|&value| ("user_ids[]", value)))
+            .push_opt("show_seat_info", self.show_seat_info)
             .push_opt("state", self.state);
 
         params
@@ -180,6 +184,23 @@ mod tests {
             .project("simple/project")
             .user_id(1)
             .user_ids([1, 2].iter().copied())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_show_seat_info() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects/simple%2Fproject/members/all")
+            .add_query_params(&[("show_seat_info", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = AllProjectMembers::builder()
+            .project("simple/project")
+            .show_seat_info(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

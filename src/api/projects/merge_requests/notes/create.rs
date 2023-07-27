@@ -23,6 +23,9 @@ pub struct CreateMergeRequestNote<'a> {
     #[builder(setter(into))]
     body: Cow<'a, str>,
 
+    /// Whether to create an internal note or not.
+    #[builder(default)]
+    internal: Option<bool>,
     /// The creation date of the note.
     ///
     /// Requires administrator or owner permissions.
@@ -33,13 +36,27 @@ pub struct CreateMergeRequestNote<'a> {
     /// Required when using the `/merge` command to verify that the intended commit is being
     /// merged.
     #[builder(setter(into), default)]
-    merge_request_diff_sha: Option<Cow<'a, str>>,
+    merge_request_diff_head_sha: Option<Cow<'a, str>>,
 }
 
 impl<'a> CreateMergeRequestNote<'a> {
     /// Create a builder for the endpoint.
     pub fn builder() -> CreateMergeRequestNoteBuilder<'a> {
         CreateMergeRequestNoteBuilder::default()
+    }
+}
+
+impl<'a> CreateMergeRequestNoteBuilder<'a> {
+    /// The SHA of the head of the merge request.
+    #[deprecated(
+        since = "0.1602.1",
+        note = "typo in GitLab docs; use `merge_request_diff_head_sha` instead."
+    )]
+    pub fn merge_request_diff_sha<M>(&mut self, merge_request_diff_sha: M) -> &mut Self
+    where
+        M: Into<Cow<'a, str>>,
+    {
+        self.merge_request_diff_head_sha(merge_request_diff_sha)
     }
 }
 
@@ -61,10 +78,11 @@ impl<'a> Endpoint for CreateMergeRequestNote<'a> {
 
         params
             .push("body", self.body.as_ref())
+            .push_opt("internal", self.internal)
             .push_opt("created_at", self.created_at)
             .push_opt(
-                "merge_request_diff_sha",
-                self.merge_request_diff_sha.as_ref(),
+                "merge_request_diff_head_sha",
+                self.merge_request_diff_head_sha.as_ref(),
             );
 
         params.into_body()
@@ -153,6 +171,27 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_internal() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/notes")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("body=body", "&internal=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateMergeRequestNote::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .body("body")
+            .internal(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_created_at() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -174,6 +213,31 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_merge_request_diff_head_sha() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/notes")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "body=body",
+                "&merge_request_diff_head_sha=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateMergeRequestNote::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .body("body")
+            .merge_request_diff_head_sha("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    #[allow(deprecated)]
     fn endpoint_merge_request_diff_sha() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -181,7 +245,7 @@ mod tests {
             .content_type("application/x-www-form-urlencoded")
             .body_str(concat!(
                 "body=body",
-                "&merge_request_diff_sha=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+                "&merge_request_diff_head_sha=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
             ))
             .build()
             .unwrap();

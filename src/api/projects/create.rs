@@ -504,7 +504,7 @@ pub struct CreateProject<'a> {
     namespace_id: Option<u64>,
     /// The default branch of the new project.
     ///
-    /// Defaults to `master`.
+    /// Defaults to `main`. Requires `initialize_with_readme` to be `true`.
     #[builder(setter(into), default)]
     default_branch: Option<Cow<'a, str>>,
     /// The description of the new project.
@@ -540,6 +540,10 @@ pub struct CreateProject<'a> {
     pages_access_level: Option<FeatureAccessLevelPublic>,
     /// Set the access level for operations features.
     #[builder(default)]
+    #[deprecated(
+        since = "0.1602.1",
+        note = "Use `releases`, `environments`, `feature_flags`, `infrastructure`, and `monitor` access levels instead"
+    )]
     operations_access_level: Option<FeatureAccessLevel>,
     /// Set the access level for requirements features.
     #[builder(default)]
@@ -550,6 +554,21 @@ pub struct CreateProject<'a> {
     /// Set the access level for security and compliance features.
     #[builder(default)]
     security_and_compliance_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for release access.
+    #[builder(default)]
+    releases_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for environment access.
+    #[builder(default)]
+    environments_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for feature flag access.
+    #[builder(default)]
+    feature_flags_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for infrastructure access.
+    #[builder(default)]
+    infrastructure_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for monitoring access.
+    #[builder(default)]
+    monitor_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
@@ -577,6 +596,8 @@ pub struct CreateProject<'a> {
     #[builder(default)]
     visibility: Option<VisibilityLevel>,
     /// A URL to import the repository from.
+    ///
+    /// Mutually exclusive with `initialize_with_readme`.
     #[builder(setter(into), default)]
     import_url: Option<Cow<'a, str>>,
     /// Whether job results are visible to non-project members or not.
@@ -591,6 +612,12 @@ pub struct CreateProject<'a> {
     /// Whether all discussions must be resolved before merges are allowed.
     #[builder(default)]
     only_allow_merge_if_all_discussions_are_resolved: Option<bool>,
+    /// If `true`, merge requests may not be merged unless all status checks are passing.
+    #[builder(default)]
+    only_allow_merge_if_all_status_checks_passed: Option<bool>,
+    /// The template for merge commit messages.
+    #[builder(setter(into), default)]
+    merge_commit_template: Option<Cow<'a, str>>,
     /// The merge method to use for the project.
     #[builder(default)]
     merge_method: Option<MergeMethod>,
@@ -600,6 +627,9 @@ pub struct CreateProject<'a> {
     /// Whether merge trains are enabled.
     #[builder(default)]
     merge_trains_enabled: Option<bool>,
+    /// Whether MRs default to targing this project or the upstream project.
+    #[builder(default)]
+    mr_default_target_self: Option<bool>,
     /// The squash option for the project.
     #[builder(default)]
     squash_option: Option<SquashOption>,
@@ -643,6 +673,7 @@ pub struct CreateProject<'a> {
     auto_cancel_pending_pipelines: Option<EnableState>,
     /// The default regular expression to use for build coverage extraction.
     #[builder(setter(into), default)]
+    #[deprecated(since = "0.1602.1", note = "removed upstream")]
     build_coverage_regex: Option<Cow<'a, str>>,
     /// The path to the GitLab CI configuration file within the repository.
     ///
@@ -660,6 +691,7 @@ pub struct CreateProject<'a> {
     repository_storage: Option<Cow<'a, str>>,
     /// How many approvals are required before allowing merges.
     #[builder(default)]
+    #[deprecated(since = "0.1602.1", note = "Use merge request approvals APIs instead.")]
     approvals_before_merge: Option<u64>,
     /// The classification label of the project.
     #[builder(setter(into), default)]
@@ -671,6 +703,8 @@ pub struct CreateProject<'a> {
     #[builder(default)]
     mirror_trigger_builds: Option<bool>,
     /// Initialize the project with a readme.
+    ///
+    /// Mutually exclusive with `import_url`.
     #[builder(default)]
     initialize_with_readme: Option<bool>,
     /// The name of a template project to use.
@@ -688,6 +722,9 @@ pub struct CreateProject<'a> {
     /// Whether the package repository is enabled or not.
     #[builder(default)]
     packages_enabled: Option<bool>,
+    /// Whether group runners are enabled for this project or not.
+    #[builder(default)]
+    group_runners_enabled: Option<bool>,
 
     /// Whether to enable issues or not.
     #[deprecated(note = "use `issues_access_level` instead")]
@@ -864,13 +901,23 @@ impl<'a> Endpoint for CreateProject<'a> {
             .push_opt("wiki_access_level", self.wiki_access_level)
             .push_opt("snippets_access_level", self.snippets_access_level)
             .push_opt("pages_access_level", self.pages_access_level)
-            .push_opt("operations_access_level", self.operations_access_level)
             .push_opt("requirements_access_level", self.requirements_access_level)
             .push_opt("analytics_access_level", self.analytics_access_level)
             .push_opt(
                 "security_and_compliance_access_level",
                 self.security_and_compliance_access_level,
             )
+            .push_opt("releases_access_level", self.releases_access_level)
+            .push_opt("environments_access_level", self.environments_access_level)
+            .push_opt(
+                "feature_flags_access_level",
+                self.feature_flags_access_level,
+            )
+            .push_opt(
+                "infrastructure_access_level",
+                self.infrastructure_access_level,
+            )
+            .push_opt("monitor_access_level", self.monitor_access_level)
             .push_opt("emails_disabled", self.emails_disabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
@@ -897,9 +944,15 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "only_allow_merge_if_all_discussions_are_resolved",
                 self.only_allow_merge_if_all_discussions_are_resolved,
             )
+            .push_opt(
+                "only_allow_merge_if_all_status_checks_passed",
+                self.only_allow_merge_if_all_status_checks_passed,
+            )
+            .push_opt("merge_commit_template", self.merge_commit_template.as_ref())
             .push_opt("merge_method", self.merge_method)
             .push_opt("merge_pipelines_enabled", self.merge_pipelines_enabled)
             .push_opt("merge_trains_enabled", self.merge_trains_enabled)
+            .push_opt("mr_default_target_self", self.mr_default_target_self)
             .push_opt("squash_option", self.squash_option)
             .push_opt(
                 "autoclose_referenced_issues",
@@ -923,7 +976,6 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "auto_cancel_pending_pipelines",
                 self.auto_cancel_pending_pipelines,
             )
-            .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
             .push_opt("ci_config_path", self.ci_config_path.as_ref())
             .push_opt("auto_devops_enabled", self.auto_devops_enabled)
             .push_opt(
@@ -931,7 +983,6 @@ impl<'a> Endpoint for CreateProject<'a> {
                 self.auto_devops_deploy_strategy,
             )
             .push_opt("repository_storage", self.repository_storage.as_ref())
-            .push_opt("approvals_before_merge", self.approvals_before_merge)
             .push_opt(
                 "external_authorization_classification_label",
                 self.external_authorization_classification_label.as_ref(),
@@ -946,7 +997,8 @@ impl<'a> Endpoint for CreateProject<'a> {
                 "group_with_project_templates_id",
                 self.group_with_project_templates_id,
             )
-            .push_opt("packages_enabled", self.packages_enabled);
+            .push_opt("packages_enabled", self.packages_enabled)
+            .push_opt("group_runners_enabled", self.group_runners_enabled);
 
         if let Some(policy) = self.container_expiration_policy_attributes.as_ref() {
             policy.add_query(&mut params);
@@ -963,7 +1015,10 @@ impl<'a> Endpoint for CreateProject<'a> {
                 .push_opt(
                     "container_registry_enabled",
                     self.container_registry_enabled,
-                );
+                )
+                .push_opt("operations_access_level", self.operations_access_level)
+                .push_opt("build_coverage_regex", self.build_coverage_regex.as_ref())
+                .push_opt("approvals_before_merge", self.approvals_before_merge);
         }
 
         params.into_body()
@@ -1480,6 +1535,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_operations_access_level() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -1553,6 +1609,101 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .security_and_compliance_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_releases_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&releases_access_level=private"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .releases_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_environments_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&environments_access_level=private"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .environments_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_feature_flags_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&feature_flags_access_level=private"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .feature_flags_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_infrastructure_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&infrastructure_access_level=private"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .infrastructure_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_monitor_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&monitor_access_level=private"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .monitor_access_level(FeatureAccessLevel::Private)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -2030,6 +2181,47 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_only_allow_merge_if_all_status_checks_passed() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&only_allow_merge_if_all_status_checks_passed=false",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .only_allow_merge_if_all_status_checks_passed(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_merge_commit_template() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&merge_commit_template=template"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .merge_commit_template("template")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_merge_method() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -2081,6 +2273,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .merge_trains_enabled(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_mr_default_target_self() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&mr_default_target_self=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .mr_default_target_self(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -2316,6 +2527,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_build_coverage_regex() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -2411,6 +2623,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_approvals_before_merge() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -2602,6 +2815,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .packages_enabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_group_runners_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&group_runners_enabled=false"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .group_runners_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

@@ -13,19 +13,26 @@ use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 use crate::api::ParamValue;
 
+/// Errors when parsing cron sequences.
 #[derive(Debug, Error)]
 #[non_exhaustive]
 pub enum PipelineScheduleCronError {
+    /// Failure to parse a cron expression.
     #[error("parse error: {}", reason)]
-    ParseError { reason: String },
+    ParseError {
+        /// The reason for the parse error.
+        reason: String,
+    },
 }
 
+/// A cron schedule for a pipeline.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PipelineScheduleCron {
     cron: String,
 }
 
 impl PipelineScheduleCron {
+    /// Create a cron expression from a string.
     pub fn new<E>(expression: E) -> Result<Self, PipelineScheduleCronError>
     where
         E: AsRef<str>,
@@ -56,160 +63,318 @@ impl<'a> ParamValue<'a> for &'a PipelineScheduleCron {
     }
 }
 
+/// Timezone selection for a pipeline schedule.
+///
+/// GitLab uses [ActiveRecord's TimeZone names][activerecord-timezone] to map to official
+/// timezones.
+///
+/// https://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PipelineScheduleTimeZone<'a> {
+    /// Etc/GMT+12
     InternationalDateLineWest,
+    /// Pacific/Pago_Pago
     AmericanSamoa,
+    /// Pacific/Midway
     MidwayIsland,
+    /// Pacific/Honolulu
     Hawaii,
+    /// America/Juneau
     Alaska,
+    /// America/Los_Angeles
     PacificTimeUSCanada,
+    /// America/Tijuana
     Tijuana,
+    /// America/Phoenix
     Arizona,
+    /// America/Mazatlan
     Mazatlan,
+    /// America/Denver
     MountainTimeUSCanada,
+    /// America/Guatemala
     CentralAmerica,
+    /// America/Chicago
     CentralTimeUSCanada,
+    /// America/Chihuahua
     Chihuahua,
+    /// America/Mexico_City
     Guadalajara,
+    /// America/Mexico_City
     MexicoCity,
+    /// America/Monterrey
     Monterrey,
+    /// America/Regina
     Saskatchewan,
+    /// America/Bogota
     Bogota,
+    /// America/New_York
     EasternTimeUSCanada,
+    /// America/Indiana/Indianapolis
     IndianaEast,
+    /// America/Lima
     Lima,
+    /// America/Lima
     Quito,
+    /// America/Halifax
     AtlanticTimeCanada,
+    /// America/Caracas
     Caracas,
+    /// America/Guyana
     Georgetown,
+    /// America/La_Paz
     LaPaz,
+    /// America/Puerto_Rico
     PuertoRico,
+    /// America/Santiago
     Santiago,
+    /// America/St_Johns
     Newfoundland,
+    /// America/Sao_Paulo
     Brasilia,
+    /// America/Argentina/Buenos_Aires
     BuenosAires,
+    /// America/Godthab
     Greenland,
+    /// America/Montevideo
     Montevideo,
+    /// Atlantic/South_Georgia
     MidAtlantic,
+    /// Atlantic/Azores
     Azores,
+    /// Atlantic/Cape_Verde
     CapeVerdeIslands,
+    /// Europe/London
     Edinburgh,
+    /// Europe/Lisbon
     Lisbon,
+    /// Europe/London
     London,
+    /// Africa/Monrovia
     Monrovia,
+    /// Etc/UTC
     UTC,
+    /// Europe/Amsterdam
     Amsterdam,
+    /// Europe/Belgrade
     Belgrade,
+    /// Europe/Berlin
     Berlin,
+    /// Europe/Zurich
     Bern,
+    /// Europe/Bratislava
     Bratislava,
+    /// Europe/Brussels
     Brussels,
+    /// Europe/Budapest
     Budapest,
+    /// Africa/Casablanca
     Casablanca,
+    /// Europe/Copenhagen
     Copenhagen,
+    /// Europe/Dublin
     Dublin,
+    /// Europe/Ljubljana
     Ljubljana,
+    /// Europe/Madrid
     Madrid,
+    /// Europe/Paris
     Paris,
+    /// Europe/Prague
     Prague,
+    /// Europe/Rome
     Rome,
+    /// Europe/Sarajevo
     Sarajevo,
+    /// Europe/Skopje
     Skopje,
+    /// Europe/Stockholm
     Stockholm,
+    /// Europe/Vienna
     Vienna,
+    /// Europe/Warsaw
     Warsaw,
+    /// Africa/Algiers
     WestCentralAfrica,
+    /// Europe/Zagreb
     Zagreb,
+    /// Europe/Zurich
     Zurich,
+    /// Europe/Athens
     Athens,
+    /// Europe/Bucharest
     Bucharest,
+    /// Africa/Cairo
     Cairo,
+    /// Africa/Harare
     Harare,
+    /// Europe/Helsinki
     Helsinki,
+    /// Asia/Jerusalem
     Jerusalem,
+    /// Asia/Kaliningrad
     Kaliningrad,
+    /// Europe/Kiev
     Kyiv,
+    /// Africa/Johannesburg
     Pretoria,
+    /// Europe/Eiga
     Riga,
+    /// Europe/Sofia
     Sofia,
+    /// Europe/Tallinn
     Tallinn,
+    /// Europe/Vilnius
     Vilnius,
+    /// Asia/Baghdad
     Baghdad,
+    /// Europe/Istanbul
     Istanbul,
+    /// Asia/Kuwait
     Kuwait,
+    /// Europe/Minsk
     Minsk,
+    /// Europe/Moscow
     Moscow,
+    /// Asia/Nairobi
     Nairobi,
+    /// Asia/Riyadh
     Riyadh,
+    /// Europe/Moscow
     StPetersburg,
+    /// Europe/Volgograd
     Volgograd,
+    /// Asia/Tehran
     Tehran,
+    /// Asia/Muscat
     AbuDhabi,
+    /// Asia/Baku
     Baku,
+    /// Asia/Muscat
     Muscat,
+    /// Europe/Samara
     Samara,
+    /// Asia/Tbilisi
     Tbilisi,
+    /// Asia/Yerevan
     Yerevan,
+    /// Asia/Kabul
     Kabul,
+    /// Asia/Yekaterinburg
     Ekaterinburg,
+    /// Asia/Karachi
     Islamabad,
+    /// Asia/Karachi
     Karachi,
+    /// Asia/Tashkent
     Tashkent,
+    /// Asia/Kolkata
     Chennai,
+    /// Asia/Kolkata
     Kolkata,
+    /// Asia/Kolkata
     Mumbai,
+    /// Asia/Kolkata
     NewDelhi,
+    /// Asia/Colombo
     SriJayawardenepura,
+    /// Asia/Kathmandu
     Kathmandu,
+    /// Asia/Almaty
     Almaty,
+    /// Asia/Dhaka
     Astana,
+    /// Asia/Dhaka
     Dhaka,
+    /// Asia/Urumqi
     Urumqi,
+    /// Asia/Rangoon
     Rangoon,
+    /// Asia/Bangkok
     Bangkok,
+    /// Asia/Bangkok
     Hanoi,
+    /// Asia/Jakarta
     Jakarta,
+    /// Asia/Krasnoyarsk
     Krasnoyarsk,
+    /// Asia/Novosibirsk
     Novosibirsk,
+    /// Asia/Shanghai
     Beijing,
+    /// Asia/Chongqing
     Chongqing,
+    /// Asia/Hong_Kong
     HongKong,
+    /// Asia/Irkutsk
     Irkutsk,
+    /// Asia/Kuala_Lumpur
     KualaLumpur,
+    /// Australia/Perth
     Perth,
+    /// Asia/Singapore
     Singapore,
+    /// Asia/Taipei
     Taipei,
+    /// Asia/Ulaanbaatar
     Ulaanbaatar,
+    /// Asia/Tokyo
     Osaka,
+    /// Asia/Tokyo
     Sapporo,
+    /// Asia/Seoul
     Seoul,
+    /// Asia/Tokyo
     Tokyo,
+    /// Asia/Yakutsk
     Yakutsk,
+    ///Australia/Adelaide
     Adelaide,
+    ///Australia/Darwin
     Darwin,
+    ///Australia/Brisbane
     Brisbane,
+    ///Australia/Melbourne
     Canberra,
+    /// Pacific/Guam
     Guam,
+    /// Australia/Hobart
     Hobart,
+    ///Australia/Melbourne
     Melbourne,
+    /// Pacific/Port_Moresby
     PortMoresby,
+    /// Australia/Sydney
     Sydney,
+    /// Asia/Vladivostok
     Vladivostok,
+    /// Asia/Magadan
     Magadan,
+    /// Pacific/Noumea
     NewCaledonia,
+    /// Pacific/Guadalcanal
     SolomonIslands,
+    /// Asia/Srednekolymsk
     Srednekolymsk,
+    /// Pacific/Auckland
     Auckland,
+    /// Pacific/Fiji
     Fiji,
+    /// Asia/Kamchatka
     Kamchatka,
+    /// Pacific/Majuro
     MarshallIslands,
+    /// Pacific/Auckland
     Wellington,
+    /// Pacific/Chatham
     ChathamIslands,
+    /// Pacific/Tongatapu
     Nukualofa,
+    /// Pacific/Apia
     Samoa,
+    /// Pacific/Fakaofo
     TokelauIslands,
+    /// Coverage of any unhandled time zone.
     Custom(Cow<'a, str>),
 }
 

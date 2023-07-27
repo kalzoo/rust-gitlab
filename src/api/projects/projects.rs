@@ -161,6 +161,12 @@ pub struct Projects<'a> {
     /// Filter projects by those without activity before this date.
     #[builder(default)]
     last_activity_before: Option<DateTime<Utc>>,
+    /// Filter projects last updated before a given date.
+    #[builder(default)]
+    updated_before: Option<DateTime<Utc>>,
+    /// Filter projects last updated after a given date.
+    #[builder(default)]
+    updated_after: Option<DateTime<Utc>>,
     /// Filter projects by which storage backend the repository is on.
     ///
     /// Available to administrators only.
@@ -278,6 +284,8 @@ impl<'a> Endpoint for Projects<'a> {
             .push_opt("id_before", self.id_before)
             .push_opt("last_activity_after", self.last_activity_after)
             .push_opt("last_activity_before", self.last_activity_before)
+            .push_opt("updated_before", self.updated_before)
+            .push_opt("updated_after", self.updated_after)
             .push_opt("repository_storage", self.repository_storage.as_ref())
             .extend(
                 self.custom_attributes
@@ -687,6 +695,38 @@ mod tests {
 
         let endpoint = Projects::builder()
             .last_activity_before(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_updated_before() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("updated_before", "2020-01-01T00:00:00Z")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder()
+            .updated_before(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_updated_after() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("updated_after", "2020-01-01T00:00:00Z")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder()
+            .updated_after(Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap())
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

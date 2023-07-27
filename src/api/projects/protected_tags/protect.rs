@@ -27,7 +27,7 @@ pub struct ProtectTag<'a> {
     create_access_level: Option<ProtectedAccessLevel>,
     /// A discrete set of accesses allowed to create tags.
     #[builder(setter(name = "_allowed_to_create"), default, private)]
-    allowed_to_create: BTreeSet<ProtectedAccess>,
+    allowed_to_create: BTreeSet<ProtectedAccess<ProtectedAccessLevel>>,
 }
 
 impl<'a> ProtectTag<'a> {
@@ -39,7 +39,10 @@ impl<'a> ProtectTag<'a> {
 
 impl<'a> ProtectTagBuilder<'a> {
     /// Add access to create tags.
-    pub fn allowed_to_create(&mut self, access: ProtectedAccess) -> &mut Self {
+    pub fn allowed_to_create(
+        &mut self,
+        access: ProtectedAccess<ProtectedAccessLevel>,
+    ) -> &mut Self {
         self.allowed_to_create
             .get_or_insert_with(BTreeSet::new)
             .insert(access);

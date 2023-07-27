@@ -62,9 +62,15 @@ pub struct CreateProjectVariable<'a> {
     /// Whether the variable is masked.
     #[builder(default)]
     masked: Option<bool>,
+    /// Whether the variable is treated as a raw string.
+    #[builder(default)]
+    raw: Option<bool>,
     /// The environment scope of the variable.
     #[builder(setter(into), default)]
     environment_scope: Option<Cow<'a, str>>,
+    /// The description of the variable.
+    #[builder(setter(into), default)]
+    description: Option<Cow<'a, str>>,
 }
 
 impl<'a> CreateProjectVariable<'a> {
@@ -92,7 +98,9 @@ impl<'a> Endpoint for CreateProjectVariable<'a> {
             .push_opt("variable_type", self.variable_type)
             .push_opt("protected", self.protected)
             .push_opt("masked", self.masked)
-            .push_opt("environment_scope", self.environment_scope.as_ref());
+            .push_opt("raw", self.raw)
+            .push_opt("environment_scope", self.environment_scope.as_ref())
+            .push_opt("description", self.description.as_ref());
 
         params.into_body()
     }
@@ -258,6 +266,27 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_raw() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/variables")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("key=testkey", "&value=testvalue", "&raw=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProjectVariable::builder()
+            .project("simple/project")
+            .key("testkey")
+            .value("testvalue")
+            .raw(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_environment_scope() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -277,6 +306,31 @@ mod tests {
             .key("testkey")
             .value("testvalue")
             .environment_scope("*")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_description() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects/simple%2Fproject/variables")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "key=testkey",
+                "&value=testvalue",
+                "&description=desc"
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProjectVariable::builder()
+            .project("simple/project")
+            .key("testkey")
+            .value("testvalue")
+            .description("desc")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

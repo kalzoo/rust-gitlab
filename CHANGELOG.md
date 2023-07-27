@@ -1,3 +1,86 @@
+# v0.1602.1 (unreleased)
+
+## Breaking changes
+
+  * `api::projects::protected_branches::ProtectBranch::allowed_to_unprotect` no
+    longer supports the `NoAccess` level as GitLab does not support it. Callers
+    need to update to use the `ProtectedAccessLevelWithAccess` set of levels
+    instead.
+
+## Fixes
+
+  * Milestone filters for `api::issues::{Group,Project}Issues` now use the
+    proper query parameter (`milestone_id`).
+
+## Additions
+
+  * Add `api::groups::BranchProtection::PushExceptInitial` protection rule.
+  * Support editing member rule IDs on group and project memberships.
+  * Support `Upcoming` and `Started` milestone queries for issues.
+  * Support `skip_users` in group and project member list queries.
+  * Support `show_seat_info` parameter when listing memberships.
+  * Support `None` and `Any` epic filters for project issues.
+  * Support epic filters for group issues.
+  * Support filtering project and group issues by health status.
+  * Support `Any`, `Today`, and `Tomorrow` issue due date filters.
+  * Support sorting issue results by their title.
+  * Support filtering group issues by their type.
+  * Support filtering out external users when listing users.
+  * Support setting and editing the `raw` flag on project CI variables.
+  * Support setting and editing the `description` field on project CI
+    variables.
+  * Support sorting tags by version number.
+  * Support filtering commits by author.
+  * Support filtering branches by regex.
+  * Support setting the `internal` flag for created issue and MR notes.
+  * Support the `WaitingForResource` job scope when filtering jobs.
+  * Support the `include_retried` field for project jobs.
+  * Support filtering MRs by approver usernames.
+  * Support filtering MRs by whether they are approved or not.
+  * Support setting `merge_commit_template` when creating a project.
+  * Support setting `mr_default_target_self` when creating a project.
+  * Support IP restriction ranges when editing groups.
+  * Support wiki access level when editing groups.
+  * Support project download limit parameters when editing groups.
+  * Support filtering projects by last updated timestamps.
+  * Support skipping LDAP users when searching users.
+  * Support downloading raw file contents backed by LFS.
+  * Support setting and editing access levels for `releases`, `environments`,
+    `feature flags`, `infrastructure`, and `monitor` project features.
+  * Support setting and editing the
+    `only_allow_merge_if_all_status_checks_passed` flag on projects.
+  * Support setting and editing group runner support on projects.
+  * Support editing `mirror_branch_regex` on projects.
+  * Support editing `ci_allow_fork_pipelines_to_run_in_parent_project`,
+    `enforce_auth_checks_on_uploads`, `issue_branch_template`,
+    `allow_pipeline_trigger_approve_deployment`, and
+    `ci_forward_deployment_rollback_allowed` settings on projects.
+
+## Changes
+
+  * Deprecate
+    `api::issues::{Group,Project}Issues::{without_milestone,any_milestone,milestone}`
+    in preference for `milestone_id`. With new enumerations possible, using the
+    actual name for the parameter is best with the actual type exposed.
+  * The `ref` parameter for raw file contents is no longer required. If not
+    provided, the repository's `HEAD` commit will be used.
+  * Deprecate including `tags` and `tags_count` in project registry repository
+    queries. Removed in GitLab 15.0.
+  * Deprecate MR note creation and editing with `merge_request_diff_sha`
+    fields. The documentation had a typo and it is only supported when creating
+    an MR note. Use `merge_request_diff_head_sha` instead.
+  * Deprecate `approvals_before_merge` in project creation and editing and MR
+    creation. MR approval rules APIs (currently no bindings are provided)
+    should be used instead.
+  * Deprecate `confidential` for issue notes. Use `internal` instead, but note
+    that it is only available at note creation and cannot be edited later.
+  * `ProtectedAccess` is now a generic type in order to support different
+    fields with different available access levels. Most call sites should not
+    be affected.
+  * Deprecate `build_coverage_regex` when creating and editing a project. This
+    setting is now set via `.gitlab-ci.yml` rather than at the project-level.
+  * Deprecate `operations_access_level` for more granular feature selections.
+
 # v0.1602.0
 
 ## Additions

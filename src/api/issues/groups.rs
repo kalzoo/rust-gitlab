@@ -12,13 +12,13 @@ use http::Method;
 
 use crate::api::{
     common::{CommaSeparatedList, NameOrId, SortOrder},
-    helpers::{Labels, Milestone, ReactionEmoji},
+    helpers::{Labels, ReactionEmoji},
     Endpoint, Pageable, QueryParams,
 };
 
 use super::{
-    Assignee, IssueDueDateFilter, IssueIteration, IssueOrderBy, IssueScope, IssueSearchScope,
-    IssueState, IssueWeight,
+    Assignee, IssueDueDateFilter, IssueEpic, IssueHealthStatus, IssueIteration, IssueMilestone,
+    IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueType, IssueWeight,
 };
 
 /// Query for issues within a group.
@@ -47,8 +47,8 @@ pub struct GroupIssues<'a> {
     #[builder(default)]
     iteration: Option<IssueIteration<'a>>,
     /// Filter issues with a milestone.
-    #[builder(setter(name = "_milestone"), default, private)]
-    milestone: Option<Milestone<'a>>,
+    #[builder(default)]
+    milestone_id: Option<IssueMilestone<'a>>,
     /// Filter issues within a scope.
     #[builder(default)]
     scope: Option<IssueScope>,
@@ -90,6 +90,15 @@ pub struct GroupIssues<'a> {
     /// Filter issues by due date.
     #[builder(default)]
     due_date: Option<IssueDueDateFilter>,
+    /// Filter by epic ID.
+    #[builder(default)]
+    epic_id: Option<IssueEpic>,
+    /// Filter by issue type.
+    #[builder(default)]
+    issue_type: Option<IssueType>,
+    /// Filter by issue health status.
+    #[builder(default)]
+    health_status: Option<IssueHealthStatus>,
 
     // TODO: How best to support this parameter?
     // not
@@ -171,13 +180,13 @@ impl<'a> GroupIssuesBuilder<'a> {
 
     /// Filter issues without a milestone.
     pub fn without_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::None));
+        self.milestone_id = Some(Some(IssueMilestone::None));
         self
     }
 
     /// Filter issues with any milestone.
     pub fn any_milestone(&mut self) -> &mut Self {
-        self.milestone = Some(Some(Milestone::Any));
+        self.milestone_id = Some(Some(IssueMilestone::Any));
         self
     }
 
@@ -186,7 +195,7 @@ impl<'a> GroupIssuesBuilder<'a> {
     where
         M: Into<Cow<'a, str>>,
     {
-        self.milestone = Some(Some(Milestone::Named(milestone.into())));
+        self.milestone_id = Some(Some(IssueMilestone::Named(milestone.into())));
         self
     }
 
@@ -291,7 +300,7 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("state", self.state)
             .push_opt("labels", self.labels.as_ref())
             .push_opt("with_labels_details", self.with_labels_details)
-            .push_opt("milestone", self.milestone.as_ref())
+            .push_opt("milestone_id", self.milestone_id.as_ref())
             .push_opt("scope", self.scope)
             .push_opt("my_reaction_emoji", self.my_reaction_emoji.as_ref())
             .push_opt("non_archived", self.non_archived)
@@ -304,6 +313,9 @@ impl<'a> Endpoint for GroupIssues<'a> {
             .push_opt("updated_before", self.updated_before)
             .push_opt("confidential", self.confidential)
             .push_opt("due_date", self.due_date)
+            .push_opt("epic_id", self.epic_id)
+            .push_opt("issue_type", self.issue_type)
+            .push_opt("health_status", self.health_status)
             .push_opt("order_by", self.order_by)
             .push_opt("sort", self.sort);
 
@@ -336,8 +348,9 @@ mod tests {
 
     use crate::api::common::SortOrder;
     use crate::api::issues::{
-        groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueIteration,
-        IssueOrderBy, IssueScope, IssueSearchScope, IssueState, IssueWeight,
+        groups::GroupIssues, groups::GroupIssuesBuilderError, IssueDueDateFilter, IssueEpic,
+        IssueHealthStatus, IssueIteration, IssueMilestone, IssueOrderBy, IssueScope,
+        IssueSearchScope, IssueState, IssueType, IssueWeight,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -473,6 +486,57 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_epic_id() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("epic_id", "4")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .epic_id(IssueEpic::Id(4))
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_issue_type() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("issue_type", "incident")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .issue_type(IssueType::Incident)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_health_status() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/simple%2Fgroup/issues")
+            .add_query_params(&[("health_status", "at_risk")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = GroupIssues::builder()
+            .group("simple/group")
+            .health_status(IssueHealthStatus::AtRisk)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
     fn endpoint_iteration_none() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("groups/simple%2Fgroup/issues")
@@ -541,17 +605,17 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_milestone() {
+    fn endpoint_milestone_id() {
         let endpoint = ExpectedUrl::builder()
             .endpoint("groups/simple%2Fgroup/issues")
-            .add_query_params(&[("milestone", "1.0")])
+            .add_query_params(&[("milestone_id", "1.0")])
             .build()
             .unwrap();
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = GroupIssues::builder()
             .group("simple/group")
-            .milestone("1.0")
+            .milestone_id(IssueMilestone::Named("1.0".into()))
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
