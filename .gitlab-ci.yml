@@ -21,7 +21,7 @@ stages:
         GIT_CLONE_PATH: $CI_BUILDS_DIR/rust
 
 .rust_minimum:
-    image: "rust:1.60"
+    image: "rust:1.63"
 
     variables:
         CARGO_UPDATE_POLICY: newest
