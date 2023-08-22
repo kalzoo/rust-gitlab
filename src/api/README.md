@@ -56,6 +56,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/issues/:issue/notes` `projects/issues/notes/notes.rs`
   * `POST   /projects/:project/issues/:issue/notes` `projects/issues/notes/create.rs`
   * `PUT    /projects/:project/issues/:issue/notes/:note` `projects/issues/notes/edit.rs`
+  * `GET    /projects/:project/issues/:issue/related_merge_requests` `projects/issues/related_merge_requests.rs`
   * `GET    /projects/:project/issues/:issue/resource_label_events` `projects/issues/resource_label_events.rs`
   * `GET    /projects/:project/jobs` `projects/jobs/jobs.rs`
   * `GET    /projects/:project/jobs/:job` `projects/jobs/job.rs`
@@ -320,7 +321,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/issues/:issue/metric_images/:metric_image` https://gitlab.kitware.com/help/api/issues.md#delete-metric-image
   * `POST   /projects/:project/issues/:issue/move` https://gitlab.kitware.com/help/api/issues.md#move-an-issue
   * `GET    /projects/:project/issues/:issue/participants` https://gitlab.kitware.com/help/api/issues.md#participants-on-issues
-  * `GET    /projects/:project/issues/:issue/related_merge_requests` https://gitlab.kitware.com/help/api/issues.md#list-merge-requests-related-to-issue
   * `PUT    /projects/:project/issues/:issue/reorder` https://gitlab.kitware.com/help/api/issues.md#reorder-an-issue
     Arguably this should be a `POST` endpoint
   * `POST   /projects/:project/issues/:issue/reset_spent_time` https://gitlab.kitware.com/help/api/issues.md#reset-spent-time-for-an-issue
