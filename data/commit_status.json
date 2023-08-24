@@ -14,6 +14,7 @@
   "finished_at": "2016-11-08T09:35:32.629-05:00",
   "id": 931434,
   "name": "rust-gitlab-megas-linux-debug",
+  "pipeline_id": 34289,
   "ref": "master",
   "sha": "de4ac3cf96cb8a0893be22b03f5171d934f9d392",
   "started_at": null,
