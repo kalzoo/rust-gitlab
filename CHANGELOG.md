@@ -5,6 +5,10 @@
   * Support `/project/:project/issues/:issue_iid/related_merge_requests`
     endpoint.
 
+## Fixes
+
+  * Switches `/api/projects/repository/tree` to use ordinary pagination.
+
 # v0.1602.1
 
 ## Breaking changes
