@@ -55,11 +55,7 @@ impl<'a> Endpoint for Tree<'a> {
     }
 }
 
-impl<'a> Pageable for Tree<'a> {
-    fn use_keyset_pagination(&self) -> bool {
-        true
-    }
-}
+impl<'a> Pageable for Tree<'a> {}
 
 #[cfg(test)]
 mod tests {
