@@ -9,6 +9,10 @@
 
   * Switches `/api/projects/repository/tree` to use ordinary pagination.
 
+## Changes
+
+  * Minimum dependency build now requires 1.63 to avoid security advisories.
+
 # v0.1602.1
 
 ## Breaking changes

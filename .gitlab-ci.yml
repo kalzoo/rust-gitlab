@@ -14,7 +14,7 @@ stages:
     - publish
 
 .rust_minimum_mindeps:
-    image: "rust:1.57"
+    image: "rust:1.63"
 
     variables:
         CARGO_UPDATE_POLICY: newest
