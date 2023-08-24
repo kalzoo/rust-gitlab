@@ -28,7 +28,7 @@ client_api = [
 ]
 client_der = ["reqwest/native-tls", "client_api"]
 client_pem = ["reqwest/rustls-tls", "client_api"]
-minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset"]
+minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset", "rustls-webpki"]
 
 [dependencies]
 base64 = "~0.13"
@@ -37,7 +37,7 @@ derive_builder = "~0.11.2"
 itertools = { version = "~0.10", optional = true }
 log = "~0.4.6"
 percent-encoding = { version = "^2.0", optional = true }
-reqwest = { version = "~0.11.11", features = ["blocking", "json"], default-features = false, optional = true }
+reqwest = { version = "~0.11.19", features = ["blocking", "json"], default-features = false, optional = true }
 thiserror = { version = "^1.0.2", optional = true }
 async-trait = { version = "~0.1.9", optional = true }
 futures-util = { version = "0.3.14", default-features = false, optional = true }
@@ -64,6 +64,8 @@ tempfile = { version = "^3.4.0", optional = true }
 h2 = { version = "0.3.17", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0045
 memoffset = { version = "0.6.2", optional = true }
+# Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0052
+rustls-webpki = { version = "0.101.4", optional = true }
 
 [dev-dependencies]
 itertools = { version = "~0.10" }
