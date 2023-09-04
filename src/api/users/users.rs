@@ -118,7 +118,7 @@ pub struct Users<'a> {
     /// Search for users with a given custom attribute set.
     #[builder(setter(name = "_custom_attributes"), default, private)]
     custom_attributes: BTreeMap<Cow<'a, str>, Cow<'a, str>>,
-    /// Search for users with custom attributes.
+    /// Provide custom attributes as well.
     #[builder(default)]
     with_custom_attributes: Option<bool>,
 
