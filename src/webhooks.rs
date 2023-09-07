@@ -11,7 +11,7 @@
 //! Gitlab does not have consistent structures for its hooks, so they often change from
 //! version to version.
 
-use chrono::{DateTime, NaiveDate, TimeZone, Utc};
+use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
@@ -43,7 +43,9 @@ impl<'de> Deserialize<'de> for HookDate {
     {
         let val = String::deserialize(deserializer)?;
 
-        Utc.datetime_from_str(&val, "%Y-%m-%d %H:%M:%S UTC")
+        NaiveDateTime::parse_from_str(&val, "%Y-%m-%d %H:%M:%S UTC")
+            // XXX(chrono-0.4.25): `dt.and_utc()`
+            .map(|dt| Utc.from_utc_datetime(&dt))
             .or_else(|_| DateTime::parse_from_rfc3339(&val).map(|dt| dt.with_timezone(&Utc)))
             .or_else(|_| {
                 DateTime::parse_from_str(&val, "%Y-%m-%d %H:%M:%S %z")
