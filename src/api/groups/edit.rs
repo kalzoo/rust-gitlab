@@ -361,7 +361,7 @@ mod tests {
     }
 
     #[test]
-    fn project_is_necessary() {
+    fn group_is_necessary() {
         let err = EditGroup::builder().build().unwrap_err();
         crate::test::assert_missing_field!(err, EditGroupBuilderError, "group");
     }

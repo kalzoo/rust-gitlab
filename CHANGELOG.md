@@ -3,6 +3,7 @@
 ## Additions
 
   * Add Email Address to User Hook Attributes.
+  * Support managing group/project push rules.
 
 # v0.1604.0
 

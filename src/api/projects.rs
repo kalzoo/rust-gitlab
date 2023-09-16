@@ -29,6 +29,7 @@ mod project;
 mod projects;
 pub mod protected_branches;
 pub mod protected_tags;
+pub mod push_rule;
 pub mod registry;
 pub mod releases;
 pub mod repository;
