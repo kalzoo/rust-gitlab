@@ -1,3 +1,9 @@
+# v0.1604.1 (unreleased)
+
+## Additions
+
+  * Add Email Address to User Hook Attributes.
+
 # v0.1604.0
 
   * No changes needed for GitLab 16.4.
