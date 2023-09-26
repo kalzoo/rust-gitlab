@@ -1,3 +1,7 @@
+# v0.1604.0
+
+  * No changes needed for GitLab 16.4.
+
 # v0.1603.0
 
 ## Additions
