@@ -27,6 +27,7 @@ These API endpoints have been implemented.
   * `GET    /groups/:group/packages`  `groups/packages/packages.rs`
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
   * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
+  * `PUT    /groups/:group/push_rule` `groups/push_rule/edit.rs`
   * `POST   /groups/:group/share` `groups/share.rs`
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
@@ -143,6 +144,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/protected_tags` `projects/protected_tags/protect.rs`
   * `GET    /projects/:project/protected_tags/:name` `projects/protected_tags/protected_tag.rs`
   * `DELETE /projects/:project/protected_tags/:name` `projects/protected_tags/unprotect.rs`
+  * `PUT    /projects/:project/push_rule` `projects/push_rule/edit.rs`
   * `GET    /projects/:project/registry/repositories` `projects/registry/repositories.rs`
   * `DELETE /projects/:project/registry/repositories/:repository` `projects/registry/delete_repository.rs`
   * `GET    /projects/:project/registry/repositories/:repository/tags` `projects/registry/repository_tags.rs`
@@ -245,7 +247,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/provisioned_users` https://gitlab.kitware.com/help/api/groups.md#list-provisioned-users
   * `GET    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#get-group-push-rules
   * `POST   /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#add-group-push-rule
-  * `PUT    /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#edit-group-push-rule
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
@@ -394,7 +395,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report-summary
   * `GET    /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#get-project-push-rules
   * `POST   /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#add-project-push-rule
-  * `PUT    /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#edit-project-push-rule
   * `DELETE /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#delete-project-push-rule
   * `DELETE /projects/:project/registry/repositories/:repository_id/tags` https://gitlab.kitware.com/help/api/container_registry.md#delete-registry-repository-tags-in-bulk
   * `POST   /projects/:project/releases` https://gitlab.kitware.com/help/api/releases/index.md#create-a-release

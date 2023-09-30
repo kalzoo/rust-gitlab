@@ -572,8 +572,6 @@ impl<'a> Endpoint for EditProject<'a> {
 
 #[cfg(test)]
 mod tests {
-    use http::Method;
-
     use crate::api::common::{EnableState, VisibilityLevel};
     use crate::api::projects::{
         AutoDevOpsDeployStrategy, BuildGitStrategy, ContainerExpirationCadence,
@@ -583,6 +581,7 @@ mod tests {
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
+    use http::Method;
 
     #[test]
     fn project_is_needed() {
