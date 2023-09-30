@@ -120,6 +120,8 @@ pub struct UserHookAttrs {
     pub username: String,
     /// The URL to the avatar of the user.
     pub avatar_url: Option<String>,
+    /// The email address of the user.
+    pub email: Option<String>,
 }
 
 /// The identity of a user exposed through a hook.
