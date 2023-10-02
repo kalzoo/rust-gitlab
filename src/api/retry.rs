@@ -191,10 +191,9 @@ where
             if let Some(uri) = request.uri_ref() {
                 builder = builder.uri(uri);
             }
-            // https://github.com/hyperium/http/pull/495
-            // if let Some(version) = request.version_ref() {
-            //     builder = builder.version(version);
-            // }
+            if let Some(version) = request.version_ref() {
+                builder = builder.version(*version);
+            }
             if let Some(headers) = request.headers_ref() {
                 for (key, value) in headers.iter() {
                     builder = builder.header(key, value);
@@ -203,7 +202,7 @@ where
             // Ignore extensions for now. Can be handled once this is released:
             // https://github.com/hyperium/http/pull/497
 
-            dbg!(self.client.rest(builder, body.clone()))
+            self.client.rest(builder, body.clone())
         })
     }
 }

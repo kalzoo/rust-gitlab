@@ -5,6 +5,10 @@
   * Add Email Address to User Hook Attributes.
   * Support managing group/project push rules.
 
+## Fixes
+
+  * `api::retry::Client` now forwards the HTTP version for requests as well.
+
 # v0.1604.0
 
   * No changes needed for GitLab 16.4.
