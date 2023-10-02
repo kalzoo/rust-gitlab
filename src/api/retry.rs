@@ -202,7 +202,7 @@ where
             // Ignore extensions for now. Can be handled once this is released:
             // https://github.com/hyperium/http/pull/497
 
-            dbg!(self.client.rest(builder, body.clone()))
+            self.client.rest(builder, body.clone())
         })
     }
 }
