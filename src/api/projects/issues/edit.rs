@@ -245,7 +245,7 @@ impl<'a> EditIssueBuilder<'a> {
 
     /// Remove a label from the issue.
     ///
-    /// This is an incremental remove form the existing set of labels on the issue.
+    /// This is an incremental removal from the existing set of labels on the issue.
     pub fn remove_label<L>(&mut self, label: L) -> &mut Self
     where
         L: Into<Cow<'a, str>>,

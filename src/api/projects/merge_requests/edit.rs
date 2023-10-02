@@ -255,7 +255,7 @@ impl<'a> EditMergeRequestBuilder<'a> {
 
     /// Remove a label from the merge request.
     ///
-    /// This is an incremental remove form the existing set of labels on the merge request.
+    /// This is an incremental removal from the existing set of labels on the merge request.
     pub fn remove_label<L>(&mut self, label: L) -> &mut Self
     where
         L: Into<Cow<'a, str>>,
