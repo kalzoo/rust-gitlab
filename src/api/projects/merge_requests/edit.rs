@@ -207,6 +207,11 @@ impl<'a> EditMergeRequestBuilder<'a> {
     }
 
     /// Add a label
+    ///
+    /// Note that the list of labels sent will replace the set on the instance. This only adds it
+    /// to the list of labels to add to the set before sending it to the instance.
+    ///
+    /// See: `add_label`.
     pub fn label<L>(&mut self, label: L) -> &mut Self
     where
         L: Into<Cow<'a, str>>,
@@ -223,6 +228,11 @@ impl<'a> EditMergeRequestBuilder<'a> {
     }
 
     /// Add multiple labels
+    ///
+    /// Note that the list of labels sent will replace the set on the instance. This only adds it
+    /// to the list of labels to add to the set before sending it to the instance.
+    ///
+    /// See: `add_label`.
     pub fn labels<I, L>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = L>,
