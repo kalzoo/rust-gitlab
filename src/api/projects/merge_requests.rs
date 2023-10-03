@@ -69,6 +69,7 @@ pub use self::pipelines::MergeRequestPipelinesBuilder;
 #[deprecated(note = "use `pipelines::MergeRequestPipelinesBuilderError` instead")]
 pub use self::pipelines::MergeRequestPipelinesBuilderError;
 
+#[allow(deprecated)]
 pub use self::changes::MergeRequestChanges;
 pub use self::changes::MergeRequestChangesBuilder;
 pub use self::changes::MergeRequestChangesBuilderError;

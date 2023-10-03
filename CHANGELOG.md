@@ -10,6 +10,11 @@
 
   * `api::retry::Client` now forwards the HTTP version for requests as well.
 
+## Deprecations
+
+  * Deprecate `api::projects::merge_requests::MergeRequestChanges` endpoint.
+    Deprecated in GitLab 15.7; use `MergeRequestDiffs` instead.
+
 # v0.1604.0
 
   * No changes needed for GitLab 16.4.
