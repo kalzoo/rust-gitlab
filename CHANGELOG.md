@@ -4,10 +4,16 @@
 
   * Add Email Address to User Hook Attributes.
   * Support managing group/project push rules.
+  * Add `api::projects::merge_requests::MergeRequestDiffs` endpoint.
 
 ## Fixes
 
   * `api::retry::Client` now forwards the HTTP version for requests as well.
+
+## Deprecations
+
+  * Deprecate `api::projects::merge_requests::MergeRequestChanges` endpoint.
+    Deprecated in GitLab 15.7; use `MergeRequestDiffs` instead.
 
 # v0.1604.0
 

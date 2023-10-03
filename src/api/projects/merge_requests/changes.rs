@@ -4,6 +4,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those s.
 
+#![allow(deprecated)]
+
 use derive_builder::Builder;
 
 use crate::api::common::NameOrId;
@@ -12,6 +14,7 @@ use crate::api::endpoint_prelude::*;
 /// Shows information of a merge request including its files and changes.
 #[derive(Debug, Builder, Clone)]
 #[builder(setter(strip_option))]
+#[deprecated(note = "Deprecated by GitLab. Use `MergeRequestDiffs` instead")]
 pub struct MergeRequestChanges<'a> {
     /// The project with the merge request.
     #[builder(setter(into))]
