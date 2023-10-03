@@ -16,6 +16,7 @@ pub mod awards;
 mod changes;
 mod commits;
 mod create;
+mod diffs;
 pub mod discussions;
 mod edit;
 mod issues_closed_by;
@@ -35,6 +36,10 @@ pub use self::approve::ApproveMergeRequestBuilderError;
 pub use self::create::CreateMergeRequest;
 pub use self::create::CreateMergeRequestBuilder;
 pub use self::create::CreateMergeRequestBuilderError;
+
+pub use self::diffs::MergeRequestDiffs;
+pub use self::diffs::MergeRequestDiffsBuilder;
+pub use self::diffs::MergeRequestDiffsBuilderError;
 
 pub use self::edit::EditMergeRequest;
 pub use self::edit::EditMergeRequestBuilder;

@@ -93,6 +93,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/merge_requests/:merge_request/changes` `projects/merge_requests/changes.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/closes_issues` `projects/merge_requests/issues_closed_by.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/commits` `projects/merge_requests/commits.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/diffs``projects/merge_requests/diffs.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/discussions` `projects/merge_requests/discussions/discussions.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/discussions` `projects/merge_requests/discussions/create.rs`
   * `PUT    /projects/:project/merge_requests/:merge_request/merge` `projects/merge_requests/merge.rs`
@@ -348,7 +349,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-award-emoji
   * `DELETE /projects/:project/merge_requests/:merge_request/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji
   * `POST   /projects/:project/merge_requests/:merge_request/cancel_merge_when_pipeline_succeeds` https://gitlab.kitware.com/help/api/merge_requests.md#cancel-merge-when-pipeline-succeeds
-  * `GET    /projects/:project/merge_requests/:merge_request/diffs` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-request-diffs
   * `GET    /projects/:project/merge_requests/:merge_request/discussions/:discussion` https://gitlab.kitware.com/help/api/discussions.md#get-single-merge-request-discussion-item
   * `PUT    /projects/:project/merge_requests/:merge_request/discussions/:discussion` https://gitlab.kitware.com/help/api/discussions.md#resolve-a-merge-request-thread
   * `POST   /projects/:project/merge_requests/:merge_request/discussions/:discussion/notes` https://gitlab.kitware.com/help/api/discussions.md#add-note-to-existing-merge-request-thread

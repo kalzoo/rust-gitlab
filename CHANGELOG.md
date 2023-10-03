@@ -4,6 +4,7 @@
 
   * Add Email Address to User Hook Attributes.
   * Support managing group/project push rules.
+  * Add `api::projects::merge_requests::MergeRequestDiffs` endpoint.
 
 ## Fixes
 
