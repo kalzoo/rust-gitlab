@@ -5,6 +5,10 @@
   * Add Email Address to User Hook Attributes.
   * Support managing group/project push rules.
   * Add `api::projects::merge_requests::MergeRequestDiffs` endpoint.
+  * `api::paged` iterators can be turned into async `Stream`s using the
+    `into_async()` method.
+  * `api::paged` iterators can now set the page number (1-indexed) for direct
+    access.
 
 ## Fixes
 
