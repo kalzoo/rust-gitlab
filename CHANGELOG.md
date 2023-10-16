@@ -9,6 +9,7 @@
     `into_async()` method.
   * `api::paged` iterators can now set the page number (1-indexed) for direct
     access.
+  * Extend enum `systemhooks::ProjectEvent` with `project_update`
 
 ## Fixes
 
