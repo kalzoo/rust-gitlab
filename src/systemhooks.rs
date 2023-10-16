@@ -36,6 +36,9 @@ pub enum ProjectEvent {
     /// A project moved from one namespace to another.
     #[serde(rename = "project_transfer")]
     Transfer,
+    /// An attribute of a project has changed
+    #[serde(rename = "project_update")]
+    Update,
 }
 
 /// Visibility levels for projects.
@@ -373,9 +376,8 @@ impl<'de> Deserialize<'de> for SystemHook {
         };
 
         let hook_res = match event_name.as_ref() {
-            "project_create" | "project_destroy" | "project_rename" | "project_transfer" => {
-                serde_json::from_value(val).map(SystemHook::Project)
-            },
+            "project_create" | "project_destroy" | "project_rename" | "project_transfer"
+            | "project_update" => serde_json::from_value(val).map(SystemHook::Project),
 
             "user_add_to_team" | "user_remove_from_team" => {
                 serde_json::from_value(val).map(SystemHook::ProjectMember)
