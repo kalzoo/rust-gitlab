@@ -16,9 +16,13 @@ mod macros;
 #[cfg(feature = "client_api")]
 mod gitlab;
 
+#[cfg(not(feature = "_nohooks"))]
 pub mod hooks;
+#[cfg(not(feature = "_nohooks"))]
 pub mod systemhooks;
+#[cfg(not(feature = "_nohooks"))]
 pub mod types;
+#[cfg(not(feature = "_nohooks"))]
 pub mod webhooks;
 
 #[cfg(feature = "client_api")]
@@ -32,6 +36,7 @@ pub use crate::auth::AuthError;
 pub use crate::gitlab::{
     AsyncGitlab, Gitlab, GitlabBuilder, GitlabError, ImpersonationClient, RestError,
 };
+#[cfg(not(feature = "_nohooks"))]
 pub use crate::types::*;
 
 #[cfg(test)]
