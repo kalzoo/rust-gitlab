@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+PART_NAMES = (
+    'major',
+    'minor',
+    'patch',
+)
+
+
+def version_from_changelog(clpath):
+    with open(clpath, 'r') as fin:
+        for line in fin:
+            if not line.startswith('# v'):
+                continue
+            number = line[3:].strip()
+            return number.removesuffix(' (unreleased)')
+
+
+def version_from_crate(cratepath):
+    import tomllib
+
+    with open(cratepath, 'rb') as fin:
+        cratedata = tomllib.load(fin)
+
+    return (cratedata['package']['name'], cratedata['package']['version'])
+
+
+def version_parts(version):
+    return version.split('.')
+
+
+if __name__ == '__main__':
+    import os
+    import sys
+
+    changelog_path = sys.argv[1]
+
+    changelog_ver = version_from_changelog(changelog_path)
+    (name, crate_ver) = version_from_crate(os.path.join(os.path.dirname(changelog_path), 'Cargo.toml'))
+
+    changelog_verparts = version_parts(changelog_ver)
+    crate_verparts = version_parts(crate_ver)
+
+    bumpname = 'patch'
+    for (cl, c, k) in zip(changelog_verparts, crate_verparts, PART_NAMES):
+        if cl != c:
+            bumpname = k
+            break
+
+    print(f'{bumpname}')
