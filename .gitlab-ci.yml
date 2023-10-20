@@ -102,6 +102,26 @@ clippy-features:build:
         # https://rustsec.org/advisories/RUSTSEC-2023-0015
         CARGO_AUDIT_ARGS: --ignore RUSTSEC-2022-0078 --ignore RUSTSEC-2023-0015
 
+semver-checks:prep:
+    extends:
+        - .rust_stable
+        - .cargo_semver_checks_job
+        - .cargo_build_tags
+        - .run_automatically
+    variables:
+        CARGO_FEATURES: "--only-explicit-features --features _nohooks"
+        CHANGELOG_PATH: CHANGELOG.md
+
+semver-checks:features:prep:
+    extends:
+        - .rust_stable
+        - .cargo_semver_checks_job
+        - .cargo_build_tags
+        - .run_automatically
+    variables:
+        CARGO_FEATURES: "--only-explicit-features --features _nohooks --features client_api"
+        CHANGELOG_PATH: CHANGELOG.md
+
 audit-mindeps:build:
     extends:
         - .rust_minimum_mindeps
