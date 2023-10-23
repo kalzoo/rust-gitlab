@@ -29,6 +29,9 @@ client_api = [
 client_der = ["reqwest/native-tls", "client_api"]
 client_pem = ["reqwest/rustls-tls", "client_api"]
 minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset", "rustls-webpki"]
+# This feature is here to aid with `semver-checks` by hiding the known-unstable
+# parts of the crate.
+_nohooks = []
 
 [dependencies]
 base64 = "~0.13"

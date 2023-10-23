@@ -6,11 +6,11 @@
 
 use http::{HeaderMap, HeaderValue};
 use log::error;
+use serde::Deserialize;
 use thiserror::Error;
 
 use crate::api::users::CurrentUser;
 use crate::api::{self, AsyncQuery, Query};
-use crate::types::UserPublic;
 
 #[derive(Debug, Error)]
 #[non_exhaustive]
@@ -20,6 +20,12 @@ pub enum AuthError {
         #[from]
         source: http::header::InvalidHeaderValue,
     },
+}
+
+#[derive(Deserialize, Debug)]
+struct UserPublic {
+    /// The username.
+    _username: String,
 }
 
 type AuthResult<T> = Result<T, AuthError>;
