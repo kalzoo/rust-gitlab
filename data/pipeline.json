@@ -11,7 +11,7 @@
     "icon": "status_success",
     "illustration": null,
     "label": "passed",
-    "text": "passed",
+    "text": "Passed",
     "tooltip": "passed"
   },
   "duration": 0,
@@ -31,6 +31,7 @@
   "user": {
     "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/35/buildbot-logo.png",
     "id": 35,
+    "locked": false,
     "name": "buildbot",
     "state": "active",
     "username": "buildbot",

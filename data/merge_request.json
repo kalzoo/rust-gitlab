@@ -4,6 +4,7 @@
   "assignee": {
     "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
     "id": 10,
+    "locked": false,
     "name": "Brad King",
     "state": "active",
     "username": "brad.king",
@@ -13,6 +14,7 @@
     {
       "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
       "id": 10,
+      "locked": false,
       "name": "Brad King",
       "state": "active",
       "username": "brad.king",
@@ -22,6 +24,7 @@
   "author": {
     "avatar_url": "https://secure.gravatar.com/avatar/2f5f7e99190174edb5a2f66b8653b0b2?s=80&d=identicon",
     "id": 13,
+    "locked": false,
     "name": "Ben Boeckel",
     "state": "active",
     "username": "ben.boeckel",
@@ -59,7 +62,7 @@
       "icon": "status_success",
       "illustration": null,
       "label": "passed",
-      "text": "passed",
+      "text": "Passed",
       "tooltip": "passed"
     },
     "duration": null,
@@ -78,6 +81,7 @@
     "user": {
       "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/11/avatar.png",
       "id": 11,
+      "locked": false,
       "name": "Kitware Robot",
       "state": "active",
       "username": "kwrobot",
@@ -112,6 +116,7 @@
     {
       "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
       "id": 10,
+      "locked": false,
       "name": "Brad King",
       "state": "active",
       "username": "brad.king",

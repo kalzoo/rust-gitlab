@@ -3,6 +3,7 @@
   "author": {
     "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/35/buildbot-logo.png",
     "id": 35,
+    "locked": false,
     "name": "buildbot",
     "state": "active",
     "username": "buildbot",
