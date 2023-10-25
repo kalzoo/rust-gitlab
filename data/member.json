@@ -4,6 +4,7 @@
   "created_at": "2016-02-03T16:26:13.282-05:00",
   "expires_at": null,
   "id": 10,
+  "locked": false,
   "name": "Brad King",
   "state": "active",
   "username": "brad.king",

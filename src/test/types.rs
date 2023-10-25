@@ -921,7 +921,7 @@ fn test_read_pipeline() {
             "icon": "status_success",
             "illustration": null,
             "label": "passed",
-            "text": "passed",
+            "text": "Passed",
             "tooltip": "passed",
         }),
     );

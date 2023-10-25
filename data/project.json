@@ -63,6 +63,7 @@
   "merge_method": "merge",
   "merge_requests_access_level": "enabled",
   "merge_requests_enabled": true,
+  "model_experiments_access_level": "enabled",
   "monitor_access_level": "disabled",
   "name": "rust-gitlab",
   "name_with_namespace": "Utils / rust-gitlab",

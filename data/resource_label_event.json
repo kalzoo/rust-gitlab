@@ -15,6 +15,7 @@
   "user": {
     "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
     "id": 10,
+    "locked": false,
     "name": "Brad King",
     "state": "active",
     "username": "brad.king",

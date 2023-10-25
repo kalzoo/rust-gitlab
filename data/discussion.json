@@ -8,6 +8,7 @@
         "author": {
           "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/11/avatar.png",
           "id": 11,
+          "locked": false,
           "name": "Kitware Robot",
           "state": "active",
           "username": "kwrobot",
@@ -39,6 +40,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -70,6 +72,7 @@
         "author": {
           "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/11/avatar.png",
           "id": 11,
+          "locked": false,
           "name": "Kitware Robot",
           "state": "active",
           "username": "kwrobot",
@@ -101,6 +104,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -132,6 +136,7 @@
         "author": {
           "avatar_url": "https://gitlab.kitware.com/uploads/-/system/user/avatar/11/avatar.png",
           "id": 11,
+          "locked": false,
           "name": "Kitware Robot",
           "state": "active",
           "username": "kwrobot",
@@ -163,6 +168,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/c6d5328c0ae2a0589a054b18542961e7?s=80&d=identicon",
           "id": 12142,
+          "locked": false,
           "name": "Simon Chopin",
           "state": "active",
           "username": "laarmen",
@@ -194,6 +200,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -215,6 +222,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -229,6 +237,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -250,6 +259,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -264,6 +274,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -285,6 +296,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -305,6 +317,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -336,6 +349,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -367,6 +381,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -400,6 +415,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -414,6 +430,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -447,6 +464,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -461,6 +479,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -494,6 +513,7 @@
         "resolved_by": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -514,6 +534,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
@@ -545,6 +566,7 @@
         "author": {
           "avatar_url": "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
           "id": 10,
+          "locked": false,
           "name": "Brad King",
           "state": "active",
           "username": "brad.king",
