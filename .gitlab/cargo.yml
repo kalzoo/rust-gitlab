@@ -92,13 +92,15 @@
     interruptible: true
 
 .cargo_semver_checks_job:
-    stage: prep
+    stage: advice
     script:
         - *cargo_before_script
         - .gitlab/ci/cargo-semver-checks.sh
         - export PATH=$PWD/.gitlab:$PATH
         - reltype="$( .gitlab/ci/version-from-changelog $CHANGELOG_PATH )"
         - cargo semver-checks $CARGO_FEATURES --release-type $reltype
+    needs: []
+    dependencies: []
     interruptible: true
 
 .cargo_audit_job:
