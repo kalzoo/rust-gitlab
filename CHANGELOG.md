@@ -1,3 +1,9 @@
+# v0.1605.1 (unreleased)
+
+## Fixes
+
+  * Fix "self" query used to verify authentication tokens (#96)
+
 # v0.1605.0
 
 ## Additions
