@@ -25,6 +25,7 @@ pub enum AuthError {
 #[derive(Deserialize, Debug)]
 struct UserPublic {
     /// The username.
+    #[serde(rename = "username")]
     _username: String,
 }
 
