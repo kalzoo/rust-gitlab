@@ -9,6 +9,7 @@
 //! These endpoints are used for querying packages.
 
 mod delete;
+pub mod generic;
 mod package;
 pub mod package_files;
 mod packages;

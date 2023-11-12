@@ -118,6 +118,8 @@ These API endpoints have been implemented.
   * `DELETE /projects/:project/packages/:package` `projects/packages/delete.rs`
   * `GET    /projects/:project/packages/:package/package_files` `projects/packages/package_files/package_files.rs`
   * `DELETE /projects/:project/packages/:package/package_files/:package_file` `projects/packages/package_files/delete.rs`
+  * `GET    /projects/:project/packages/generic/:package_name/:package_version/:file_name` `projects/packages/generic/get.rs`
+  * `PUT    /projects/:project/packages/generic/:package_name/:package_version/:file_name` `projects/packages/generic/upload.rs`
   * `GET    /projects/:project/pipelines` `projects/pipelines/pipelines.rs`
   * `POST   /projects/:project/pipelines` `projects/pipelines/create.rs`
   * `GET    /projects/:project/pipelines/:pipeline` `projects/pipelines/pipeline.rs`
@@ -515,6 +517,12 @@ instead of having to search the page for missing endpoints.
   * `POST   /users/:user/unfollow` https://gitlab.kitware.com/help/api/users.md#follow-and-unfollow-users
   * `GET    /user_counts` https://gitlab.kitware.com/help/api/users.md#user-counts
   * `GET    /v2/_catalog` https://gitlab.kitware.com/help/api/container_registry.md#listing-all-container-repositories
+
+## Pages to watch
+
+These pages are separate from the standard REST API docs and could have changes in the future:
+
+ * https://docs.gitlab.com/ee/user/packages/generic_packages/
 
 ## Endpoint groups
 
