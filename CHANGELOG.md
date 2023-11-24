@@ -1,4 +1,4 @@
-# v0.1605.2 (unreleased)
+# v0.1605.2
 
 ## Additions
  * Add `api::projects::packages::generic::UploadPackageFile` and `api::projects::packages::generic::GetPackageFile` endpoints.
