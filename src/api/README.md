@@ -93,7 +93,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/merge_requests/:merge_request/changes` `projects/merge_requests/changes.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/closes_issues` `projects/merge_requests/issues_closed_by.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/commits` `projects/merge_requests/commits.rs`
-  * `GET    /projects/:project/merge_requests/:merge_request/diffs``projects/merge_requests/diffs.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/diffs` `projects/merge_requests/diffs.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/discussions` `projects/merge_requests/discussions/discussions.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/discussions` `projects/merge_requests/discussions/create.rs`
   * `PUT    /projects/:project/merge_requests/:merge_request/merge` `projects/merge_requests/merge.rs`
