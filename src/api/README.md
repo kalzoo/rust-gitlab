@@ -165,6 +165,11 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/repository_tag_details.rs`
   * `DELETE /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/delete_repository_tag.rs`
   * `GET    /projects/:project/releases` `projects/releases/releases.rs`
+  * `GET    /projects/:project/releases/:tag/assests/links` `projects/releases/links/list_links.rs`
+  * `POST   /projects/:project/releases/:tag/assests/links` `projects/releases/links/create_link.rs`
+  * `GET    /projects/:project/releases/:tag/assests/links/:id` `projects/releases/links/get_link.rs`
+  * `PUT    /projects/:project/releases/:tag/assests/links/:id` `projects/releases/links/update_link.rs`
+  * `DELETE /projects/:project/releases/:tag/assests/links/:id` `projects/releases/links/delete_link.rs`
   * `GET    /projects/:project/repository/archive[.format]` `projects/repository/archive.rs`
   * `GET    /projects/:project/repository/branches` `projects/repository/branches/branches.rs`
   * `POST   /projects/:project/repository/branches` `projects/repository/branches/create.rs`
@@ -630,7 +635,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/project_templates.md
   * https://gitlab.kitware.com/help/api/project_vulnerabilities.md
   * https://gitlab.kitware.com/help/api/protected_environments.md
-  * https://gitlab.kitware.com/help/api/releases/links.md
   * https://gitlab.kitware.com/help/api/remote_mirrors.md
   * https://gitlab.kitware.com/help/api/repository_submodules.md
   * https://gitlab.kitware.com/help/api/resource_groups.md

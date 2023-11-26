@@ -8,6 +8,7 @@
 //!
 //! These endpoints are used for querying project releases.
 
+pub mod links;
 mod releases;
 
 pub use self::releases::ProjectReleaseOrderBy;
