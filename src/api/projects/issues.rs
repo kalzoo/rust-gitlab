@@ -8,6 +8,7 @@
 //!
 //! These endpoints are used for querying projects issues.
 
+pub mod awards;
 mod create;
 mod edit;
 mod issue;
