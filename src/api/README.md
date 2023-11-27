@@ -112,6 +112,8 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/merge_requests/:merge_request/notes/:note` `projects/merge_requests/notes/edit.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/awards.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/create.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` `projects/merge_requests/notes/awards/award.rs`
+  * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` `projects/merge_requests/notes/awards/delete.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines/pipelines.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines/create.rs`
   * `PUT    /projects/:project/merge_requests/:merge_request/rebase` `projects/merge_requests/rebase.rs`
@@ -360,8 +362,6 @@ instead of having to search the page for missing endpoints.
     This should probably be a `POST` event?
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-merge-request-note
   * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-a-merge-request-note
-  * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-award-emoji-for-a-comment
-  * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
   * `PUT    /projects/:project/merge_requests/:merge_request/reset_approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#reset-approvals-of-a-merge-request
     This should probably be a `POST` event.
