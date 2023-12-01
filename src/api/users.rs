@@ -12,7 +12,7 @@
 
 mod current_user;
 pub mod impersonation_tokens;
-pub mod projects;
+mod projects;
 mod user;
 mod users;
 
