@@ -12,8 +12,14 @@
 
 mod current_user;
 pub mod impersonation_tokens;
+mod projects;
 mod user;
 mod users;
+
+pub use self::projects::UserProjects;
+pub use self::projects::UserProjectsBuilder;
+pub use self::projects::UserProjectsBuilderError;
+pub use self::projects::UserProjectsOrderBy;
 
 pub use self::user::User;
 pub use self::user::UserBuilder;

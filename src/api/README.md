@@ -199,6 +199,7 @@ These API endpoints have been implemented.
   * `POST   /users/:user/impersonation_tokens` `users/impersonation_tokens/create.rs`
   * `GET    /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/impersonation_token.rs`
   * `DELETE /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/delete.rs`
+  * `GET    /users/:user/projects` `users/projects/projects.rs`
 
 # Todo
 
@@ -508,7 +509,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /users/:user/memberships` https://gitlab.kitware.com/help/api/users.md#user-memberships-admin-only
   * `POST   /users/:user/personal_access_tokens` https://gitlab.kitware.com/help/api/users.md#create-a-personal-access-token
   * `GET    /users/:user/project_deploy_keys` https://gitlab.kitware.com/help/api/deploy_keys.md#list-project-deploy-keys-for-user
-  * `GET    /users/:user/projects` https://gitlab.kitware.com/help/api/projects.md#list-user-projects
   * `POST   /users/:user/reject` https://gitlab.kitware.com/help/api/users.md#reject-user
   * `GET    /users/:user/starred_projects` https://gitlab.kitware.com/help/api/projects.md#list-projects-starred-by-a-user
   * `GET    /users/:user/status` https://gitlab.kitware.com/help/api/users.md#get-the-status-of-a-user
