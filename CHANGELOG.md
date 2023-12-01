@@ -1,3 +1,10 @@
+# v0.1606.1 (unreleased)
+
+## Additions
+
+  * Add missing endpoints to `api::projects::merge_requests::awards` and `api::projects::merge_requests::notes::awards`.
+  * Add `api::projects::issues::awards` and `api::projects::issues::notes::awards` endpoints.
+
 # v0.1606.0
 
   * No changes needed for GitLab 16.6.

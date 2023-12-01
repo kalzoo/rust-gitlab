@@ -53,10 +53,18 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/issues` `projects/issues/create.rs`
   * `GET    /projects/:project/issues/:issue` `projects/issues/issue.rs`
   * `PUT    /projects/:project/issues/:issue` `projects/issues/edit.rs`
+  * `GET    /projects/:project/issues/:issue/award_emoji` `projects/issues/awards/awards.rs`
+  * `POST   /projects/:project/issues/:issue/award_emoji` `projects/issues/awards/create.rs`
+  * `GET    /projects/:project/issues/:issue/award_emoji/:award` `projects/issues/awards/award.rs`
+  * `DELETE /projects/:project/issues/:issue/award_emoji/:award` `projects/issues/awards/delete.rs`
   * `GET    /projects/:project/issues/:issue/closed_by` `projects/issues/merge_requests_closing.rs`
   * `GET    /projects/:project/issues/:issue/notes` `projects/issues/notes/notes.rs`
   * `POST   /projects/:project/issues/:issue/notes` `projects/issues/notes/create.rs`
   * `PUT    /projects/:project/issues/:issue/notes/:note` `projects/issues/notes/edit.rs`
+  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji` `projects/issues/notes/awards/awards.rs`
+  * `POST   /projects/:project/issues/:issue/notes/:note/award_emoji` `projects/issues/notes/awards/create.rs`
+  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji/:award` `projects/issues/notes/awards/award.rs`
+  * `DELETE /projects/:project/issues/:issue/notes/:note/award_emoji/:award` `projects/issues/notes/awards/delete.rs`
   * `GET    /projects/:project/issues/:issue/related_merge_requests` `projects/issues/related_merge_requests.rs`
   * `GET    /projects/:project/issues/:issue/resource_label_events` `projects/issues/resource_label_events.rs`
   * `GET    /projects/:project/jobs` `projects/jobs/jobs.rs`
@@ -104,6 +112,8 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/merge_requests/:merge_request/notes/:note` `projects/merge_requests/notes/edit.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/awards.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji` `projects/merge_requests/notes/awards/create.rs`
+  * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` `projects/merge_requests/notes/awards/award.rs`
+  * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` `projects/merge_requests/notes/awards/delete.rs`
   * `GET    /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines/pipelines.rs`
   * `POST   /projects/:project/merge_requests/:merge_request/pipelines` `projects/merge_requests/pipelines/create.rs`
   * `PUT    /projects/:project/merge_requests/:merge_request/rebase` `projects/merge_requests/rebase.rs`
@@ -302,10 +312,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/import_project_members/:project2` https://gitlab.kitware.com/help/api/projects.md#import-project-members
   * `DELETE /projects/:project/issues/:issue` https://gitlab.kitware.com/help/api/issues.md#delete-an-issue
   * `POST   /projects/:project/issues/:issue/add_spent_time` https://gitlab.kitware.com/help/api/issues.md#add-spent-time-for-an-issue
-  * `GET    /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-emoji-reactions
-  * `POST   /projects/:project/issues/:issue/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#add-a-new-emoji-reaction
-  * `GET    /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-single-emoji-reaction
-  * `DELETE /projects/:project/issues/:issue/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-emoji-reaction
   * `POST   /projects/:project/issues/:issue/clone` https://gitlab.kitware.com/help/api/issues.md#clone-an-issue
   * `GET    /projects/:project/issues/:issue/discussions` https://gitlab.kitware.com/help/api/discussions.md#list-project-issue-discussion-items
   * `POST   /projects/:project/issues/:issue/discussions` https://gitlab.kitware.com/help/api/discussions.md#create-new-issue-thread
@@ -315,10 +321,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/issues/:issue/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-an-issue-thread-note
   * `GET    /projects/:project/issues/:issue/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-issue-note
   * `DELETE /projects/:project/issues/:issue/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-an-issue-note
-  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-a-comments-emoji-reactions
-  * `POST   /projects/:project/issues/:issue/notes/:note/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#add-reactions-to-comments
-  * `GET    /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-emoji-reaction-for-a-comment
-  * `DELETE /projects/:project/issues/:issue/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-emoji-reaction-from-a-comment
   * `GET    /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#list-metric-images
   * `POST   /projects/:project/issues/:issue/metric_images` https://gitlab.kitware.com/help/api/issues.md#upload-metric-image
   * `PUT    /projects/:project/issues/:issue/metric_images/:metric_image` https://gitlab.kitware.com/help/api/issues.md#update-metric-image
@@ -360,8 +362,6 @@ instead of having to search the page for missing endpoints.
     This should probably be a `POST` event?
   * `GET    /projects/:project/merge_requests/:merge_request/notes/:note` https://gitlab.kitware.com/help/api/notes.md#get-single-merge-request-note
   * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note` https://gitlab.kitware.com/help/api/notes.md#delete-a-merge-request-note
-  * `GET    /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#get-an-award-emoji-for-a-comment
-  * `DELETE /projects/:project/merge_requests/:merge_request/notes/:note/award_emoji/:award` https://gitlab.kitware.com/help/api/award_emoji.md#delete-an-award-emoji-from-a-comment
   * `GET    /projects/:project/merge_requests/:merge_request/participants` https://gitlab.kitware.com/help/api/merge_requests.md#get-single-mr-participants
   * `PUT    /projects/:project/merge_requests/:merge_request/reset_approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#reset-approvals-of-a-merge-request
     This should probably be a `POST` event.
