@@ -5,6 +5,7 @@
   * Add missing endpoints to `api::projects::merge_requests::awards` and `api::projects::merge_requests::notes::awards`.
   * Add `api::projects::issues::awards` and `api::projects::issues::notes::awards` endpoints.
   * Add `api::users::projects::UserProjects` endpoint.
+  * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
 
 # v0.1606.0
 

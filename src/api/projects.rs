@@ -10,6 +10,7 @@
 //!
 //! These endpoints are used for querying and modifying projects and their resources.
 
+mod archive;
 mod create;
 pub mod deploy_keys;
 mod edit;
@@ -34,8 +35,13 @@ pub mod registry;
 pub mod releases;
 pub mod repository;
 mod share;
+mod unarchive;
 mod unshare;
 pub mod variables;
+
+pub use self::archive::ArchiveProject;
+pub use self::archive::ArchiveProjectBuilder;
+pub use self::archive::ArchiveProjectBuilderError;
 
 pub use self::create::AutoDevOpsDeployStrategy;
 pub use self::create::BuildGitStrategy;
@@ -69,6 +75,10 @@ pub use self::projects::ProjectsBuilderError;
 pub use self::share::ShareProject;
 pub use self::share::ShareProjectBuilder;
 pub use self::share::ShareProjectBuilderError;
+
+pub use self::unarchive::UnarchiveProject;
+pub use self::unarchive::UnarchiveProjectBuilder;
+pub use self::unarchive::UnarchiveProjectBuilderError;
 
 pub use self::unshare::UnshareProject;
 pub use self::unshare::UnshareProjectBuilder;
