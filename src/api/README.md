@@ -35,6 +35,7 @@ These API endpoints have been implemented.
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
   * `PUT    /projects/:project` `projects/edit.rs`
+  * `POST   /projects/:project/archive` `projects/archive.rs`
   * `GET    /projects/:project/deploy_keys` `projects/deploy_keys/deploy_keys.rs`
   * `GET    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/deploy_key.rs`
   * `POST   /projects/:project/deploy_keys` `projects/deploy_keys/create.rs`
@@ -189,6 +190,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
     Arguably, this should be `POST /projects/:project/repository/commits/:sha/statuses`.
     https://gitlab.com/gitlab-org/gitlab/-/issues/217412
+  * `POST   /projects/:project/unarchive` `projects/unarchive.rs`
   * `POST   /projects/:project/variables` `projects/variables/create.rs`
   * `GET    /projects/:project/variables/:key` `projects/variables/variable.rs`
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
@@ -276,7 +278,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
-  * `POST   /projects/:project/archive` https://gitlab.kitware.com/help/api/projects.md#archive-a-project
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
   * `GET    /projects/:project/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-project-level-rules
@@ -452,7 +453,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/storage` https://gitlab.kitware.com/help/api/projects.md#get-the-path-to-repository-storage
   * `PUT    /projects/:project/transfer` https://gitlab.kitware.com/help/api/projects.md#transfer-a-project-to-a-new-namespace
   * `GET    /projects/:project/transfer_locations` https://gitlab.kitware.com/help/api/projects.md#get-groups-to-which-a-user-can-transfer-a-project
-  * `POST   /projects/:project/unarchive` https://gitlab.kitware.com/help/api/projects.md#unarchive-a-project
   * `POST   /projects/:project/unstar` https://gitlab.kitware.com/help/api/projects.md#unstar-a-project
   * `POST   /projects/:project/uploads` https://gitlab.kitware.com/help/api/projects.md#upload-a-file
   * `GET    /projects/:project/users` https://gitlab.kitware.com/help/api/projects.md#get-project-users
