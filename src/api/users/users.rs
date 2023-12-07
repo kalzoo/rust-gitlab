@@ -146,9 +146,12 @@ pub struct Users<'a> {
     /// Exclude external users.
     #[builder(default)]
     exclude_external: Option<bool>,
-    /// Filter uses based on administrator status.
+    /// Filter urses based on administrator status.
     #[builder(default)]
     admins: Option<bool>,
+    /// Filter users based on auditor status.
+    #[builder(default)]
+    auditors: Option<bool>,
     /// If provided, only return users created by the given SAML provider ID.
     #[builder(default)]
     saml_provider_id: Option<u64>,
@@ -225,6 +228,7 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("exclude_internal", self.exclude_internal)
             .push_opt("exclude_external", self.exclude_external)
             .push_opt("admins", self.admins)
+            .push_opt("auditors", self.auditors)
             .push_opt("saml_provider_id", self.saml_provider_id)
             .push_opt("skip_ldap", self.skip_ldap);
 
@@ -576,6 +580,19 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Users::builder().admins(false).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_auditors() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("users")
+            .add_query_params(&[("auditors", "false")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Users::builder().auditors(false).build().unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 
