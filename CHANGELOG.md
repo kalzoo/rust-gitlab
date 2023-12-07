@@ -11,6 +11,7 @@
   * Support enforcing expiration on service access tokens for group hooks.
   * Support filtering group and project packages by version.
   * Support enforcing committer name requirements for push rules.
+  * Support model experimentl access levels when creating or editng projects.
 
 ## Deprecations
 

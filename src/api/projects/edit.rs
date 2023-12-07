@@ -95,6 +95,9 @@ pub struct EditProject<'a> {
     /// Set the access level for monitoring access.
     #[builder(default)]
     monitor_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for model experiment access.
+    #[builder(default)]
+    model_experiments_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
@@ -427,6 +430,10 @@ impl<'a> Endpoint for EditProject<'a> {
                 self.infrastructure_access_level,
             )
             .push_opt("monitor_access_level", self.monitor_access_level)
+            .push_opt(
+                "model_experiments_access_level",
+                self.model_experiments_access_level,
+            )
             .push_opt("emails_enabled", self.emails_enabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
@@ -1031,6 +1038,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .monitor_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_model_experiments_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("model_experiments_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .model_experiments_access_level(FeatureAccessLevel::Private)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
