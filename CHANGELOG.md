@@ -13,6 +13,7 @@
   * Support enforcing committer name requirements for push rules.
   * Support model experimentl access levels when creating or editng projects.
   * Support `unidiff` requests for merge request diffs.
+  * Support the `SecurityOrchestrationPolicy` for the pipeline source filter.
 
 ## Deprecations
 
