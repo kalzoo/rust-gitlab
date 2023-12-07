@@ -12,8 +12,8 @@ use derive_builder::Builder;
 use crate::api::common::{CommaSeparatedList, NameOrId, VisibilityLevel};
 use crate::api::endpoint_prelude::*;
 use crate::api::groups::{
-    BranchProtection, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
-    SubgroupCreationAccessLevel,
+    BranchProtection, BranchProtectionDefaults, GroupProjectCreationAccessLevel,
+    SharedRunnersMinutesLimit, SubgroupCreationAccessLevel,
 };
 use crate::api::projects::FeatureAccessLevel;
 use crate::api::ParamValue;
@@ -117,6 +117,9 @@ pub struct EditGroup<'a> {
     /// The default branch protection for projects within the group.
     #[builder(default)]
     default_branch_protection: Option<BranchProtection>,
+    /// The default branch protection defaults for projects within the group.
+    #[builder(default)]
+    default_branch_protection_defaults: Option<BranchProtectionDefaults>,
     /// Shared runner settings for the group.
     #[builder(default)]
     shared_runners_setting: Option<SharedRunnersSetting>,
@@ -327,6 +330,10 @@ impl<'a> Endpoint for EditGroup<'a> {
                 self.auto_ban_user_on_excessive_projects_download,
             );
 
+        if let Some(defaults) = self.default_branch_protection_defaults.as_ref() {
+            defaults.add_query(&mut params);
+        }
+
         #[allow(deprecated)]
         {
             params.push_opt("emails_disabled", self.emails_disabled);
@@ -344,8 +351,9 @@ mod tests {
 
     use crate::api::common::VisibilityLevel;
     use crate::api::groups::{
-        BranchProtection, EditGroup, EditGroupBuilderError, GroupProjectCreationAccessLevel,
-        SharedRunnersMinutesLimit, SharedRunnersSetting, SubgroupCreationAccessLevel,
+        BranchProtection, BranchProtectionAccessLevel, BranchProtectionDefaults, EditGroup,
+        EditGroupBuilderError, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
+        SharedRunnersSetting, SubgroupCreationAccessLevel,
     };
     use crate::api::projects::FeatureAccessLevel;
     use crate::api::{self, Query};
@@ -752,6 +760,106 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .default_branch_protection(BranchProtection::Full)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allowed_to_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("default_branch_protection_defaults%5Ballowed_to_push%5D%5B%5D=30")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allowed_to_push(BranchProtectionAccessLevel::Developer)
+                    .allowed_to_push(BranchProtectionAccessLevel::Maintainer)
+                    .not_allowed_to_push(BranchProtectionAccessLevel::Maintainer)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allow_force_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("default_branch_protection_defaults%5Ballow_force_push%5D=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allow_force_push(true)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allowed_to_merge() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("default_branch_protection_defaults%5Ballowed_to_merge%5D%5B%5D=30")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allowed_to_merge(BranchProtectionAccessLevel::Developer)
+                    .allowed_to_merge(BranchProtectionAccessLevel::Maintainer)
+                    .not_allowed_to_merge(BranchProtectionAccessLevel::Maintainer)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_developer_can_initial_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("default_branch_protection_defaults%5Bdeveloper_can_initial_push%5D=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .developer_can_initial_push(true)
+                    .build()
+                    .unwrap(),
+            )
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

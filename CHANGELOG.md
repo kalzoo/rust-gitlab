@@ -20,6 +20,7 @@
   * Support filtering projects by those that are hidden or are pending deletion.
   * Support keyset pagination for the `/users` endpoint.
   * Support authentication with job tokens.
+  * Support `default_branch_protection_defaults` parameters when creating and editing groups.
 
 ## Deprecations
 
