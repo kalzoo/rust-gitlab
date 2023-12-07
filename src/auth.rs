@@ -35,6 +35,7 @@ type AuthResult<T> = Result<T, AuthError>;
 ///
 /// Gitlab supports two kinds of tokens
 #[derive(Clone)]
+#[non_exhaustive]
 pub enum Auth {
     /// A personal access token, obtained through Gitlab user settings
     Token(String),
