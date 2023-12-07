@@ -15,6 +15,7 @@ use crate::api::ParamValue;
 
 /// Access levels available for most features.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum FeatureAccessLevel {
     /// The feature is not available at all.
     Disabled,
@@ -45,6 +46,7 @@ impl ParamValue<'static> for FeatureAccessLevel {
 ///
 /// Note that only the `pages` feature currently uses this.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum FeatureAccessLevelPublic {
     /// The feature is not available at all.
     Disabled,
@@ -78,6 +80,7 @@ impl ParamValue<'static> for FeatureAccessLevelPublic {
 ///
 /// Note that GitLab only supports a few discrete values for this setting.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
 pub enum ContainerExpirationCadence {
     /// Every day.
     OneDay,
@@ -114,6 +117,7 @@ impl ParamValue<'static> for ContainerExpirationCadence {
 ///
 /// Note that GitLab only supports a few discrete values for this setting.
 #[derive(Debug, Clone, Copy, Eq)]
+#[non_exhaustive]
 pub enum ContainerExpirationKeepN {
     /// Only one.
     One,
@@ -192,6 +196,7 @@ impl ParamValue<'static> for ContainerExpirationKeepN {
 ///
 /// Note that GitLab only supports a few discrete values for this setting.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
 pub enum ContainerExpirationOlderThan {
     /// One week old.
     OneWeek,
@@ -303,6 +308,7 @@ impl<'a> ContainerExpirationPolicy<'a> {
 
 /// The deploy strategy used when Auto DevOps is enabled.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum AutoDevOpsDeployStrategy {
     /// Continuous deployment.
     Continuous,
@@ -331,6 +337,7 @@ impl ParamValue<'static> for AutoDevOpsDeployStrategy {
 
 /// How merge requests should be merged when using the "Merge" button.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeMethod {
     /// Always create a merge commit.
     Merge,
@@ -359,6 +366,7 @@ impl ParamValue<'static> for MergeMethod {
 
 /// How squashing should be presented in the project.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum SquashOption {
     /// Never allow squashing.
     Never,
@@ -390,6 +398,7 @@ impl ParamValue<'static> for SquashOption {
 
 /// The default Git strategy for CI jobs.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum BuildGitStrategy {
     /// Clone the reopsitory every time.
     Clone,

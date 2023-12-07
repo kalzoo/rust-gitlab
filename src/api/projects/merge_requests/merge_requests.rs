@@ -17,6 +17,7 @@ use crate::api::ParamValue;
 
 /// Filters for merge request states.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeRequestState {
     /// Filter merge requests that are open.
     Opened,
@@ -47,6 +48,7 @@ impl ParamValue<'static> for MergeRequestState {
 
 /// Parameters for a merge request view.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeRequestView {
     /// Return just the IID, URL, title, description, and basic state information.
     Simple,
@@ -68,6 +70,7 @@ impl ParamValue<'static> for MergeRequestView {
 
 /// Filter merge requests by a scope.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeRequestScope {
     /// Filter merge requests created by the API caller.
     CreatedByMe,
@@ -94,6 +97,7 @@ impl ParamValue<'static> for MergeRequestScope {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum Assignee {
     Assigned,
     Unassigned,
@@ -145,6 +149,7 @@ impl ParamValue<'static> for MergeRequestSearchScope {
 
 /// Keys merge request results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeRequestOrderBy {
     /// Sort by creation date.
     CreatedAt,
@@ -179,6 +184,7 @@ impl ParamValue<'static> for MergeRequestOrderBy {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum ApproverIds {
     Any,
     None,
@@ -202,6 +208,7 @@ impl ApproverIds {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum ApprovedBy<'a> {
     Any,
     None,
@@ -233,6 +240,7 @@ impl<'a> ApprovedBy<'a> {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum MergeRequestMilestone<'a> {
     None,
     Any,

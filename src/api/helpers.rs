@@ -17,6 +17,7 @@ use crate::api::ParamValue;
 
 /// Keys note results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum NoteOrderBy {
     /// Sort by creation date.
     CreatedAt,
@@ -48,6 +49,7 @@ impl ParamValue<'static> for NoteOrderBy {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub(crate) enum Labels<'a> {
     Any,
     None,
@@ -71,6 +73,7 @@ impl<'a, 'b: 'a> ParamValue<'static> for &'b Labels<'a> {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub(crate) enum ReactionEmoji<'a> {
     None,
     Any,

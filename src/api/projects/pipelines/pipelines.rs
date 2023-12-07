@@ -13,6 +13,7 @@ use crate::api::ParamValue;
 
 /// Scopes for pipelines.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineScope {
     /// Currently running.
     Running,
@@ -47,6 +48,7 @@ impl ParamValue<'static> for PipelineScope {
 
 /// The status of a pipeline.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineStatus {
     /// Currently running.
     Running,
@@ -99,6 +101,7 @@ impl ParamValue<'static> for PipelineStatus {
 
 /// Keys pipeline results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineOrderBy {
     /// Order by the pipeline ID.
     Id,
@@ -141,6 +144,7 @@ impl ParamValue<'static> for PipelineOrderBy {
 
 /// Ways that pipelines can be created.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineSource {
     /// A pipeline crated by pushing to a repository.
     Push,

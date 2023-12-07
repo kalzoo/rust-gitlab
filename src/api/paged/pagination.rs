@@ -30,6 +30,7 @@ pub enum PaginationError {
 
 /// Pagination options for GitLab.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Pagination {
     /// Return all results.
     ///

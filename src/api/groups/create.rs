@@ -12,6 +12,7 @@ use crate::api::ParamValue;
 
 /// Access levels for creating a project within a group.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum GroupProjectCreationAccessLevel {
     /// No new projects may be added to the group.
     NoOne,
@@ -39,6 +40,7 @@ impl ParamValue<'static> for GroupProjectCreationAccessLevel {
 
 /// Access levels for creating a subgroup within a group.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum SubgroupCreationAccessLevel {
     /// Owners may add new subprojects.
     Owner,
@@ -63,6 +65,7 @@ impl ParamValue<'static> for SubgroupCreationAccessLevel {
 
 /// Branch protection rules for groups.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum BranchProtection {
     /// Developers and maintainers may push, force push, and delete branches.
     None,
@@ -97,6 +100,7 @@ impl ParamValue<'static> for BranchProtection {
 
 /// Settings for a group's shared runner minute allocation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum SharedRunnersMinutesLimit {
     /// Inherit the setting from the parent group or instance.
     Inherit,

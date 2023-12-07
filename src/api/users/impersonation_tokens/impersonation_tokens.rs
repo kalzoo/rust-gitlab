@@ -11,6 +11,7 @@ use crate::api::ParamValue;
 
 /// States of impersonation tokens.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum ImpersonationTokenState {
     /// All states.
     All,

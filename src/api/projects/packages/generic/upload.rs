@@ -14,6 +14,7 @@ use derive_builder::Builder;
 /// It can be default (default) or hidden. Hidden packages do not appear in the UI or package API
 /// list endpoints.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum UploadPackageStatus {
     /// All packages that appear in the UI
     Default,
@@ -49,6 +50,7 @@ impl ParamValue<'static> for UploadPackageStatus {
 ///
 /// By default, the response is empty.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum UploadPackageSelect {
     /// Returns details of the package file record created by this request
     PackageFile,

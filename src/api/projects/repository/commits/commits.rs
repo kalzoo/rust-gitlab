@@ -13,6 +13,7 @@ use crate::api::ParamValue;
 
 /// Orders commits may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum CommitsOrder {
     /// Commits are returned in reverse chronological order.
     Default,

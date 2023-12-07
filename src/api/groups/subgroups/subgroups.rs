@@ -14,6 +14,7 @@ use crate::api::ParamValue;
 
 /// Keys subgroup results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum GroupSubgroupsOrderBy {
     /// Order by the user ID.
     Id,

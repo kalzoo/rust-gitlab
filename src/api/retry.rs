@@ -107,6 +107,7 @@ impl Default for Backoff {
 
 /// An error from a client even after retrying multiple times.
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum Error<E>
 where
     E: StdError + Send + Sync + 'static,

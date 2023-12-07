@@ -11,6 +11,7 @@ use derive_builder::Builder;
 
 /// Sort orderings for packages.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PackageOrderBy {
     /// Order by the creation date of the package.
     CreatedAt,

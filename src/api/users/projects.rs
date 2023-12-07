@@ -16,6 +16,7 @@ use crate::api::ParamValue;
 
 /// Keys project results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum UserProjectsOrderBy {
     /// Order by the user ID.
     Id,

@@ -14,6 +14,7 @@ use crate::api::ParamValue;
 
 /// Scopes for impersonation tokens.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum ImpersonationTokenScope {
     /// Access the API and perform git reads and writes.
     Api,

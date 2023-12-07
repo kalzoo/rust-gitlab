@@ -15,6 +15,7 @@ use crate::api::ParamValue;
 
 /// Keys user results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum UserOrderBy {
     /// Order by the user ID.
     Id,

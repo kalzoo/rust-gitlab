@@ -15,6 +15,7 @@ use crate::api::{endpoint_prelude::*, ParamValue};
 
 /// Filter merge train entries by a scope.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeTrainsScope {
     /// Still in progress.
     Active,

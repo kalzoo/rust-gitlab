@@ -14,6 +14,7 @@ use crate::api::projects::merge_requests::create::{Assignee, Reviewer};
 use crate::api::ParamValue;
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum MergeRequestLabels<'a> {
     Unlabeled,
     Labeled(CommaSeparatedList<Cow<'a, str>>),
@@ -30,6 +31,7 @@ impl<'a, 'b: 'a> ParamValue<'a> for &'b MergeRequestLabels<'a> {
 
 /// States an issue may be set to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MergeRequestStateEvent {
     /// Close the issue.
     Close,

@@ -13,6 +13,7 @@ use crate::api::ParamValue;
 
 /// The type of line to comment on.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum LineType {
     /// A removed or edited line.
     Old,
@@ -161,6 +162,7 @@ impl ImagePosition {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum FilePosition<'a> {
     Text(TextPosition<'a>),
     Image(ImagePosition),

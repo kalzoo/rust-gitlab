@@ -11,6 +11,7 @@ use crate::api::endpoint_prelude::*;
 
 /// The type of a pipeline variable.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineVariableType {
     /// An environment variable.
     ///

@@ -12,6 +12,7 @@ use crate::api::ParamValue;
 
 /// Keys group results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum ProjectReleaseOrderBy {
     /// Order by the release date.
     ReleasedAt,
