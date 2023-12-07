@@ -174,6 +174,42 @@ impl Gitlab {
 
     /// Create a new Gitlab API representation.
     ///
+    /// The `token` should be a valid [job token](https://docs.gitlab.com/ee/ci/jobs/ci_job_token.html).
+    /// Errors out if `token` is invalid.
+    pub fn new_job_token<H, T>(host: H, token: T) -> GitlabResult<Self>
+    where
+        H: AsRef<str>,
+        T: Into<String>,
+    {
+        Self::new_impl(
+            "https",
+            host.as_ref(),
+            Auth::JobToken(token.into()),
+            CertPolicy::Default,
+            ClientCert::None,
+        )
+    }
+
+    /// Create a new non-SSL Gitlab API representation.
+    ///
+    /// The `token` should be a valid [job token](https://docs.gitlab.com/ee/ci/jobs/ci_job_token.html).
+    /// Errors out if `token` is invalid.
+    pub fn new_job_token_insecure<H, T>(host: H, token: T) -> GitlabResult<Self>
+    where
+        H: AsRef<str>,
+        T: Into<String>,
+    {
+        Self::new_impl(
+            "http",
+            host.as_ref(),
+            Auth::JobToken(token.into()),
+            CertPolicy::Insecure,
+            ClientCert::None,
+        )
+    }
+
+    /// Create a new Gitlab API representation.
+    ///
     /// The `token` should be a valid [OAuth2 token](https://docs.gitlab.com/ee/api/oauth2.html).
     /// Errors out if `token` is invalid.
     pub fn with_oauth2<H, T>(host: H, token: T) -> GitlabResult<Self>

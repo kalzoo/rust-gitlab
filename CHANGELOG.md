@@ -19,6 +19,7 @@
   * Support editing `prevent_merge_without_jira_issue` when editing a project.
   * Support filtering projects by those that are hidden or are pending deletion.
   * Support keyset pagination for the `/users` endpoint.
+  * Support authentication with job tokens.
 
 ## Deprecations
 
