@@ -253,6 +253,10 @@ where
         };
         if !status.is_success() {
             return Err(ApiError::from_gitlab(v));
+        } else if status == http::StatusCode::MOVED_PERMANENTLY {
+            return Err(ApiError::moved_permanently(
+                rsp.headers().get(http::header::LOCATION),
+            ));
         }
 
         let page = serde_json::from_value::<Vec<T>>(v).map_err(ApiError::data_type::<Vec<T>>)?;

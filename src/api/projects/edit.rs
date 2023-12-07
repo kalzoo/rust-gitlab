@@ -95,10 +95,17 @@ pub struct EditProject<'a> {
     /// Set the access level for monitoring access.
     #[builder(default)]
     monitor_access_level: Option<FeatureAccessLevel>,
+    /// Set the access level for model experiment access.
+    #[builder(default)]
+    model_experiments_access_level: Option<FeatureAccessLevel>,
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
+    #[deprecated(since = "0.1606.1", note = "use `emails_enabled` instead")]
     emails_disabled: Option<bool>,
+    /// Whether to enable email notifications or not.
+    #[builder(default)]
+    emails_enabled: Option<bool>,
     /// Whether the default set of award emojis are shown for this project.
     #[builder(default)]
     show_default_award_emojis: Option<bool>,
@@ -176,6 +183,9 @@ pub struct EditProject<'a> {
     /// not.
     #[builder(default)]
     remove_source_branch_after_merge: Option<bool>,
+    /// Whether merge requests require an associated Jira issue or not.
+    #[builder(default)]
+    prevent_merge_without_jira_issue: Option<bool>,
     /// Whether to enable print merge request links if branch/commits are pushed by console
     #[builder(default)]
     printing_merge_request_link_enabled: Option<bool>,
@@ -423,7 +433,11 @@ impl<'a> Endpoint for EditProject<'a> {
                 self.infrastructure_access_level,
             )
             .push_opt("monitor_access_level", self.monitor_access_level)
-            .push_opt("emails_disabled", self.emails_disabled)
+            .push_opt(
+                "model_experiments_access_level",
+                self.model_experiments_access_level,
+            )
+            .push_opt("emails_enabled", self.emails_enabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
                 "restrict_user_defined_variables",
@@ -479,6 +493,10 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt(
                 "remove_source_branch_after_merge",
                 self.remove_source_branch_after_merge,
+            )
+            .push_opt(
+                "prevent_merge_without_jira_issue",
+                self.prevent_merge_without_jira_issue,
             )
             .push_opt(
                 "printing_merge_request_link_enabled",
@@ -552,6 +570,7 @@ impl<'a> Endpoint for EditProject<'a> {
         #[allow(deprecated)]
         {
             params
+                .push_opt("emails_disabled", self.emails_disabled)
                 .push_opt("issues_enabled", self.issues_enabled)
                 .push_opt("merge_requests_enabled", self.merge_requests_enabled)
                 .push_opt("jobs_enabled", self.jobs_enabled)
@@ -1032,6 +1051,26 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_model_experiments_access_level() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("model_experiments_access_level=private")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .model_experiments_access_level(FeatureAccessLevel::Private)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    #[allow(deprecated)]
     fn endpoint_emails_disabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -1045,6 +1084,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .emails_disabled(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_emails_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("emails_enabled=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .emails_enabled(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -1656,6 +1714,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .remove_source_branch_after_merge(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_prevent_merge_without_jira_issue() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("prevent_merge_without_jira_issue=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .prevent_merge_without_jira_issue(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

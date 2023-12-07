@@ -4,6 +4,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use std::borrow::Cow;
+use std::collections::BTreeSet;
+
 use derive_builder::Builder;
 
 use crate::api::common::VisibilityLevel;
@@ -98,6 +101,118 @@ impl ParamValue<'static> for BranchProtection {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
+/// Access levels for branch protection rules.
+pub enum BranchProtectionAccessLevel {
+    /// Developer access to the project.
+    Developer,
+    /// Maintainer access to the project.
+    Maintainer,
+}
+
+impl BranchProtectionAccessLevel {
+    fn as_str(self) -> String {
+        use crate::api::common::AccessLevel;
+
+        let int_level = match self {
+            Self::Developer => AccessLevel::Developer,
+            Self::Maintainer => AccessLevel::Maintainer,
+        };
+
+        format!("{}", int_level.as_u64())
+    }
+}
+
+impl ParamValue<'static> for BranchProtectionAccessLevel {
+    fn as_value(&self) -> Cow<'static, str> {
+        self.as_str().into()
+    }
+}
+
+/// Branch protection rule defaults for groups.
+#[derive(Debug, Builder, Clone)]
+#[builder(setter(strip_option))]
+pub struct BranchProtectionDefaults {
+    #[builder(setter(name = "_allowed_to_push"), default, private)]
+    /// Access levels allowed to push.
+    allowed_to_push: BTreeSet<BranchProtectionAccessLevel>,
+    #[builder(default)]
+    /// Whether force pushes are allowed or not.
+    allow_force_push: Option<bool>,
+    #[builder(setter(name = "_allowed_to_merge"), default, private)]
+    /// Access levels allowed to merge.
+    allowed_to_merge: BTreeSet<BranchProtectionAccessLevel>,
+    #[builder(default)]
+    /// Whether developers can create branches or not.
+    developer_can_initial_push: Option<bool>,
+}
+
+impl BranchProtectionDefaults {
+    /// Create a builder for branch protection defaults.
+    pub fn builder() -> BranchProtectionDefaultsBuilder {
+        BranchProtectionDefaultsBuilder::default()
+    }
+
+    pub(crate) fn add_query<'b>(&'b self, params: &mut FormParams<'b>) {
+        params
+            .extend(self.allowed_to_push.iter().map(|&value| {
+                (
+                    "default_branch_protection_defaults[allowed_to_push][]",
+                    value,
+                )
+            }))
+            .push_opt(
+                "default_branch_protection_defaults[allow_force_push]",
+                self.allow_force_push,
+            )
+            .extend(self.allowed_to_merge.iter().map(|&value| {
+                (
+                    "default_branch_protection_defaults[allowed_to_merge][]",
+                    value,
+                )
+            }))
+            .push_opt(
+                "default_branch_protection_defaults[developer_can_initial_push]",
+                self.developer_can_initial_push,
+            );
+    }
+}
+
+impl BranchProtectionDefaultsBuilder {
+    /// Add an access level allowed to push.
+    pub fn allowed_to_push(&mut self, allowed: BranchProtectionAccessLevel) -> &mut Self {
+        self.allowed_to_push
+            .get_or_insert_with(BTreeSet::new)
+            .insert(allowed);
+        self
+    }
+
+    /// Remove an access level allowed to push.
+    pub fn not_allowed_to_push(&mut self, disallowed: BranchProtectionAccessLevel) -> &mut Self {
+        self.allowed_to_push
+            .get_or_insert_with(BTreeSet::new)
+            .remove(&disallowed);
+        self
+    }
+
+    /// Add an access level allowed to merge.
+    pub fn allowed_to_merge(&mut self, allowed: BranchProtectionAccessLevel) -> &mut Self {
+        self.allowed_to_merge
+            .get_or_insert_with(BTreeSet::new)
+            .insert(allowed);
+        self
+    }
+
+    /// Remove an access level allowed to merge.
+    pub fn not_allowed_to_merge(&mut self, disallowed: BranchProtectionAccessLevel) -> &mut Self {
+        self.allowed_to_merge
+            .get_or_insert_with(BTreeSet::new)
+            .remove(&disallowed);
+        self
+    }
+}
+
 /// Settings for a group's shared runner minute allocation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
@@ -176,7 +291,11 @@ pub struct CreateGroup<'a> {
     subgroup_creation_level: Option<SubgroupCreationAccessLevel>,
     /// Disable email notifications from the group.
     #[builder(default)]
+    #[deprecated(since = "0.1606.1", note = "use `emails_enabled` instead")]
     emails_disabled: Option<bool>,
+    /// Enable email notifications from the group.
+    #[builder(default)]
+    emails_enabled: Option<bool>,
     // TODO: Figure out how to actually use this.
     // avatar   mixed   no  Image file for avatar of the group
     // avatar: ???,
@@ -195,6 +314,9 @@ pub struct CreateGroup<'a> {
     /// The default branch protection for projects within the group.
     #[builder(default)]
     default_branch_protection: Option<BranchProtection>,
+    /// The default branch protection defaults for projects within the group.
+    #[builder(default)]
+    default_branch_protection_defaults: Option<BranchProtectionDefaults>,
     /// Pipeline quota (in minutes) for the group on shared runners.
     #[builder(setter(into), default)]
     shared_runners_minutes_limit: Option<SharedRunnersMinutesLimit>,
@@ -237,7 +359,7 @@ impl<'a> Endpoint for CreateGroup<'a> {
             .push_opt("project_creation_level", self.project_creation_level)
             .push_opt("auto_devops_enabled", self.auto_devops_enabled)
             .push_opt("subgroup_creation_level", self.subgroup_creation_level)
-            .push_opt("emails_disabled", self.emails_disabled)
+            .push_opt("emails_enabled", self.emails_enabled)
             .push_opt("mentions_disabled", self.mentions_disabled)
             .push_opt("lfs_enabled", self.lfs_enabled)
             .push_opt("request_access_enabled", self.request_access_enabled)
@@ -252,6 +374,15 @@ impl<'a> Endpoint for CreateGroup<'a> {
                 self.extra_shared_runners_minutes_limit,
             );
 
+        if let Some(defaults) = self.default_branch_protection_defaults.as_ref() {
+            defaults.add_query(&mut params);
+        }
+
+        #[allow(deprecated)]
+        {
+            params.push_opt("emails_disabled", self.emails_disabled);
+        }
+
         params.into_body()
     }
 }
@@ -262,8 +393,9 @@ mod tests {
 
     use crate::api::common::VisibilityLevel;
     use crate::api::groups::{
-        BranchProtection, CreateGroup, CreateGroupBuilderError, GroupProjectCreationAccessLevel,
-        SharedRunnersMinutesLimit, SubgroupCreationAccessLevel,
+        BranchProtection, BranchProtectionAccessLevel, BranchProtectionDefaults, CreateGroup,
+        CreateGroupBuilderError, GroupProjectCreationAccessLevel, SharedRunnersMinutesLimit,
+        SubgroupCreationAccessLevel,
     };
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
@@ -301,6 +433,18 @@ mod tests {
             (BranchProtection::Full, "2"),
             (BranchProtection::Push, "3"),
             (BranchProtection::PushExceptInitial, "4"),
+        ];
+
+        for (i, s) in items {
+            assert_eq!(i.as_str(), *s);
+        }
+    }
+
+    #[test]
+    fn branch_protection_access_level_as_str() {
+        let items = &[
+            (BranchProtectionAccessLevel::Developer, "30"),
+            (BranchProtectionAccessLevel::Maintainer, "40"),
         ];
 
         for (i, s) in items {
@@ -578,6 +722,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_emails_disabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -592,6 +737,26 @@ mod tests {
             .name("name")
             .path("path")
             .emails_disabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_emails_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("groups")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&path=path", "&emails_enabled=false"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateGroup::builder()
+            .name("name")
+            .path("path")
+            .emails_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
@@ -704,6 +869,126 @@ mod tests {
             .name("name")
             .path("path")
             .default_branch_protection(BranchProtection::Full)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allowed_to_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("groups")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&path=path",
+                "&default_branch_protection_defaults%5Ballowed_to_push%5D%5B%5D=30",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateGroup::builder()
+            .name("name")
+            .path("path")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allowed_to_push(BranchProtectionAccessLevel::Developer)
+                    .allowed_to_push(BranchProtectionAccessLevel::Maintainer)
+                    .not_allowed_to_push(BranchProtectionAccessLevel::Maintainer)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allow_force_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("groups")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&path=path",
+                "&default_branch_protection_defaults%5Ballow_force_push%5D=true",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateGroup::builder()
+            .name("name")
+            .path("path")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allow_force_push(true)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_allowed_to_merge() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("groups")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&path=path",
+                "&default_branch_protection_defaults%5Ballowed_to_merge%5D%5B%5D=30",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateGroup::builder()
+            .name("name")
+            .path("path")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .allowed_to_merge(BranchProtectionAccessLevel::Developer)
+                    .allowed_to_merge(BranchProtectionAccessLevel::Maintainer)
+                    .not_allowed_to_merge(BranchProtectionAccessLevel::Maintainer)
+                    .build()
+                    .unwrap(),
+            )
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_default_branch_protection_defaults_developer_can_initial_push() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("groups")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!(
+                "name=name",
+                "&path=path",
+                "&default_branch_protection_defaults%5Bdeveloper_can_initial_push%5D=true",
+            ))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateGroup::builder()
+            .name("name")
+            .path("path")
+            .default_branch_protection_defaults(
+                BranchProtectionDefaults::builder()
+                    .developer_can_initial_push(true)
+                    .build()
+                    .unwrap(),
+            )
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

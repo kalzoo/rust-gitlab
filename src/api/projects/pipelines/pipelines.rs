@@ -174,6 +174,8 @@ pub enum PipelineSource {
     OnDemandDastScan,
     /// A pipeline created by an on-demand DAST validation.
     OnDemandDastValidation,
+    /// A pipeline created by a security orchestration policy.
+    SecurityOrchestrationPolicy,
 }
 
 impl PipelineSource {
@@ -194,6 +196,7 @@ impl PipelineSource {
             PipelineSource::ParentPipeline => "parent_pipeline",
             PipelineSource::OnDemandDastScan => "ondemand_dast_scan",
             PipelineSource::OnDemandDastValidation => "ondemand_dast_validation",
+            PipelineSource::SecurityOrchestrationPolicy => "security_orchestration_policy",
         }
     }
 }
@@ -388,6 +391,10 @@ mod tests {
             (
                 PipelineSource::OnDemandDastValidation,
                 "ondemand_dast_validation",
+            ),
+            (
+                PipelineSource::SecurityOrchestrationPolicy,
+                "security_orchestration_policy",
             ),
         ];
 

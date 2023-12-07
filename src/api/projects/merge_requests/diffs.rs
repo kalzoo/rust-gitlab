@@ -11,12 +11,17 @@ use crate::api::endpoint_prelude::*;
 
 /// Shows information of a merge request including its files and changes.
 #[derive(Debug, Builder, Clone)]
+#[builder(setter(strip_option))]
 pub struct MergeRequestDiffs<'a> {
     /// The project with the merge request.
     #[builder(setter(into))]
     project: NameOrId<'a>,
     /// The ID of the merge request.
     merge_request: u64,
+
+    /// Return diffs as unified diffs.
+    #[builder(default)]
+    unidiff: Option<bool>,
 }
 
 impl<'a> MergeRequestDiffs<'a> {
@@ -37,6 +42,14 @@ impl<'a> Endpoint for MergeRequestDiffs<'a> {
             self.project, self.merge_request,
         )
         .into()
+    }
+
+    fn parameters(&self) -> QueryParams {
+        let mut params = QueryParams::default();
+
+        params.push_opt("unidiff", self.unidiff);
+
+        params
     }
 }
 
@@ -92,6 +105,25 @@ mod tests {
         let endpoint = MergeRequestDiffs::builder()
             .project("simple/project")
             .merge_request(1)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unidiff() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::GET)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/diffs")
+            .add_query_params(&[("unidiff", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequestDiffs::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .unidiff(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

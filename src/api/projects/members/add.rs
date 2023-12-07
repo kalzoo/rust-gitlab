@@ -14,6 +14,7 @@ use crate::api::ParamValue;
 
 /// Tasks users may be assigned upon addition to a project.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[deprecated(note = "the associated parameters have been removed upstream.")]
 #[non_exhaustive]
 pub enum ProjectInviteTasksToBeDone {
     /// Request to focus on CI tasks.
@@ -24,6 +25,7 @@ pub enum ProjectInviteTasksToBeDone {
     Issues,
 }
 
+#[allow(deprecated)]
 impl ProjectInviteTasksToBeDone {
     /// The tasks as a query parameter.
     fn as_str(self) -> &'static str {
@@ -35,6 +37,7 @@ impl ProjectInviteTasksToBeDone {
     }
 }
 
+#[allow(deprecated)]
 impl ParamValue<'static> for ProjectInviteTasksToBeDone {
     fn as_value(&self) -> Cow<'static, str> {
         self.as_str().into()
@@ -64,11 +67,14 @@ pub struct AddProjectMember<'a> {
     ///
     /// Requires `tasks_project_id`.
     #[builder(setter(name = "_tasks_to_be_done"), default, private)]
+    #[deprecated(note = "removed upstream")]
+    #[allow(deprecated)]
     tasks_to_be_done: Vec<ProjectInviteTasksToBeDone>,
     /// The project ID in which to create task issues.
     ///
     /// Requires `tasks_to_be_done`.
     #[builder(default)]
+    #[deprecated(note = "removed upstream")]
     tasks_project_id: Option<u64>,
 }
 
@@ -100,6 +106,8 @@ impl<'a> AddProjectMemberBuilder<'a> {
     }
 
     /// Focus on the given task.
+    #[deprecated(note = "removed upstream")]
+    #[allow(deprecated)]
     pub fn task_to_be_done(&mut self, task: ProjectInviteTasksToBeDone) -> &mut Self {
         self.tasks_to_be_done
             .get_or_insert_with(Vec::new)
@@ -108,6 +116,8 @@ impl<'a> AddProjectMemberBuilder<'a> {
     }
 
     /// Focus on the given tasks.
+    #[deprecated(note = "removed upstream")]
+    #[allow(deprecated)]
     pub fn tasks_to_be_done<I>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = ProjectInviteTasksToBeDone>,
@@ -135,15 +145,20 @@ impl<'a> Endpoint for AddProjectMember<'a> {
             .push("user_id", &self.user_ids)
             .push("access_level", self.access_level.as_u64())
             .push_opt("expires_at", self.expires_at)
-            .push_opt("invite_source", self.invite_source.as_ref())
-            .extend(
-                self.tasks_to_be_done
-                    .iter()
-                    .map(|task| task.as_str())
-                    .unique()
-                    .map(|value| ("tasks_to_be_done[]", value)),
-            )
-            .push_opt("tasks_project_id", self.tasks_project_id);
+            .push_opt("invite_source", self.invite_source.as_ref());
+
+        #[allow(deprecated)]
+        {
+            params
+                .extend(
+                    self.tasks_to_be_done
+                        .iter()
+                        .map(|task| task.as_str())
+                        .unique()
+                        .map(|value| ("tasks_to_be_done[]", value)),
+                )
+                .push_opt("tasks_project_id", self.tasks_project_id);
+        }
 
         params.into_body()
     }
@@ -155,13 +170,14 @@ mod tests {
     use http::Method;
 
     use crate::api::common::AccessLevel;
-    use crate::api::projects::members::{
-        AddProjectMember, AddProjectMemberBuilderError, ProjectInviteTasksToBeDone,
-    };
+    #[allow(deprecated)]
+    use crate::api::projects::members::ProjectInviteTasksToBeDone;
+    use crate::api::projects::members::{AddProjectMember, AddProjectMemberBuilderError};
     use crate::api::{self, Query};
     use crate::test::client::{ExpectedUrl, SingleTestClient};
 
     #[test]
+    #[allow(deprecated)]
     fn project_invite_tasks_as_str() {
         let items = &[
             (ProjectInviteTasksToBeDone::Ci, "ci"),
@@ -317,6 +333,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tasks_to_be_done() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)

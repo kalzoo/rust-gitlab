@@ -6,6 +6,28 @@
   * Add `api::projects::issues::awards` and `api::projects::issues::notes::awards` endpoints.
   * Add `api::users::projects::UserProjects` endpoint.
   * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
+  * Support `emails_enabled` parameters when creating or editing groups and projects.
+  * Support filtering groups based on the repository storage.
+  * Support enforcing expiration on service access tokens for group hooks.
+  * Support filtering group and project packages by version.
+  * Support enforcing committer name requirements for push rules.
+  * Support model experimentl access levels when creating or editng projects.
+  * Support `unidiff` requests for merge request diffs.
+  * Support the `SecurityOrchestrationPolicy` for the pipeline source filter.
+  * Support returning users marked as auditors when listing all users.
+  * Detect and notify of `301 Moved Permanently` responses.
+  * Support editing `prevent_merge_without_jira_issue` when editing a project.
+  * Support filtering projects by those that are hidden or are pending deletion.
+  * Support keyset pagination for the `/users` endpoint.
+  * Support authentication with job tokens.
+  * Support `default_branch_protection_defaults` parameters when creating and editing groups.
+
+## Deprecations
+
+  * The `emails_disabled` parameter has been replaced by `emails_enabled` when
+    creating or editing groups and projects.
+  * The `tasks_to_be_done` and `tasks_project_id` parameters for group and
+    project memberships have been removed upstream.
 
 ## Changes
 

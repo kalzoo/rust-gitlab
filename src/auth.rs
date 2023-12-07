@@ -39,6 +39,8 @@ type AuthResult<T> = Result<T, AuthError>;
 pub enum Auth {
     /// A personal access token, obtained through Gitlab user settings
     Token(String),
+    /// A job token, obtained through a CI job.
+    JobToken(String),
     /// An OAuth2 token, obtained through the OAuth2 flow
     OAuth2(String),
     /// Unauthenticated access
@@ -61,6 +63,11 @@ impl Auth {
                 let mut token_header_value = HeaderValue::from_str(token)?;
                 token_header_value.set_sensitive(true);
                 headers.insert("PRIVATE-TOKEN", token_header_value);
+            },
+            Auth::JobToken(token) => {
+                let mut token_header_value = HeaderValue::from_str(token)?;
+                token_header_value.set_sensitive(true);
+                headers.insert("JOB-TOKEN", token_header_value);
             },
             Auth::OAuth2(token) => {
                 let value = format!("Bearer {}", token);

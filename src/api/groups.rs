@@ -26,6 +26,10 @@ pub mod subgroups;
 mod unshare;
 
 pub use create::BranchProtection;
+pub use create::BranchProtectionAccessLevel;
+pub use create::BranchProtectionDefaults;
+pub use create::BranchProtectionDefaultsBuilder;
+pub use create::BranchProtectionDefaultsBuilderError;
 pub use create::CreateGroup;
 pub use create::CreateGroupBuilder;
 pub use create::CreateGroupBuilderError;

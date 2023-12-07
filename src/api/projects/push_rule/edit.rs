@@ -65,6 +65,13 @@ pub struct EditProjectPushRule<'a> {
     #[builder(default)]
     commit_committer_check: Option<bool>,
 
+    /// Enforce commit metadata name consistency.
+    ///
+    /// If set, users can only push commits to the repository if the commit author name is
+    /// consistent with their account.
+    #[builder(default)]
+    commit_committer_name_check: Option<bool>,
+
     /// Reject commits that are not signed with a GPG key.
     #[builder(default)]
     reject_unsigned_commits: Option<bool>,
@@ -102,6 +109,10 @@ impl<'a> Endpoint for EditProjectPushRule<'a> {
             .push_opt("file_name_regex", self.file_name_regex.as_ref())
             .push_opt("max_file_size", self.max_file_size)
             .push_opt("commit_committer_check", self.commit_committer_check)
+            .push_opt(
+                "commit_committer_name_check",
+                self.commit_committer_name_check,
+            )
             .push_opt("reject_unsigned_commits", self.reject_unsigned_commits);
 
         params.into_body()
@@ -201,6 +212,26 @@ mod tests {
         let endpoint = EditProjectPushRule::builder()
             .project("10")
             .commit_committer_check(true)
+            .build()
+            .unwrap();
+
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_commit_committer_name_check() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .content_type("application/x-www-form-urlencoded")
+            .endpoint("projects/10/push_rule")
+            .body_str("commit_committer_name_check=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProjectPushRule::builder()
+            .project("10")
+            .commit_committer_name_check(true)
             .build()
             .unwrap();
 

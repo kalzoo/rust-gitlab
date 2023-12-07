@@ -25,6 +25,9 @@ pub struct MergeRequestChanges<'a> {
     /// Retrieve changes diffs via Gitaly
     #[builder(default)]
     access_raw_diffs: Option<bool>,
+    /// Return diffs as unified diffs.
+    #[builder(default)]
+    unidiff: Option<bool>,
 }
 
 impl<'a> MergeRequestChanges<'a> {
@@ -50,7 +53,9 @@ impl<'a> Endpoint for MergeRequestChanges<'a> {
     fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
         let mut params = FormParams::default();
 
-        params.push_opt("access_raw_diffs", self.access_raw_diffs);
+        params
+            .push_opt("access_raw_diffs", self.access_raw_diffs)
+            .push_opt("unidiff", self.unidiff);
 
         params.into_body()
     }
@@ -133,6 +138,26 @@ mod tests {
             .project("simple/project")
             .merge_request(1)
             .access_raw_diffs(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_unidiff() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::GET)
+            .endpoint("projects/simple%2Fproject/merge_requests/1/changes")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("unidiff=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = MergeRequestChanges::builder()
+            .project("simple/project")
+            .merge_request(1)
+            .unidiff(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
