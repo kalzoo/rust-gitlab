@@ -69,6 +69,9 @@ pub struct EditHook<'a> {
     /// Whether to verify SSL/TLS certificates for the webhook endpoint or not.
     #[builder(default)]
     enable_ssl_verification: Option<bool>,
+    /// Require service account access tokens to have an expiration date.
+    #[builder(default)]
+    service_access_tokens_expiration_enforced: Option<bool>,
     /// A secret token to include in webhook deliveries.
     ///
     /// This may be used to ensure that the webhook is actually coming from the GitLab instance.
@@ -118,6 +121,10 @@ impl<'a> Endpoint for EditHook<'a> {
             .push_opt("releases_events", self.releases_events)
             .push_opt("subgroup_events", self.subgroup_events)
             .push_opt("enable_ssl_verification", self.enable_ssl_verification)
+            .push_opt(
+                "service_access_tokens_expiration_enforced",
+                self.service_access_tokens_expiration_enforced,
+            )
             .push_opt("token", self.token.as_ref());
 
         params.into_body()
@@ -472,6 +479,26 @@ mod tests {
             .group("simple/group")
             .hook_id(1)
             .enable_ssl_verification(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_service_access_tokens_expiration_enforced() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup/hooks/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("service_access_tokens_expiration_enforced=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditHook::builder()
+            .group("simple/group")
+            .hook_id(1)
+            .service_access_tokens_expiration_enforced(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

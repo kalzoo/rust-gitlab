@@ -8,6 +8,7 @@
   * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
   * Support `emails_enabled` parameters when creating or editing groups and projects.
   * Support filtering groups based on the repository storage.
+  * Support enforcing expiration on service access tokens for group hooks.
 
 ## Deprecations
 
