@@ -19,6 +19,13 @@ pub struct EditGroupPushRule<'a> {
     #[builder(setter(into))]
     group: NameOrId<'a>,
 
+    /// Enforce commit metadata name consistency.
+    ///
+    /// If set, users can only push commits to the repository if the commit author name is
+    /// consistent with their account.
+    #[builder(default)]
+    commit_committer_name_check: Option<bool>,
+
     /// Ensure commit messages match a given regular expression.
     #[builder(setter(into), default)]
     commit_message_regex: Option<Cow<'a, str>>,
@@ -89,6 +96,10 @@ impl<'a> Endpoint for EditGroupPushRule<'a> {
     fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
         let mut params = FormParams::default();
         params
+            .push_opt(
+                "commit_committer_name_check",
+                self.commit_committer_name_check,
+            )
             .push_opt("commit_message_regex", self.commit_message_regex.as_ref())
             .push_opt(
                 "commit_message_negative_regex",
@@ -225,7 +236,27 @@ mod tests {
     }
 
     #[test]
-    fn endpoint_message_regex() {
+    fn endpoint_commit_committer_name_check() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .content_type("application/x-www-form-urlencoded")
+            .endpoint("groups/10/push_rule")
+            .body_str("commit_committer_name_check=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroupPushRule::builder()
+            .group(10)
+            .commit_committer_name_check(true)
+            .build()
+            .unwrap();
+
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_commit_message_regex() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
             .content_type("application/x-www-form-urlencoded")
