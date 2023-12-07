@@ -2,7 +2,7 @@
 
 This document categorizes the APIs as they pertain to this crate.
 
-Last synced: v16.3.0-pre (f3609f7f676a1676270be26b0e8efde1fa4ea674)
+Last synced: v16.7.0-pre (2ba6e0ea7eeaf0acfa5d6c0d26aad1e4b6c91abf)
 
 # Implemented
 
@@ -274,6 +274,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /groups/:group/service_accounts/:id/personal_access_tokens/:token/rotate` https://gitlab.kitware.com/help/api/groups.md#rotate-a-personal-access-token-for-service-account-user
   * `POST   /groups/:group/transfer` https://gitlab.kitware.com/help/api/groups.md#transfer-a-group-to-a-new-parent-group-turn-a-subgroup-to-a-top-level-group
   * `GET    /groups/:group/transfer_locations` https://gitlab.kitware.com/help/api/groups.md#get-groups-to-which-a-user-can-transfer-a-group
+  * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
   * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
@@ -346,7 +347,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/languages` https://gitlab.kitware.com/help/api/projects.md#languages
   * `DELETE /projects/:project/merge_requests/:merge_request` https://gitlab.kitware.com/help/api/merge_requests.md#delete-a-merge-request
   * `POST   /projects/:project/merge_requests/:merge_request/add_spent_time` https://gitlab.kitware.com/help/api/merge_requests.md#add-spent-time-for-a-merge-request
-  * `POST   /projects/:project/merge_requests/:merge_request/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-approval-configuration (deprecated)
   * `POST   /projects/:project/merge_requests/:merge_request/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-merge-request-level-rules
   * `GET    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-a-single-merge-request-level-rule
   * `PUT    /projects/:project/merge_requests/:merge_request/approval_rules/:approval_rule` https://gitlab.kitware.com/help/api/merge_request_approvals.md#update-merge-request-level-rule
@@ -395,6 +395,7 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/pipeline` https://gitlab.kitware.com/help/api/pipelines.md#create-a-new-pipeline
   * `GET    /projects/:project/pipeline/latest` https://gitlab.kitware.com/help/api/pipelines.md#get-the-latest-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
+  * `PUT    /projects/:project/pipelines/:pipeline/metadata` https://gitlab.kitware.com/help/api/pipelines.md#update-pipeline-metadata
   * `GET    /projects/:project/pipelines/:pipeline/test_report` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report
   * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report-summary
   * `GET    /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#get-project-push-rules
@@ -476,6 +477,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#single-ssh-key
   * `DELETE /user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-current-user
   * `POST   /user/runners` https://gitlab.kitware.com/help/api/users.md#create-a-uunner
+  * `POST   /user/personal_access_tokens` https://gitlab.kitware.com/help/api/users.md#create-a-personal-access-token-with-limited-scopes-for-the-currently-authenticated-user
   * `GET    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preferences
   * `PUT    /user/preferences` https://gitlab.kitware.com/help/api/users.md#user-preference-modification
   * `GET    /user/status` https://gitlab.kitware.com/help/api/users.md#user-status
@@ -547,6 +549,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/custom_attributes.md
   * https://gitlab.kitware.com/help/api/database_migrations.md
   * https://gitlab.kitware.com/help/api/dependencies.md
+  * https://gitlab.kitware.com/help/api/dependency_list_export.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
   * https://gitlab.kitware.com/help/api/deploy_tokens.md
   * https://gitlab.kitware.com/help/api/deployments.md
@@ -579,6 +582,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/group_relations_export.md
   * https://gitlab.kitware.com/help/api/group_releases.md
   * https://gitlab.kitware.com/help/api/group_repository_storage_moves.md
+  * https://gitlab.kitware.com/help/api/group_ssh_certificates.md
   * https://gitlab.kitware.com/help/api/group_wikis.md
   * https://gitlab.kitware.com/help/api/import.md
   * https://gitlab.kitware.com/help/api/instance_clusters.md
@@ -593,7 +597,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/license.md
   * https://gitlab.kitware.com/help/api/linked_epics.md
   * https://gitlab.kitware.com/help/api/lint.md
-  * https://gitlab.kitware.com/help/api/managed_licenses.md
   * https://gitlab.kitware.com/help/api/markdown.md
   * https://gitlab.kitware.com/help/api/member_roles.md
   * https://gitlab.kitware.com/help/api/merge_request_context_commits.md
@@ -605,6 +608,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/oauth2.md
   * https://gitlab.kitware.com/help/api/packages/composer.md
   * https://gitlab.kitware.com/help/api/packages/conan.md
+  * https://gitlab.kitware.com/help/api/packages/debian_group_distributions.md
   * https://gitlab.kitware.com/help/api/packages/debian_project_distributions.md
   * https://gitlab.kitware.com/help/api/packages/debian.md
   * https://gitlab.kitware.com/help/api/pages.md
