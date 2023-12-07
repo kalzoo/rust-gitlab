@@ -71,6 +71,9 @@ pub struct Packages<'a> {
     /// Filter packages by a fuzzy search on the name.
     #[builder(setter(into), default)]
     package_name: Option<Cow<'a, str>>,
+    /// Filter packages by the version.
+    #[builder(setter(into), default)]
+    package_version: Option<Cow<'a, str>>,
 
     /// Include versionless packages.
     #[builder(default)]
@@ -106,6 +109,7 @@ impl<'a> Endpoint for Packages<'a> {
             .push_opt("sort", self.sort)
             .push_opt("package_type", self.package_type)
             .push_opt("package_name", self.package_name.as_ref())
+            .push_opt("package_version", self.package_version.as_ref())
             .push_opt("include_versionless", self.include_versionless)
             .push_opt("status", self.status);
 
@@ -246,6 +250,23 @@ mod tests {
         let endpoint = Packages::builder()
             .project(1337)
             .package_name("test")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_package_version() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups/1337/packages")
+            .add_query_params(&[("package_version", "1.2.3")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Packages::builder()
+            .project(1337)
+            .package_version("1.2.3")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
