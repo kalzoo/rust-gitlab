@@ -63,11 +63,13 @@ pub struct AddGroupMember<'a> {
     ///
     /// Requires `tasks_project_id`.
     #[builder(setter(name = "_tasks_to_be_done"), default, private)]
+    #[deprecated(note = "removed upstream")]
     tasks_to_be_done: Vec<GroupInviteTasksToBeDone>,
     /// The project ID in which to create task issues.
     ///
     /// Requires `tasks_to_be_done`.
     #[builder(default)]
+    #[deprecated(note = "removed upstream")]
     tasks_project_id: Option<u64>,
 }
 
@@ -80,6 +82,7 @@ impl<'a> AddGroupMember<'a> {
 
 impl<'a> AddGroupMemberBuilder<'a> {
     /// Focus on the given task.
+    #[deprecated(note = "removed upstream")]
     pub fn task_to_be_done(&mut self, task: GroupInviteTasksToBeDone) -> &mut Self {
         self.tasks_to_be_done
             .get_or_insert_with(Vec::new)
@@ -88,6 +91,7 @@ impl<'a> AddGroupMemberBuilder<'a> {
     }
 
     /// Focus on the given tasks.
+    #[deprecated(note = "removed upstream")]
     pub fn tasks_to_be_done<I>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = GroupInviteTasksToBeDone>,
@@ -115,15 +119,20 @@ impl<'a> Endpoint for AddGroupMember<'a> {
             .push("user_id", self.user)
             .push("access_level", self.access_level.as_u64())
             .push_opt("expires_at", self.expires_at)
-            .push_opt("invite_source", self.invite_source.as_ref())
-            .extend(
-                self.tasks_to_be_done
-                    .iter()
-                    .map(|task| task.as_str())
-                    .unique()
-                    .map(|value| ("tasks_to_be_done[]", value)),
-            )
-            .push_opt("tasks_project_id", self.tasks_project_id);
+            .push_opt("invite_source", self.invite_source.as_ref());
+
+        #[allow(deprecated)]
+        {
+            params
+                .extend(
+                    self.tasks_to_be_done
+                        .iter()
+                        .map(|task| task.as_str())
+                        .unique()
+                        .map(|value| ("tasks_to_be_done[]", value)),
+                )
+                .push_opt("tasks_project_id", self.tasks_project_id);
+        }
 
         params.into_body()
     }
@@ -271,6 +280,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_tasks_to_be_done() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)

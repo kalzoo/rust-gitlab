@@ -14,6 +14,8 @@
 
   * The `emails_disabled` parameter has been replaced by `emails_enabled` when
     creating or editing groups and projects.
+  * The `tasks_to_be_done` and `tasks_project_id` parameters for group and
+    project memberships have been removed upstream.
 
 ## Changes
 

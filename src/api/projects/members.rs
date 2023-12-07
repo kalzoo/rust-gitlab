@@ -28,6 +28,7 @@ pub use self::all_members::ProjectMemberState;
 pub use self::add::AddProjectMember;
 pub use self::add::AddProjectMemberBuilder;
 pub use self::add::AddProjectMemberBuilderError;
+#[allow(deprecated)]
 pub use self::add::ProjectInviteTasksToBeDone;
 
 pub use self::edit::EditProjectMember;
