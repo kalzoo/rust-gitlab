@@ -17,6 +17,7 @@
   * Support returning users marked as auditors when listing all users.
   * Detect and notify of `301 Moved Permanently` responses.
   * Support editing `prevent_merge_without_jira_issue` when editing a project.
+  * Support filtering projects by those that are hidden or are pending deletion.
 
 ## Deprecations
 

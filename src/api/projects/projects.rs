@@ -173,6 +173,12 @@ pub struct Projects<'a> {
     /// Available to administrators only.
     #[builder(setter(into), default)]
     repository_storage: Option<Cow<'a, str>>,
+    /// Include hidden projects.
+    #[builder(default)]
+    include_hidden: Option<bool>,
+    /// Include projects pending deletion.
+    #[builder(default)]
+    include_pending_delete: Option<bool>,
 
     /// Order results by a given key.
     #[builder(default)]
@@ -288,6 +294,8 @@ impl<'a> Endpoint for Projects<'a> {
             .push_opt("updated_before", self.updated_before)
             .push_opt("updated_after", self.updated_after)
             .push_opt("repository_storage", self.repository_storage.as_ref())
+            .push_opt("include_hidden", self.include_hidden)
+            .push_opt("include_pending_delete", self.include_pending_delete)
             .extend(
                 self.custom_attributes
                     .iter()
@@ -744,6 +752,35 @@ mod tests {
 
         let endpoint = Projects::builder()
             .repository_storage("default")
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_include_hidden() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("include_hidden", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder().include_hidden(true).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_include_pending_delete() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("projects")
+            .add_query_params(&[("include_pending_delete", "true")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Projects::builder()
+            .include_pending_delete(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
