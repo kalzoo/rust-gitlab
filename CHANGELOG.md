@@ -7,6 +7,7 @@
   * Add `api::users::projects::UserProjects` endpoint.
   * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
   * Support `emails_enabled` parameters when creating or editing groups and projects.
+  * Support filtering groups based on the repository storage.
 
 ## Deprecations
 

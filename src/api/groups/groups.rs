@@ -84,6 +84,9 @@ pub struct Groups<'a> {
     /// Only return top-level groups.
     #[builder(default)]
     top_level_only: Option<bool>,
+    /// The storage shard used by the group.
+    #[builder(setter(into), default)]
+    repository_storage: Option<Cow<'a, str>>,
 
     /// Include project statistics in the results.
     #[builder(default)]
@@ -182,6 +185,7 @@ impl<'a> Endpoint for Groups<'a> {
                 self.min_access_level.map(|level| level.as_u64()),
             )
             .push_opt("top_level_only", self.top_level_only)
+            .push_opt("repository_storage", self.repository_storage.as_ref())
             .push_opt("statistics", self.statistics)
             .push_opt("with_custom_attributes", self.with_custom_attributes)
             .extend(
@@ -326,6 +330,22 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Groups::builder().top_level_only(true).build().unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_repository_storage() {
+        let endpoint = ExpectedUrl::builder()
+            .endpoint("groups")
+            .add_query_params(&[("repository_storage", "default")])
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = Groups::builder()
+            .repository_storage("default")
+            .build()
+            .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
     }
 
