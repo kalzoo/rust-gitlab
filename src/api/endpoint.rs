@@ -60,6 +60,10 @@ where
         };
         if !status.is_success() {
             return Err(ApiError::from_gitlab(v));
+        } else if status == http::StatusCode::MOVED_PERMANENTLY {
+            return Err(ApiError::moved_permanently(
+                rsp.headers().get(http::header::LOCATION),
+            ));
         }
 
         serde_json::from_value::<T>(v).map_err(ApiError::data_type::<T>)
@@ -95,6 +99,10 @@ where
         };
         if !status.is_success() {
             return Err(ApiError::from_gitlab(v));
+        } else if status == http::StatusCode::MOVED_PERMANENTLY {
+            return Err(ApiError::moved_permanently(
+                rsp.headers().get(http::header::LOCATION),
+            ));
         }
 
         serde_json::from_value::<T>(v).map_err(ApiError::data_type::<T>)

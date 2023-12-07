@@ -41,13 +41,18 @@ where
             (req, Vec::new())
         };
         let rsp = client.rest(req, data)?;
-        if !rsp.status().is_success() {
+        let status = rsp.status();
+        if !status.is_success() {
             let v = if let Ok(v) = serde_json::from_slice(rsp.body()) {
                 v
             } else {
-                return Err(ApiError::server_error(rsp.status(), rsp.body()));
+                return Err(ApiError::server_error(status, rsp.body()));
             };
             return Err(ApiError::from_gitlab(v));
+        } else if status == http::StatusCode::MOVED_PERMANENTLY {
+            return Err(ApiError::moved_permanently(
+                rsp.headers().get(http::header::LOCATION),
+            ));
         }
 
         Ok(())
@@ -74,13 +79,18 @@ where
             (req, Vec::new())
         };
         let rsp = client.rest_async(req, data).await?;
-        if !rsp.status().is_success() {
+        let status = rsp.status();
+        if !status.is_success() {
             let v = if let Ok(v) = serde_json::from_slice(rsp.body()) {
                 v
             } else {
-                return Err(ApiError::server_error(rsp.status(), rsp.body()));
+                return Err(ApiError::server_error(status, rsp.body()));
             };
             return Err(ApiError::from_gitlab(v));
+        } else if status == http::StatusCode::MOVED_PERMANENTLY {
+            return Err(ApiError::moved_permanently(
+                rsp.headers().get(http::header::LOCATION),
+            ));
         }
 
         Ok(())

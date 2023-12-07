@@ -15,6 +15,7 @@
   * Support `unidiff` requests for merge request diffs.
   * Support the `SecurityOrchestrationPolicy` for the pipeline source filter.
   * Support returning users marked as auditors when listing all users.
+  * Detect and notify of `301 Moved Permanently` responses.
 
 ## Deprecations
 

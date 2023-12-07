@@ -58,6 +58,12 @@ where
         #[from]
         source: serde_json::Error,
     },
+    /// The resource has been moved permanently.
+    #[error("moved permanently to: {}", location.as_ref().map(AsRef::as_ref).unwrap_or("<UNKNOWN>"))]
+    MovedPermanently {
+        /// The new location for the resource.
+        location: Option<String>,
+    },
     /// GitLab returned an error message.
     #[error("gitlab server error: {}", msg)]
     Gitlab {
@@ -143,6 +149,13 @@ where
                     source,
                 }
             },
+            Self::MovedPermanently {
+                location,
+            } => {
+                ApiError::MovedPermanently {
+                    location,
+                }
+            },
             Self::Gitlab {
                 msg,
             } => {
@@ -189,6 +202,13 @@ where
                     source,
                 }
             },
+        }
+    }
+
+    pub(crate) fn moved_permanently(raw_location: Option<&http::HeaderValue>) -> Self {
+        let location = raw_location.map(|v| String::from_utf8_lossy(v.as_bytes()).into());
+        Self::MovedPermanently {
+            location,
         }
     }
 
