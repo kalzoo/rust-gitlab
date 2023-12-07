@@ -21,6 +21,11 @@
   * Support keyset pagination for the `/users` endpoint.
   * Support authentication with job tokens.
   * Support `default_branch_protection_defaults` parameters when creating and editing groups.
+  * `api::projects::releases::links::ListReleaseLinks`
+  * `api::projects::releases::links::CreateReleaseLink`
+  * `api::projects::releases::links::GetReleaseLink`
+  * `api::projects::releases::links::UpdateReleaseLink`
+  * `api::projects::releases::links::DeleteReleaseLink`
 
 ## Deprecations
 
