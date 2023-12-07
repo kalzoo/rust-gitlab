@@ -48,6 +48,10 @@ impl UserOrderBy {
             UserOrderBy::UpdatedAt => "updated_at",
         }
     }
+
+    fn use_keyset_pagination(self) -> bool {
+        matches!(self, Self::Id | Self::Name | Self::Username)
+    }
 }
 
 impl ParamValue<'static> for UserOrderBy {
@@ -242,7 +246,11 @@ impl<'a> Endpoint for Users<'a> {
     }
 }
 
-impl<'a> Pageable for Users<'a> {}
+impl<'a> Pageable for Users<'a> {
+    fn use_keyset_pagination(&self) -> bool {
+        self.order_by.unwrap_or_default().use_keyset_pagination()
+    }
+}
 
 #[cfg(test)]
 mod tests {
