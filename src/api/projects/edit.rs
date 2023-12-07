@@ -183,6 +183,9 @@ pub struct EditProject<'a> {
     /// not.
     #[builder(default)]
     remove_source_branch_after_merge: Option<bool>,
+    /// Whether merge requests require an associated Jira issue or not.
+    #[builder(default)]
+    prevent_merge_without_jira_issue: Option<bool>,
     /// Whether to enable print merge request links if branch/commits are pushed by console
     #[builder(default)]
     printing_merge_request_link_enabled: Option<bool>,
@@ -490,6 +493,10 @@ impl<'a> Endpoint for EditProject<'a> {
             .push_opt(
                 "remove_source_branch_after_merge",
                 self.remove_source_branch_after_merge,
+            )
+            .push_opt(
+                "prevent_merge_without_jira_issue",
+                self.prevent_merge_without_jira_issue,
             )
             .push_opt(
                 "printing_merge_request_link_enabled",
@@ -1707,6 +1714,25 @@ mod tests {
         let endpoint = EditProject::builder()
             .project("simple/project")
             .remove_source_branch_after_merge(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_prevent_merge_without_jira_issue() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("projects/simple%2Fproject")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("prevent_merge_without_jira_issue=true")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditProject::builder()
+            .project("simple/project")
+            .prevent_merge_without_jira_issue(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

@@ -16,6 +16,7 @@
   * Support the `SecurityOrchestrationPolicy` for the pipeline source filter.
   * Support returning users marked as auditors when listing all users.
   * Detect and notify of `301 Moved Permanently` responses.
+  * Support editing `prevent_merge_without_jira_issue` when editing a project.
 
 ## Deprecations
 
