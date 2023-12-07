@@ -15,6 +15,7 @@ use crate::api::ParamValue;
 
 /// Encodings for uploading file contents through an HTTP request.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Encoding {
     /// No special encoding.
     ///

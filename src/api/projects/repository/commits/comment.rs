@@ -12,6 +12,7 @@ use crate::api::ParamValue;
 
 /// Line types within a diff.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum LineType {
     /// A line added in the diff.
     New,

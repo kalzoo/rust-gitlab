@@ -17,6 +17,7 @@ use crate::api::ParamValue;
 
 /// States an issue may be set to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueStateEvent {
     /// Close the issue.
     Close,
@@ -40,12 +41,14 @@ impl ParamValue<'static> for IssueStateEvent {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum IssueAssignees {
     Unassigned,
     Assignees(BTreeSet<u64>),
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum IssueLabels<'a> {
     Unlabeled,
     Labeled(CommaSeparatedList<Cow<'a, str>>),

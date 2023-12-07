@@ -19,6 +19,7 @@
 //!
 //! // This enum describes approval rule types.
 //! #[derive(Debug, Deserialize, Clone, Copy, PartialEq, Eq)]
+//! #[non_exhaustive]
 //! enum RuleType {
 //!     // The approval rule gets this type when you press "Add approval rule" in settings.
 //!     #[serde(rename = "regular")]

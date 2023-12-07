@@ -13,6 +13,7 @@ use crate::api::common::{CommaSeparatedList, NameOrId};
 use crate::api::endpoint_prelude::*;
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub(crate) enum Assignee {
     Unassigned,
     Id(u64),
@@ -37,6 +38,7 @@ impl Assignee {
 
 /// Parameters for setting the reviewer(s) of a merge request.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub(crate) enum Reviewer {
     /// Unset all reviewers.
     Unassigned,

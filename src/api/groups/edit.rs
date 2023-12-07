@@ -20,6 +20,7 @@ use crate::api::ParamValue;
 
 /// Access levels for creating a project within a group.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum SharedRunnersSetting {
     /// All projects and subgroups can use shared runners.
     Enabled,

@@ -7,6 +7,12 @@
   * Add `api::users::projects::UserProjects` endpoint.
   * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
 
+## Changes
+
+  * `enum` types under the `api` module (with a few exceptions) have been
+    marked as `#[non_exhaustive] with the intent to keep semver stability
+    if/when GitLab enhances the API in ways that require these types to change.
+
 # v0.1606.0
 
   * No changes needed for GitLab 16.6.

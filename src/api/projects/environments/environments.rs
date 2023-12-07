@@ -18,6 +18,7 @@ enum NameOrSearch<'a> {
 
 /// States of environments.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum EnvironmentState {
     /// Environments that have been deployed and are available.
     Available,

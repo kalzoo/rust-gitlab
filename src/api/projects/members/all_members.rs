@@ -13,6 +13,7 @@ use crate::api::endpoint_prelude::*;
 use crate::api::ParamValue;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 /// States that project memberships may be in.
 pub enum ProjectMemberState {
     /// Users awaiting acceptance.

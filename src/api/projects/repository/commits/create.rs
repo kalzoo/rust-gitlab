@@ -16,6 +16,7 @@ use crate::api::ParamValue;
 
 /// All actions that can be performed in a commit
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum CommitActionType {
     /// Create a file.
     // XXX(rust-1.62): use `#[default]`
@@ -147,6 +148,7 @@ impl<'a> CommitAction<'a> {
 static CONTENT_REQUIRED_CREATE: &str = "content is required for create.";
 static CONTENT_REQUIRED_UPDATE: &str = "content is required for update.";
 
+#[non_exhaustive]
 enum CommitActionValidationError {
     ContentRequiredByCreate,
     ContentRequiredByUpdate,
@@ -229,6 +231,7 @@ impl<'a> CreateCommit<'a> {
     }
 }
 
+#[non_exhaustive]
 enum CreateCommitValidationError {
     AtMostOneStartItem,
 }

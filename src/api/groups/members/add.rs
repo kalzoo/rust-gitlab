@@ -14,6 +14,7 @@ use crate::api::ParamValue;
 
 /// Tasks users may be assigned upon addition to a group.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum GroupInviteTasksToBeDone {
     /// Request to focus on CI tasks.
     Ci,

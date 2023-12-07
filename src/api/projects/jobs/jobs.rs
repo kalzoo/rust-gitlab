@@ -14,6 +14,7 @@ use crate::api::ParamValue;
 
 /// Scopes for jobs.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum JobScope {
     /// Created, but blocked on dependencies or triggers.
     Created,

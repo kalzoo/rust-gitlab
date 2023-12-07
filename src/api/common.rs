@@ -21,6 +21,7 @@ use crate::api::ParamValue;
 
 /// Access levels for groups and projects.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
 pub enum AccessLevel {
     /// Anonymous access.
     Anonymous,
@@ -215,6 +216,7 @@ impl<'a> ParamValue<'a> for &'a NameOrId<'a> {
 
 /// Visibility levels of projects.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum VisibilityLevel {
     /// The project is visible to anonymous users.
     Public,
@@ -280,6 +282,7 @@ impl ParamValue<'static> for YesNo {
 
 /// Access levels for protected branches and tags.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
 pub enum ProtectedAccessLevel {
     /// Developers and maintainers may perform the action.
     Developer,
@@ -318,6 +321,7 @@ impl ParamValue<'static> for ProtectedAccessLevel {
 
 /// Access levels for protected branches and tags.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[non_exhaustive]
 pub enum ProtectedAccessLevelWithAccess {
     /// Developers and maintainers may perform the action.
     Developer,

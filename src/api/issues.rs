@@ -21,6 +21,7 @@ mod projects;
 
 /// Filters for issue states.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueState {
     /// Filter issues that are open.
     Opened,
@@ -45,6 +46,7 @@ impl ParamValue<'static> for IssueState {
 
 /// Filter issues by a scope.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueScope {
     /// Filter issues created by the API caller.
     CreatedByMe,
@@ -72,6 +74,7 @@ impl ParamValue<'static> for IssueScope {
 
 /// Types of issues.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueType {
     /// Regular issues.
     Issue,
@@ -167,6 +170,7 @@ impl ParamValue<'static> for IssueHealthStatus {
 
 /// Filter values for issue iteration values.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueIteration<'a> {
     /// Issues without any iteration.
     None,
@@ -198,6 +202,7 @@ impl<'a> IssueIteration<'a> {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 enum Assignee<'a> {
     Assigned,
     Unassigned,
@@ -226,6 +231,7 @@ impl<'a> Assignee<'a> {
 
 /// Filter issues by weight.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueWeight {
     /// Filter issues with any weight.
     Any,
@@ -253,6 +259,7 @@ impl ParamValue<'static> for IssueWeight {
 
 /// The scope to apply search query terms to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueSearchScope {
     /// Search within titles.
     Title,
@@ -277,6 +284,7 @@ impl ParamValue<'static> for IssueSearchScope {
 
 /// Filter values for due dates.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueDueDateFilter {
     /// Issues without a due date.
     None,
@@ -321,6 +329,7 @@ impl ParamValue<'static> for IssueDueDateFilter {
 
 /// Keys issue results may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IssueOrderBy {
     /// Sort by creation date.
     CreatedAt,
@@ -383,6 +392,7 @@ impl ParamValue<'static> for IssueOrderBy {
 
 /// Filters available for issue milestones.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum IssueMilestone<'a> {
     /// Issues without any milestone.
     None,

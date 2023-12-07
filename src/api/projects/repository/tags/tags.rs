@@ -12,6 +12,7 @@ use crate::api::{common::NameOrId, ParamValue};
 
 /// Orders commits may be ordered by.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum TagsOrderBy {
     /// Commits are returned in reverse chronological order.
     Name,

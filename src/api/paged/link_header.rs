@@ -58,6 +58,7 @@ impl<'a> LinkHeader<'a> {
 
 /// An error which can occur when parsing a link header.
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum LinkHeaderParseError {
     /// An invalid HTTP header was found.
     #[error("invalid header")]

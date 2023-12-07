@@ -12,6 +12,7 @@ use crate::api::ParamValue;
 
 /// Scopes for pipeline schedules.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PipelineScheduleScope {
     /// Active schedules.
     Active,

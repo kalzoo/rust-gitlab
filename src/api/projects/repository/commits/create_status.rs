@@ -12,6 +12,7 @@ use crate::api::ParamValue;
 
 /// The state a commit status may have.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum CommitStatusState {
     /// The status is expected, but has not started yet.
     Pending,

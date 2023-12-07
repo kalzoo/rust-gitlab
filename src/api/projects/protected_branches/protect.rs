@@ -18,6 +18,7 @@ pub use crate::api::common::ProtectedAccessLevel;
 
 /// Granular protected access controls for branches.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum ProtectedAccess<T> {
     /// Give a specific user access.
     User(u64),
