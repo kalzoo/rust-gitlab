@@ -6,6 +6,12 @@
   * Add `api::projects::issues::awards` and `api::projects::issues::notes::awards` endpoints.
   * Add `api::users::projects::UserProjects` endpoint.
   * Add `api::projects::ArchiveProject` and `api::projects::UnarchiveProject` endpoints.
+  * Support `emails_enabled` parameters when creating or editing groups and projects.
+
+## Deprecations
+
+  * The `emails_disabled` parameter has been replaced by `emails_enabled` when
+    creating or editing groups and projects.
 
 ## Changes
 

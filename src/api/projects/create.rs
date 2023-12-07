@@ -581,7 +581,11 @@ pub struct CreateProject<'a> {
 
     /// Whether to enable email notifications or not.
     #[builder(default)]
+    #[deprecated(since = "0.1606.1", note = "use `emails_enabled` instead")]
     emails_disabled: Option<bool>,
+    /// Whether to enable email notifications or not.
+    #[builder(default)]
+    emails_enabled: Option<bool>,
     /// Whether the default set of award emojis are shown for this project.
     #[builder(default)]
     show_default_award_emojis: Option<bool>,
@@ -927,7 +931,7 @@ impl<'a> Endpoint for CreateProject<'a> {
                 self.infrastructure_access_level,
             )
             .push_opt("monitor_access_level", self.monitor_access_level)
-            .push_opt("emails_disabled", self.emails_disabled)
+            .push_opt("emails_enabled", self.emails_enabled)
             .push_opt("show_default_award_emojis", self.show_default_award_emojis)
             .push_opt(
                 "restrict_user_defined_variables",
@@ -1016,6 +1020,7 @@ impl<'a> Endpoint for CreateProject<'a> {
         #[allow(deprecated)]
         {
             params
+                .push_opt("emails_disabled", self.emails_disabled)
                 .push_opt("issues_enabled", self.issues_enabled)
                 .push_opt("merge_requests_enabled", self.merge_requests_enabled)
                 .push_opt("jobs_enabled", self.jobs_enabled)
@@ -1719,6 +1724,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_emails_disabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::POST)
@@ -1732,6 +1738,25 @@ mod tests {
         let endpoint = CreateProject::builder()
             .name("name")
             .emails_disabled(true)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_emails_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::POST)
+            .endpoint("projects")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str(concat!("name=name", "&emails_enabled=true"))
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = CreateProject::builder()
+            .name("name")
+            .emails_enabled(true)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();

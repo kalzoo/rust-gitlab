@@ -89,7 +89,11 @@ pub struct EditGroup<'a> {
     subgroup_creation_level: Option<SubgroupCreationAccessLevel>,
     /// Disable email notifications from the group.
     #[builder(default)]
+    #[deprecated(since = "0.1606.1", note = "use `emails_enabled` instead")]
     emails_disabled: Option<bool>,
+    /// Enable email notifications from the group.
+    #[builder(default)]
+    emails_enabled: Option<bool>,
     // TODO: Figure out how to actually use this.
     // avatar   mixed   no  Image file for avatar of the group
     // avatar: ???,
@@ -273,7 +277,7 @@ impl<'a> Endpoint for EditGroup<'a> {
             .push_opt("project_creation_level", self.project_creation_level)
             .push_opt("auto_devops_enabled", self.auto_devops_enabled)
             .push_opt("subgroup_creation_level", self.subgroup_creation_level)
-            .push_opt("emails_disabled", self.emails_disabled)
+            .push_opt("emails_enabled", self.emails_enabled)
             .push_opt("mentions_disabled", self.mentions_disabled)
             .push_opt(
                 "prevent_sharing_groups_outside_hierarchy",
@@ -322,6 +326,11 @@ impl<'a> Endpoint for EditGroup<'a> {
                 "auto_ban_user_on_excessive_projects_download",
                 self.auto_ban_user_on_excessive_projects_download,
             );
+
+        #[allow(deprecated)]
+        {
+            params.push_opt("emails_disabled", self.emails_disabled);
+        }
 
         params.into_body()
     }
@@ -596,6 +605,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn endpoint_emails_disabled() {
         let endpoint = ExpectedUrl::builder()
             .method(Method::PUT)
@@ -609,6 +619,25 @@ mod tests {
         let endpoint = EditGroup::builder()
             .group("simple/group")
             .emails_disabled(false)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_emails_enabled() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("groups/simple%2Fgroup")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("emails_enabled=false")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditGroup::builder()
+            .group("simple/group")
+            .emails_enabled(false)
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
