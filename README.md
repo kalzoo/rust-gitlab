@@ -8,6 +8,8 @@ new API additions, so not all available parameters or types will support
 arbitrarily old GitLab instances (usually query parameters will be ignored and
 type fields cause deserialization errors).
 
+For guidelines on contributions, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 The endpoints that are supported all live under the [`api`](src/api.rs) module.
 Each endpoint may be constructed using a "builder" pattern to provide supported
 fields. To use an endpoint, you may query it using the
