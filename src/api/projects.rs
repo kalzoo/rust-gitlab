@@ -10,6 +10,7 @@
 //!
 //! These endpoints are used for querying and modifying projects and their resources.
 
+pub mod access_requests;
 mod archive;
 mod create;
 pub mod deploy_keys;

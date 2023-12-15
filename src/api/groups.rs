@@ -10,6 +10,7 @@
 //!
 //! These endpoints are used for querying and modifying groups and their resources.
 
+pub mod access_requests;
 mod create;
 mod edit;
 mod group;

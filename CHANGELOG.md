@@ -4,6 +4,8 @@
 
   * `api::projects::releases::CreateRelease`
   * Add `api::projects::repository::commits::signature` endpoint.
+  * Add endpoints for groups/projects access requests `api::projects::access_requests::{access_requests,request,approve,deny}`
+    and `api::groups::access_requests::{access_requests,request,approve,deny}`.
 
 ## Changes
 
