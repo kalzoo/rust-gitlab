@@ -3,6 +3,7 @@
 ## Additions
 
   * `api::projects::releases::CreateRelease`
+  * Add `api::projects::repository::commits::signature` endpoint.
 
 ## Changes
 
