@@ -31,7 +31,7 @@ impl Default for LinkType {
 }
 
 impl LinkType {
-    fn as_str(self) -> &'static str {
+    pub(in super::super) fn as_str(self) -> &'static str {
         match self {
             Self::Other => "other",
             Self::Runbook => "runbook",

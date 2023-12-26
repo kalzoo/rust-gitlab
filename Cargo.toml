@@ -11,7 +11,7 @@ documentation = "https://docs.rs/gitlab/0.1606.1"
 readme = "README.md"
 keywords = ["gitlab", "api"]
 categories = ["web-programming", "api-bindings"]
-edition = "2018"
+edition = "2021"
 
 [features]
 default = ["client_api"]
