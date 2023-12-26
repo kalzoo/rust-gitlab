@@ -1,3 +1,10 @@
+# v0.1606.2 (unreleased)
+
+## Changes
+
+  * Add `JsonEncoded` variant to `BodyError` enum.
+  * Add `JsonParams` helper to create JSON-bodied queries.
+
 # v0.1606.1
 
 ## Additions

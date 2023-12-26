@@ -101,6 +101,7 @@ pub use self::paged::Pagination;
 pub use self::paged::PaginationError;
 
 pub use self::params::FormParams;
+pub use self::params::JsonParams;
 pub use self::params::ParamValue;
 pub use self::params::QueryParams;
 
