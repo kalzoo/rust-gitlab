@@ -387,10 +387,13 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Users::builder()
-            .external_provider(ExternalProvider {
-                uid: "1".into(),
-                name: "provider".into(),
-            })
+            .external_provider(
+                ExternalProvider::builder()
+                    .uid("1")
+                    .name("provider")
+                    .build()
+                    .unwrap(),
+            )
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
