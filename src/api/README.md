@@ -13,6 +13,12 @@ These API endpoints have been implemented.
   * `POST   /groups` `groups/create.rs`
   * `PUT    /groups/:group` `groups/edit.rs`
   * `GET    /groups/:group` `groups/group.rs`
+  * `GET    /groups/:group/access_requests` `groups/access_requests/access_requests.rs`
+  * `POST   /groups/:group/access_requests` `groups/access_requests/request.rs`
+  * `PUT    /groups/:group/access_requests/:user_id/approve` `groups/access_requests/approve.rs`
+    This should be a `POST` action `POST /groups/:group/access_requests/:user_id/approve`.
+    https://gitlab.com/gitlab-org/gitlab/-/issues/435861
+  * `DELETE /groups/:group/access_requests/:user_id` `groups/access_requests/deny.rs`
   * `GET    /groups/:group/hooks` `groups/hooks/hooks.rs`
   * `POST   /groups/:group/hooks` `groups/hooks/create.rs`
   * `GET    /groups/:group/hooks/:hook` `groups/hooks/hook.rs`
@@ -35,6 +41,12 @@ These API endpoints have been implemented.
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
   * `PUT    /projects/:project` `projects/edit.rs`
+  * `GET    /projects/:project/access_requests` `projects/access_requests/access_requests.rs`
+  * `POST   /projects/:project/access_requests` `projects/access_requests/request.rs`
+    This should be a `POST` action `POST /projects/:project/access_requests/:user_id/approve`.
+    https://gitlab.com/gitlab-org/gitlab/-/issues/435861
+  * `PUT    /projects/:project/access_requests/:user_id/approve` `projects/access_requests/approve.rs`
+  * `DELETE /projects/:project/access_requests/:user_id` `projects/access_requests/deny.rs`
   * `POST   /projects/:project/archive` `projects/archive.rs`
   * `GET    /projects/:project/deploy_keys` `projects/deploy_keys/deploy_keys.rs`
   * `GET    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/deploy_key.rs`
@@ -535,7 +547,6 @@ These pages are separate from the standard REST API docs and could have changes 
 
 These pages document other endpoints not mentioned above:
 
-  * https://gitlab.kitware.com/help/api/access_requests.md
   * https://gitlab.kitware.com/help/api/access_tokens.md
   * https://gitlab.kitware.com/help/api/admin_sidekiq_queues.md
   * https://gitlab.kitware.com/help/api/alert_management_alerts.md
