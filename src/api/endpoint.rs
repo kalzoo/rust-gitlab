@@ -21,6 +21,8 @@ use crate::api::{
 pub enum UrlBase {
     /// An endpoint uses the API v4 URL prefix.
     ApiV4,
+    /// An endpoint acts on the instance itself.
+    Instance,
 }
 
 impl UrlBase {
@@ -31,6 +33,7 @@ impl UrlBase {
     {
         match self {
             UrlBase::ApiV4 => client.rest_endpoint(endpoint),
+            UrlBase::Instance => client.instance_endpoint(endpoint),
         }
     }
 }
