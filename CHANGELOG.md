@@ -1,3 +1,15 @@
+# v0.1606.2 (unreleased)
+
+## Additions
+
+  * `api::projects::releases::CreateRelease`
+
+## Changes
+
+  * Add `JsonEncoded` variant to `BodyError` enum.
+  * Add `JsonParams` helper to create JSON-bodied queries.
+  * Update to use the 2021 edition; used in the test suite.
+
 # v0.1606.1
 
 ## Additions

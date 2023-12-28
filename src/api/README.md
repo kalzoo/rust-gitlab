@@ -165,6 +165,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/repository_tag_details.rs`
   * `DELETE /projects/:project/registry/repositories/:repository/tags/:tag_name` `projects/registry/delete_repository_tag.rs`
   * `GET    /projects/:project/releases` `projects/releases/releases.rs`
+  * `POST   /projects/:project/releases` `projects/releases/create.rs`
   * `GET    /projects/:project/releases/:tag/assests/links` `projects/releases/links/list_links.rs`
   * `POST   /projects/:project/releases/:tag/assests/links` `projects/releases/links/create_link.rs`
   * `GET    /projects/:project/releases/:tag/assests/links/:id` `projects/releases/links/get_link.rs`
@@ -407,7 +408,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#add-project-push-rule
   * `DELETE /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#delete-project-push-rule
   * `DELETE /projects/:project/registry/repositories/:repository_id/tags` https://gitlab.kitware.com/help/api/container_registry.md#delete-registry-repository-tags-in-bulk
-  * `POST   /projects/:project/releases` https://gitlab.kitware.com/help/api/releases/index.md#create-a-release
   * `GET    /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#get-a-release-by-a-tag-name
   * `PUT    /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#update-a-release
   * `DELETE /projects/:project/releases/:tag_name` https://gitlab.kitware.com/help/api/releases/index.md#delete-a-release

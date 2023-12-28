@@ -12,6 +12,7 @@
 use std::borrow::Cow;
 
 use chrono::{DateTime, NaiveDate, Utc};
+use serde_json::Value;
 use url::Url;
 
 use crate::api::BodyError;
@@ -142,6 +143,34 @@ impl<'a> FormParams<'a> {
     }
 }
 
+/// A structure for JSON parameters.
+#[derive(Debug, Default, Clone)]
+#[non_exhaustive]
+pub struct JsonParams {}
+
+impl JsonParams {
+    /// Clean a JSON value for submission.
+    ///
+    /// Removes `null` and empty array values from top-level objects.
+    pub fn clean(mut val: Value) -> Value {
+        if let Some(obj) = val.as_object_mut() {
+            obj.retain(|_, v| {
+                !v.is_null()
+                    && v.as_array().map(|a| !a.is_empty()).unwrap_or(true)
+                    && v.as_object().map(|o| !o.is_empty()).unwrap_or(true)
+            });
+        }
+
+        val
+    }
+
+    /// Encode the parameters into a request body.
+    pub fn into_body(input: &Value) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
+        let body = serde_json::to_string(input)?;
+        Ok(Some(("application/json", body.into_bytes())))
+    }
+}
+
 /// A structure for query parameters.
 #[derive(Debug, Default, Clone)]
 pub struct QueryParams<'a> {
@@ -195,7 +224,9 @@ impl<'a> QueryParams<'a> {
 
 #[cfg(test)]
 mod tests {
-    use crate::api::ParamValue;
+    use serde_json::json;
+
+    use crate::api::{JsonParams, ParamValue};
 
     #[test]
     fn bool_str() {
@@ -204,5 +235,34 @@ mod tests {
         for (i, s) in items {
             assert_eq!((*i).as_value(), *s);
         }
+    }
+
+    #[test]
+    fn json_params_clean() {
+        let dirty = json!({
+            "null": null,
+            "int": 1,
+            "str": "str",
+            "array": [null],
+            "empty_array": [],
+            "object": {
+                "nested_null": null,
+                "nested_empty_array": [],
+                "nested_empty_object": {},
+            },
+            "empty_object": {},
+        });
+        let clean = json!({
+            "int": 1,
+            "str": "str",
+            "array": [null],
+            "object": {
+                "nested_null": null,
+                "nested_empty_array": [],
+                "nested_empty_object": {},
+            },
+        });
+
+        assert_eq!(JsonParams::clean(dirty), clean);
     }
 }

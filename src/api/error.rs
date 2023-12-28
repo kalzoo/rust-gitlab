@@ -22,6 +22,13 @@ pub enum BodyError {
         #[from]
         source: serde_urlencoded::ser::Error,
     },
+    /// Body data could not be serialized to JSON from form parameters.
+    #[error("failed to JSON encode form parameters: {}", source)]
+    JsonEncoded {
+        /// The source of the error.
+        #[from]
+        source: serde_json::Error,
+    },
 }
 
 /// Errors which may occur when using API endpoints.
