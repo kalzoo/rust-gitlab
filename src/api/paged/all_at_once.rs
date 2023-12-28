@@ -52,7 +52,10 @@ where
 {
     async fn query_async(&self, client: &C) -> Result<Vec<T>, ApiError<C::Error>> {
         let url = {
-            let mut url = client.rest_endpoint(&self.endpoint.endpoint())?;
+            let mut url = self
+                .endpoint
+                .url_base()
+                .endpoint_for(client, &self.endpoint.endpoint())?;
             self.endpoint.parameters().add_to_url(&mut url);
             url
         };

@@ -8,9 +8,12 @@ use std::borrow::Cow;
 
 use async_trait::async_trait;
 use http::{self, header, Method, Request};
+use reqwest::Url;
 use serde::de::DeserializeOwned;
 
-use crate::api::{query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Query, QueryParams};
+use crate::api::{
+    query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Query, QueryParams, RestClient,
+};
 
 /// URL bases for endpoints.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -18,6 +21,18 @@ use crate::api::{query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Qu
 pub enum UrlBase {
     /// An endpoint uses the API v4 URL prefix.
     ApiV4,
+}
+
+impl UrlBase {
+    /// Get the endpoint for a given URL base.
+    pub fn endpoint_for<C>(&self, client: &C, endpoint: &str) -> Result<Url, ApiError<C::Error>>
+    where
+        C: RestClient,
+    {
+        match self {
+            UrlBase::ApiV4 => client.rest_endpoint(endpoint),
+        }
+    }
 }
 
 /// A trait for providing the necessary information for a single REST API endpoint.
@@ -52,7 +67,7 @@ where
     C: Client,
 {
     fn query(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let mut url = self.url_base().endpoint_for(client, &self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()
@@ -91,7 +106,7 @@ where
     C: AsyncClient + Sync,
 {
     async fn query_async(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let mut url = self.url_base().endpoint_for(client, &self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()

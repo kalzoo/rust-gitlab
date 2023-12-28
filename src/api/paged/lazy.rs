@@ -196,7 +196,11 @@ where
         let url = if let Some(next_url) = next_page.next_url() {
             next_url.clone()
         } else {
-            let mut url = client.rest_endpoint(&self.paged.endpoint.endpoint())?;
+            let mut url = self
+                .paged
+                .endpoint
+                .url_base()
+                .endpoint_for(client, &self.paged.endpoint.endpoint())?;
             self.paged.endpoint.parameters().add_to_url(&mut url);
 
             let per_page = self.paged.pagination.page_limit();
