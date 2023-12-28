@@ -209,10 +209,8 @@ impl<'a> Endpoint for CreateUser<'a> {
 
         self.password.add_query(&mut params);
 
-        if let Some(value) = self.external_provider.as_ref() {
-            params
-                .push("extern_uid", &value.uid)
-                .push("provider", &value.name);
+        if let Some(external_provider) = self.external_provider.as_ref() {
+            external_provider.add_form_params(&mut params);
         }
 
         params.into_body()

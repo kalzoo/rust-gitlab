@@ -65,16 +65,28 @@ impl ParamValue<'static> for UserOrderBy {
 pub struct ExternalProvider<'a> {
     /// The UID of the user on the service.
     #[builder(setter(into))]
-    pub uid: Cow<'a, str>,
+    uid: Cow<'a, str>,
     /// The name of the service.
     #[builder(setter(into))]
-    pub name: Cow<'a, str>,
+    name: Cow<'a, str>,
 }
 
 impl<'a> ExternalProvider<'a> {
     /// Create a builder for the external provider.
     pub fn builder() -> ExternalProviderBuilder<'a> {
         ExternalProviderBuilder::default()
+    }
+
+    pub(crate) fn add_query_params<'b>(&'b self, params: &mut QueryParams<'b>) {
+        params
+            .push("extern_uid", &self.uid)
+            .push("provider", &self.name);
+    }
+
+    pub(crate) fn add_form_params<'b>(&'b self, params: &mut FormParams<'b>) {
+        params
+            .push("extern_uid", &self.uid)
+            .push("provider", &self.name);
     }
 }
 
@@ -236,10 +248,8 @@ impl<'a> Endpoint for Users<'a> {
             .push_opt("saml_provider_id", self.saml_provider_id)
             .push_opt("skip_ldap", self.skip_ldap);
 
-        if let Some(value) = self.external_provider.as_ref() {
-            params
-                .push("extern_uid", &value.uid)
-                .push("provider", &value.name);
+        if let Some(external_provider) = self.external_provider.as_ref() {
+            external_provider.add_query_params(&mut params);
         }
 
         params
@@ -387,10 +397,13 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let endpoint = Users::builder()
-            .external_provider(ExternalProvider {
-                uid: "1".into(),
-                name: "provider".into(),
-            })
+            .external_provider(
+                ExternalProvider::builder()
+                    .uid("1")
+                    .name("provider")
+                    .build()
+                    .unwrap(),
+            )
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
