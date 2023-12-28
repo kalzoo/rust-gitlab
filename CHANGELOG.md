@@ -14,6 +14,11 @@
   * Add `JsonParams` helper to create JSON-bodied queries.
   * Update to use the 2021 edition; used in the test suite.
 
+## Breaking changes
+
+  * `api::users::ExternalProvider` members are now private; use the associated
+    `builder()` method to build an instance instead.
+
 # v0.1606.1
 
 ## Additions
