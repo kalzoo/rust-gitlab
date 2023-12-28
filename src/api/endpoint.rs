@@ -12,12 +12,25 @@ use serde::de::DeserializeOwned;
 
 use crate::api::{query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Query, QueryParams};
 
+/// URL bases for endpoints.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum UrlBase {
+    /// An endpoint uses the API v4 URL prefix.
+    ApiV4,
+}
+
 /// A trait for providing the necessary information for a single REST API endpoint.
 pub trait Endpoint {
     /// The HTTP method to use for the endpoint.
     fn method(&self) -> Method;
     /// The path to the endpoint.
     fn endpoint(&self) -> Cow<'static, str>;
+
+    /// The URL base of the API endpoint.
+    fn url_base(&self) -> UrlBase {
+        UrlBase::ApiV4
+    }
 
     /// Query parameters for the endpoint.
     fn parameters(&self) -> QueryParams {

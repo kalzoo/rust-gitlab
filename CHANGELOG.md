@@ -7,6 +7,8 @@
   * Add endpoints for groups/projects access requests `api::projects::access_requests::{access_requests,request,approve,deny}`
     and `api::groups::access_requests::{access_requests,request,approve,deny}`.
   * Add `api::users::CreateUser`
+  * The `Endpoint::url_base` method may be used to select the base for the
+    endpoint's URL. Current options include `UrlBase::ApiV4`.
 
 ## Changes
 

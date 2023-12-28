@@ -85,6 +85,7 @@ pub use self::client::Client;
 pub use self::client::RestClient;
 
 pub use self::endpoint::Endpoint;
+pub use self::endpoint::UrlBase;
 
 pub use self::error::ApiError;
 pub use self::error::BodyError;
