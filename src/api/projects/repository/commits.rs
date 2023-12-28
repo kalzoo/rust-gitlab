@@ -15,6 +15,7 @@ mod commits;
 mod create;
 mod create_status;
 mod merge_requests;
+mod signature;
 mod statuses;
 
 pub use self::comment::CommentOnCommit;
@@ -55,3 +56,7 @@ pub use self::statuses::CommitStatusesBuilderError;
 pub use self::merge_requests::MergeRequests;
 pub use self::merge_requests::MergeRequestsBuilder;
 pub use self::merge_requests::MergeRequestsBuilderError;
+
+pub use self::signature::Signature;
+pub use self::signature::SignatureBuilder;
+pub use self::signature::SignatureBuilderError;
