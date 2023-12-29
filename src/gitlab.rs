@@ -691,6 +691,14 @@ impl<'a, C> ImpersonationClient<'a, C> {
             client,
         }
     }
+
+    /// Switch to using an OAuth2 token instead of a personal access token
+    pub fn oauth2_token(&mut self) -> &mut Self {
+        if let Auth::Token(auth) = self.auth.clone() {
+            self.auth = Auth::OAuth2(auth);
+        }
+        self
+    }
 }
 
 impl<'a, C> api::RestClient for ImpersonationClient<'a, C>

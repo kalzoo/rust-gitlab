@@ -12,6 +12,8 @@
     `UrlBase::Instance`.
   * `api::RestClient::instance_endpoint` now has a default implementation of
     not supporting `UrlBase::Instance` endpoints.
+  * `ImpersonationClient` may now be switched to an OAuth2 token like the main
+    builder can.
 
 ## Changes
 
