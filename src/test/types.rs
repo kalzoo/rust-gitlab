@@ -454,7 +454,7 @@ fn test_read_singlenote_discussion() {
         .unwrap();
     assert!(discussion.individual_note);
     assert_eq!(discussion.notes.len(), 1);
-    let note = discussion.notes.get(0).unwrap();
+    let note = discussion.notes.first().unwrap();
     assert!(!note.resolvable);
     assert!(note.position.is_none());
     assert_eq!(note.note_type, None)
@@ -469,7 +469,7 @@ fn test_read_nocode_discussion() {
         .unwrap();
     assert!(!discussion.individual_note);
     assert_eq!(discussion.notes.len(), 3);
-    let question = discussion.notes.get(0).unwrap();
+    let question = discussion.notes.first().unwrap();
     let comment = discussion.notes.get(1).unwrap();
     assert!(question.resolvable);
     assert!(comment.resolvable);
@@ -494,7 +494,7 @@ fn test_read_code_discussion() {
         .find(|x| x.id.value() == "9f4998b2308728b95cff52af97019479e1269183")
         .unwrap();
     assert!(!discussion.individual_note);
-    let note = discussion.notes.get(0).unwrap();
+    let note = discussion.notes.first().unwrap();
     assert!(note.resolvable);
     assert_eq!(note.resolved, Some(true));
     check_user_brad_king(&note.author);
