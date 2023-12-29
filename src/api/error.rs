@@ -9,7 +9,7 @@ use std::error::Error;
 
 use thiserror::Error;
 
-use crate::api::PaginationError;
+use crate::api::{PaginationError, UrlBase};
 
 /// Errors which may occur when creating form data.
 #[derive(Debug, Error)]
@@ -112,6 +112,11 @@ where
         #[from]
         source: PaginationError,
     },
+    #[error("unsupported URL base: {:?}", url_base)]
+    UnsupportedUrlBase {
+        /// The URL base that is not supported.
+        url_base: UrlBase,
+    },
 }
 
 impl<E> ApiError<E>
@@ -209,6 +214,13 @@ where
                     source,
                 }
             },
+            Self::UnsupportedUrlBase {
+                url_base,
+            } => {
+                ApiError::UnsupportedUrlBase {
+                    url_base,
+                }
+            },
         }
     }
 
@@ -252,6 +264,12 @@ where
         ApiError::DataType {
             source,
             typename: any::type_name::<T>(),
+        }
+    }
+
+    pub(crate) fn unsupported_url_base(url_base: UrlBase) -> Self {
+        Self::UnsupportedUrlBase {
+            url_base,
         }
     }
 }

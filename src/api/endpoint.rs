@@ -8,9 +8,35 @@ use std::borrow::Cow;
 
 use async_trait::async_trait;
 use http::{self, header, Method, Request};
+use reqwest::Url;
 use serde::de::DeserializeOwned;
 
-use crate::api::{query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Query, QueryParams};
+use crate::api::{
+    query, ApiError, AsyncClient, AsyncQuery, BodyError, Client, Query, QueryParams, RestClient,
+};
+
+/// URL bases for endpoints.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum UrlBase {
+    /// An endpoint uses the API v4 URL prefix.
+    ApiV4,
+    /// An endpoint acts on the instance itself.
+    Instance,
+}
+
+impl UrlBase {
+    /// Get the endpoint for a given URL base.
+    pub fn endpoint_for<C>(&self, client: &C, endpoint: &str) -> Result<Url, ApiError<C::Error>>
+    where
+        C: RestClient,
+    {
+        match self {
+            UrlBase::ApiV4 => client.rest_endpoint(endpoint),
+            UrlBase::Instance => client.instance_endpoint(endpoint),
+        }
+    }
+}
 
 /// A trait for providing the necessary information for a single REST API endpoint.
 pub trait Endpoint {
@@ -18,6 +44,11 @@ pub trait Endpoint {
     fn method(&self) -> Method;
     /// The path to the endpoint.
     fn endpoint(&self) -> Cow<'static, str>;
+
+    /// The URL base of the API endpoint.
+    fn url_base(&self) -> UrlBase {
+        UrlBase::ApiV4
+    }
 
     /// Query parameters for the endpoint.
     fn parameters(&self) -> QueryParams {
@@ -39,7 +70,7 @@ where
     C: Client,
 {
     fn query(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let mut url = self.url_base().endpoint_for(client, &self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()
@@ -78,7 +109,7 @@ where
     C: AsyncClient + Sync,
 {
     async fn query_async(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let mut url = self.url_base().endpoint_for(client, &self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()

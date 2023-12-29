@@ -173,6 +173,12 @@ where
             .rest_endpoint(endpoint)
             .map_err(|e| e.map_client(Error::inner))
     }
+
+    fn instance_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
+        self.client
+            .instance_endpoint(endpoint)
+            .map_err(|e| e.map_client(Error::inner))
+    }
 }
 
 impl<C> api::Client for Client<C>

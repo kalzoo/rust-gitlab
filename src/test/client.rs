@@ -112,7 +112,8 @@ struct MockClient {
     response_map: HashMap<(Method, String), MockResponse>,
 }
 
-const CLIENT_STUB: &str = "https://gitlab.host.invalid/api/v4";
+const CLIENT_STUB_APIV4: &str = "https://gitlab.host.invalid/api/v4";
+const CLIENT_STUB: &str = "https://gitlab.host.invalid/";
 
 pub struct SingleTestClient {
     client: MockClient,
@@ -161,6 +162,10 @@ impl RestClient for SingleTestClient {
     type Error = TestClientError;
 
     fn rest_endpoint(&self, endpoint: &str) -> Result<Url, ApiError<Self::Error>> {
+        Ok(Url::parse(&format!("{}/{}", CLIENT_STUB_APIV4, endpoint))?)
+    }
+
+    fn instance_endpoint(&self, endpoint: &str) -> Result<Url, ApiError<Self::Error>> {
         Ok(Url::parse(&format!("{}/{}", CLIENT_STUB, endpoint))?)
     }
 }
@@ -264,6 +269,10 @@ impl<T> RestClient for PagedTestClient<T> {
     type Error = TestClientError;
 
     fn rest_endpoint(&self, endpoint: &str) -> Result<Url, ApiError<Self::Error>> {
+        Ok(Url::parse(&format!("{}/{}", CLIENT_STUB_APIV4, endpoint))?)
+    }
+
+    fn instance_endpoint(&self, endpoint: &str) -> Result<Url, ApiError<Self::Error>> {
         Ok(Url::parse(&format!("{}/{}", CLIENT_STUB, endpoint))?)
     }
 }

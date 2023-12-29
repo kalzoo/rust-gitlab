@@ -20,3 +20,4 @@ pub use crate::api::FormParams;
 pub use crate::api::JsonParams;
 pub use crate::api::Pageable;
 pub use crate::api::QueryParams;
+pub use crate::api::UrlBase;

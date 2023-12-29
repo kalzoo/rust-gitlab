@@ -509,6 +509,8 @@ pub struct AsyncGitlab {
     /// The client to use for API calls.
     client: reqwest::Client,
     /// The base URL to use for API calls.
+    instance_url: Url,
+    /// The base URL to use for REST API calls.
     rest_url: Url,
     /// The URL to use for GraphQL API calls.
     graphql_url: Url,
@@ -519,6 +521,7 @@ pub struct AsyncGitlab {
 impl Debug for AsyncGitlab {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("AsyncGitlab")
+            .field("instance_url", &self.instance_url)
             .field("rest_url", &self.rest_url)
             .field("graphql_url", &self.graphql_url)
             .finish()
@@ -532,6 +535,11 @@ impl api::RestClient for AsyncGitlab {
     fn rest_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
         debug!(target: "gitlab", "REST api call {}", endpoint);
         Ok(self.rest_url.join(endpoint)?)
+    }
+
+    fn instance_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
+        debug!(target: "gitlab", "instance api call {}", endpoint);
+        Ok(self.instance_url.join(endpoint)?)
     }
 }
 
@@ -555,6 +563,7 @@ impl AsyncGitlab {
         cert_validation: CertPolicy,
         identity: ClientCert,
     ) -> GitlabResult<Self> {
+        let instance_url = Url::parse(&format!("{}://{}/", protocol, host))?;
         let rest_url = Url::parse(&format!("{}://{}/api/v4/", protocol, host))?;
         let graphql_url = Url::parse(&format!("{}://{}/api/graphql", protocol, host))?;
 
@@ -583,6 +592,7 @@ impl AsyncGitlab {
 
         let api = AsyncGitlab {
             client,
+            instance_url,
             rest_url,
             graphql_url,
             auth,
@@ -691,6 +701,10 @@ where
 
     fn rest_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
         self.client.rest_endpoint(endpoint)
+    }
+
+    fn instance_endpoint(&self, endpoint: &str) -> Result<Url, api::ApiError<Self::Error>> {
+        self.client.instance_endpoint(endpoint)
     }
 }
 
