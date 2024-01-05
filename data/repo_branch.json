@@ -1,22 +1,23 @@
 {
   "can_push": true,
   "commit": {
-    "author_email": "brad.king@kitware.com",
-    "author_name": "Brad King",
-    "authored_date": "2018-07-12T08:50:24.000-04:00",
-    "committed_date": "2018-07-12T08:50:24.000-04:00",
-    "committer_email": "brad.king@kitware.com",
-    "committer_name": "Brad King",
-    "created_at": "2018-07-12T08:50:24.000-04:00",
-    "id": "e59db4b129b29df220ecec6119ed2130207a0397",
-    "message": "cargo: prep for 0.1100.1\n",
+    "author_email": "ben.boeckel@kitware.com",
+    "author_name": "Ben Boeckel",
+    "authored_date": "2023-12-30T08:52:08.000-05:00",
+    "committed_date": "2023-12-30T08:52:08.000-05:00",
+    "committer_email": "ben.boeckel@kitware.com",
+    "committer_name": "Ben Boeckel",
+    "created_at": "2023-12-30T08:52:08.000-05:00",
+    "extended_trailers": {},
+    "id": "f3f74e3ccb95ddd3bd9d8b1faaa2b8d7ce3cae41",
+    "message": "cargo: prep for 0.1606.2\n",
     "parent_ids": [
-      "5c81cc05661dcbb5fd923cca093920816c21ef7e"
+      "5e31b1c52ac34762affe9dcc20cd0276a6937c85"
     ],
-    "short_id": "e59db4b1",
-    "title": "cargo: prep for 0.1100.1",
+    "short_id": "f3f74e3c",
+    "title": "cargo: prep for 0.1606.2",
     "trailers": {},
-    "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/commit/e59db4b129b29df220ecec6119ed2130207a0397"
+    "web_url": "https://gitlab.kitware.com/utils/rust-gitlab/-/commit/f3f74e3ccb95ddd3bd9d8b1faaa2b8d7ce3cae41"
   },
   "default": true,
   "developers_can_merge": false,

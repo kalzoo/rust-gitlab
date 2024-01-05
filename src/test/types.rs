@@ -549,7 +549,7 @@ fn check_project_a(project: &Project) {
     );
     assert_eq!(
         project.last_activity_at,
-        datetime((2023, 8, 24), (13, 17, 32, 979)),
+        datetime((2024, 1, 1), (2, 56, 59, 430)),
     );
 }
 
@@ -562,9 +562,9 @@ fn check_project_b(project: &Project) {
     assert!(project.forked_from_project.is_none());
     assert_eq!(project.avatar_url, None);
     assert_eq!(project.ci_config_path, None);
-    assert_eq!(project.star_count, 18);
-    assert_eq!(project.forks_count, 71);
-    assert_eq!(project.open_issues_count, Some(25));
+    assert_eq!(project.star_count, 19);
+    assert_eq!(project.forks_count, 79);
+    assert_eq!(project.open_issues_count, Some(7));
     assert!(project.public_jobs);
     assert!(project.shared_with_groups.is_empty());
     assert_eq!(project.only_allow_merge_if_pipeline_succeeds, Some(false));
@@ -651,29 +651,29 @@ fn test_read_repo_branch() {
 
     assert_eq!(repo_branch.name, "master");
     let commit = repo_branch.commit.as_ref().unwrap();
-    assert_eq!(commit.author_email, "brad.king@kitware.com");
-    assert_eq!(commit.author_name, "Brad King");
+    assert_eq!(commit.author_email, "ben.boeckel@kitware.com");
+    assert_eq!(commit.author_name, "Ben Boeckel");
     assert_eq!(
         commit.authored_date,
-        datetime((2018, 7, 12), (12, 50, 24, 0)),
+        datetime((2023, 12, 30), (13, 52, 8, 0)),
     );
     assert_eq!(
         commit.committed_date,
-        datetime((2018, 7, 12), (12, 50, 24, 0)),
+        datetime((2023, 12, 30), (13, 52, 8, 0)),
     );
-    assert_eq!(commit.created_at, datetime((2018, 7, 12), (12, 50, 24, 0)));
-    assert_eq!(commit.committer_email, "brad.king@kitware.com");
-    assert_eq!(commit.committer_name, "Brad King");
+    assert_eq!(commit.created_at, datetime((2023, 12, 30), (13, 52, 8, 0)));
+    assert_eq!(commit.committer_email, "ben.boeckel@kitware.com");
+    assert_eq!(commit.committer_name, "Ben Boeckel");
     assert_eq!(
         commit.id,
-        ObjectId::new("e59db4b129b29df220ecec6119ed2130207a0397"),
+        ObjectId::new("f3f74e3ccb95ddd3bd9d8b1faaa2b8d7ce3cae41"),
     );
-    assert_eq!(commit.short_id, ObjectId::new("e59db4b1"));
-    assert_eq!(commit.title, "cargo: prep for 0.1100.1");
-    assert_eq!(commit.message, "cargo: prep for 0.1100.1\n");
+    assert_eq!(commit.short_id, ObjectId::new("f3f74e3c"));
+    assert_eq!(commit.title, "cargo: prep for 0.1606.2");
+    assert_eq!(commit.message, "cargo: prep for 0.1606.2\n");
     itertools::assert_equal(
         commit.parent_ids.as_ref().unwrap(),
-        &[ObjectId::new("5c81cc05661dcbb5fd923cca093920816c21ef7e")],
+        &[ObjectId::new("5e31b1c52ac34762affe9dcc20cd0276a6937c85")],
     );
     assert_eq!(repo_branch.merged, Some(false));
     assert_eq!(repo_branch.protected, Some(true));
@@ -793,11 +793,11 @@ fn test_read_user_public() {
     assert_eq!(user_public.organization, Some(String::new()));
     assert_eq!(
         user_public.last_sign_in_at.unwrap(),
-        datetime((2021, 12, 21), (13, 22, 1, 657)),
+        datetime((2024, 1, 4), (4, 27, 14, 960)),
     );
     assert_eq!(
         user_public.last_activity_on.unwrap(),
-        NaiveDate::from_ymd_opt(2022, 1, 6).unwrap(),
+        NaiveDate::from_ymd_opt(2024, 1, 5).unwrap(),
     );
     assert_eq!(
         user_public.confirmed_at.unwrap(),
@@ -809,7 +809,7 @@ fn test_read_user_public() {
     assert_eq!(user_public.projects_limit, 50);
     assert_eq!(
         user_public.current_sign_in_at.unwrap(),
-        datetime((2022, 1, 5), (15, 45, 8, 402)),
+        datetime((2024, 1, 5), (12, 34, 3, 998)),
     );
     assert!(user_public.identities.is_empty());
     assert!(user_public.can_create_group);

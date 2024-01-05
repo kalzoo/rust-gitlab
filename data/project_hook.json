@@ -20,6 +20,5 @@
   "repository_update_events": false,
   "tag_push_events": true,
   "url": "http://kwrobot02:8082/gitlab.kitware.com",
-  "url_variables": [],
   "wiki_page_events": true
 }
