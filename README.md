@@ -3,7 +3,7 @@
 This library implements an interface to communicate with a Gitlab instance. Not
 all API endpoints are implemented, but patches are welcome.
 
-The API is based off of the GitLab 16.6 API v4 and will likely aggressively track
+The API is based off of the GitLab 16.7 API v4 and will likely aggressively track
 new API additions, so not all available parameters or types will support
 arbitrarily old GitLab instances (usually query parameters will be ignored and
 type fields cause deserialization errors).
@@ -36,6 +36,7 @@ to a given version).
 Since this crate follows Gitlab upstream, semantic versioning may not be
 possible. Instead, the crate uses the following versioning scheme:
 
+  * Gitlab 16.7 support → 0.1607.x
   * Gitlab 16.6 support → 0.1606.x
   * Gitlab 16.5 support → 0.1605.x
   * Gitlab 16.4 support → 0.1604.x
@@ -125,7 +126,7 @@ coverage. It is recommended to depend on the full version of the crate since
 types may change in patch-level updates in order to match Gitlab's interface:
 
 ```toml
-gitlab = "=0.1606.2"
+gitlab = "=0.1607.0"
 ```
 
 # API bugs
