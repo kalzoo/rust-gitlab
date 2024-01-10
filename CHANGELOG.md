@@ -1,3 +1,8 @@
+# v0.1607.1 (unreleased)
+
+## Additions
+  * Add `From<&'a String>` impl for `NameOrId<'a>`.
+
 # v0.1607.0
 
   * No changes needed for GitLab 16.7.

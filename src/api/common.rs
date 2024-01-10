@@ -190,6 +190,12 @@ impl<'a> From<&'a str> for NameOrId<'a> {
     }
 }
 
+impl<'a> From<&'a String> for NameOrId<'a> {
+    fn from(name: &'a String) -> Self {
+        NameOrId::Name(name.into())
+    }
+}
+
 impl<'a> From<String> for NameOrId<'a> {
     fn from(name: String) -> Self {
         NameOrId::Name(name.into())
