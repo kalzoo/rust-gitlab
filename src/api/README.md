@@ -562,7 +562,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/code_suggestions.md
   * https://gitlab.kitware.com/help/api/container_registry.md
     - only the bits about JWT stuff for Docker registry communication
-  * https://gitlab.kitware.com/help/api/custom_attributes.md
+  * https://gitlab.kitware.com/help/api/custom_attributes.md (#66)
   * https://gitlab.kitware.com/help/api/database_migrations.md
   * https://gitlab.kitware.com/help/api/dependencies.md
   * https://gitlab.kitware.com/help/api/dependency_list_export.md
@@ -575,7 +575,7 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/epic_links.md
   * https://gitlab.kitware.com/help/api/epics.md
   * https://gitlab.kitware.com/help/api/error_tracking.md
-  * https://gitlab.kitware.com/help/api/events.md
+  * https://gitlab.kitware.com/help/api/events.md (#25)
   * https://gitlab.kitware.com/help/api/experiments.md
   * https://gitlab.kitware.com/help/api/feature_flag_users_lists.md
   * https://gitlab.kitware.com/help/api/feature_flags.md
