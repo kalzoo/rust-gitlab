@@ -20,6 +20,10 @@ stages:
         CARGO_UPDATE_POLICY: newest
         GIT_CLONE_PATH: $CI_BUILDS_DIR/rust
 
+.rust_minimum_mindeps_features:
+    extends: .rust_minimum_mindeps
+    image: "rust:1.64"
+
 .rust_minimum:
     image: "rust:1.63"
 
@@ -359,7 +363,7 @@ nightly-features:test:
 
 mindeps-features:build:
     extends:
-        - .rust_minimum_mindeps
+        - .rust_minimum_mindeps_features
         - .cargo_all_features
         - .cargo_build_job
         - .cargo_build_tags
@@ -372,7 +376,7 @@ mindeps-features:build:
 
 mindeps-features:test:
     extends:
-        - .rust_minimum_mindeps
+        - .rust_minimum_mindeps_features
         - .cargo_all_features
         - .cargo_test_job
         - .cargo_build_tags
