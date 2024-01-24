@@ -25,6 +25,7 @@
   "lfs_enabled": true,
   "mentions_disabled": null,
   "name": "Utils",
+  "organization_id": 1,
   "parent_id": null,
   "path": "utils",
   "prevent_sharing_groups_outside_hierarchy": false,
