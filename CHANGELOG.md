@@ -1,4 +1,4 @@
-# v0.1607.1 (unreleased)
+# v0.1608.0
 
 ## Additions
   * Add `From<&'a String>` impl for `NameOrId<'a>`.
