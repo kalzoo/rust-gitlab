@@ -213,6 +213,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/variables` `projects/variables/create.rs`
   * `GET    /projects/:project/variables/:key` `projects/variables/variable.rs`
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
+  * `GET    /runners` `runners/runners.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
@@ -483,7 +484,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
-  * `GET    /runners` https://gitlab.kitware.com/help/api/runners.md#list-owned-runners
   * `POST   /runners` https://gitlab.kitware.com/help/api/runners.md#create-an-instance-runner
   * `DELETE /runners` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner-by-authentication-token
   * `GET    /runners/all` https://gitlab.kitware.com/help/api/runners.md#list-all-runners
