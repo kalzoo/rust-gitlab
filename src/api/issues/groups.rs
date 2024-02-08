@@ -105,7 +105,7 @@ pub struct GroupIssues<'a> {
     /// Order results by a given key.
     #[builder(default)]
     order_by: Option<IssueOrderBy>,
-    /// The sort order for return results.
+    /// The sort order for returned results.
     #[builder(default)]
     sort: Option<SortOrder>,
 }

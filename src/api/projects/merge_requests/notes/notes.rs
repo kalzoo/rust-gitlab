@@ -23,7 +23,7 @@ pub struct MergeRequestNotes<'a> {
     /// Order results by a given key.
     #[builder(default)]
     order_by: Option<NoteOrderBy>,
-    /// The sort order for return results.
+    /// The sort order for returned results.
     #[builder(default)]
     sort: Option<SortOrder>,
 }

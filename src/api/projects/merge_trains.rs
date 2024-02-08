@@ -50,7 +50,7 @@ pub struct MergeTrains<'a> {
     #[builder(default)]
     scope: Option<MergeTrainsScope>,
 
-    /// The sort order for return results.
+    /// The sort order for returned results.
     #[builder(default)]
     sort: Option<SortOrder>,
 }
