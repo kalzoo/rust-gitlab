@@ -16,6 +16,8 @@
   * Add `api::runners::CreateRunner` endpoint
   * Add `api::runners::DeleteRunner` endpoint
   * Add `api::runners::DeleteRunnerByToken` endpoint
+  * Add `api::runners::ResetRunnerAuthenticationToken` endpoint
+  * Add `api::runners::ResetRunnerAuthenticationTokenByToken` endpoint
 
 ## Breaking changes
 

@@ -224,6 +224,8 @@ These API endpoints have been implemented.
   * `GET    /runners/:runner` `runners/runner.rs`
   * `PUT    /runners/:runner` `runners/edit.rs`
   * `DELETE /runners/:runner` `runners/delete.rs`
+  * `POST   /runners/:runner/reset_authentication_token` `runners/reset_authentication_token.rs`
+  * `POST   /runners/reset_authentication_token` `runners/reset_authentication_token_by_token.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
@@ -491,8 +493,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
   * `GET    /runners/:runner/jobs` https://gitlab.kitware.com/help/api/runners.md#list-jobs-processed-by-a-runner
-  * `POST   /runners/:runner/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-runner-id
-  * `POST   /runners/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-current-token
   * `POST   /runners/verify` https://gitlab.kitware.com/help/api/runners.md#verify-authentication-for-a-registered-runner
   * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
