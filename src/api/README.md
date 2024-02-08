@@ -286,6 +286,7 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
+  * `GET    /groups/:group/runners` https://gitlab.kitware.com/help/api/runners.md#list-groups-runners
   * `GET    /groups/:group/saml_group_links` https://gitlab.kitware.com/help/api/groups.md#list-saml-group-links
   * `GET    /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#get-saml-group-link
   * `DELETE /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#delete-saml-group-link
@@ -446,6 +447,9 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
   * `GET    /projects/:project/repository/tags/:tag/signature` https://gitlab.kitware.com/help/api/tags.md#get-x509-signature-of-a-tag
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
+  * `GET    /projects/:project/runners` https://gitlab.kitware.com/help/api/runners.md#list-projects-runners
+  * `POST   /projects/:project/runners` https://gitlab.kitware.com/help/api/runners.md#enable-a-runner-in-project
+  * `DELETE /projects/:project/runners/:runner` https://gitlab.kitware.com/help/api/runners.md#disable-a-runner-from-project
   * `GET    /projects/:project/share_locations` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-shareable-groups
   * `GET    /projects/:project/snapshot` https://gitlab.kitware.com/help/api/projects.md#download-snapshot-of-a-git-repository
   * `GET    /projects/:project/snippets/:snippet/award_emoji` https://gitlab.kitware.com/help/api/award_emoji.md#list-an-awardables-award-emoji
@@ -479,6 +483,17 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
+  * `GET    /runners` https://gitlab.kitware.com/help/api/runners.md#list-owned-runners
+  * `POST   /runners` https://gitlab.kitware.com/help/api/runners.md#create-an-instance-runner
+  * `DELETE /runners` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner-by-authentication-token
+  * `GET    /runners/all` https://gitlab.kitware.com/help/api/runners.md#list-all-runners
+  * `GET    /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#get-runners-details
+  * `PUT    /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#update-runners-details
+  * `DELETE /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner
+  * `GET    /runners/:runner/jobs` https://gitlab.kitware.com/help/api/runners.md#list-jobs-processed-by-a-runner
+  * `POST   /runners/:runner/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-runner-id
+  * `POST   /runners/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-current-token
+  * `POST   /runners/verify` https://gitlab.kitware.com/help/api/runners.md#verify-authentication-for-a-registered-runner
   * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
   * `GET    /user/activities` https://gitlab.kitware.com/help/api/users.md#get-user-activities-admin-only
   * `PATCH  /user/disable_two_factor` https://gitlab.kitware.com/help/api/users.md#disable-two-factor-authentication
@@ -653,7 +668,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/resource_milestone_events.md
   * https://gitlab.kitware.com/help/api/resource_state_events.md
   * https://gitlab.kitware.com/help/api/resource_weight_events.md
-  * https://gitlab.kitware.com/help/api/runners.md
   * https://gitlab.kitware.com/help/api/saml.md
   * https://gitlab.kitware.com/help/api/scim.md
   * https://gitlab.kitware.com/help/api/search.md
