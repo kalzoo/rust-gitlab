@@ -8,6 +8,8 @@
   * Add `api::runners::Runners` endpoint
   * Add `api::runners::AllRunners` endpoint
   * Add `api::projects::runners::ProjectRunners` endpoint
+  * Add `api::projects::runners::EnableProjectRunner` endpoint
+  * Add `api::projects::runners::DisableProjectRunner` endpoint
 
 ## Breaking changes
 

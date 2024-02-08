@@ -11,7 +11,17 @@
 //! These endpoints are used for querying and modifying CI runners for a project and their
 //! resources.
 
+mod disable;
+mod enable;
 mod runners;
+
+pub use self::disable::DisableProjectRunner;
+pub use self::disable::DisableProjectRunnerBuilder;
+pub use self::disable::DisableProjectRunnerBuilderError;
+
+pub use self::enable::EnableProjectRunner;
+pub use self::enable::EnableProjectRunnerBuilder;
+pub use self::enable::EnableProjectRunnerBuilderError;
 
 pub use self::runners::ProjectRunners;
 pub use self::runners::ProjectRunnersBuilder;
