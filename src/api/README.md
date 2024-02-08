@@ -34,6 +34,7 @@ These API endpoints have been implemented.
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
   * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
   * `PUT    /groups/:group/push_rule` `groups/push_rule/edit.rs`
+  * `GET    /groups/:group/runners` `groups/runners/runners.rs`
   * `POST   /groups/:group/share` `groups/share.rs`
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
@@ -291,7 +292,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /groups/:group/push_rule` https://gitlab.kitware.com/help/api/groups.md#delete-group-push-rule
   * `GET    /groups/:group/registry/repositories` https://gitlab.kitware.com/help/api/container_registry.md#within-a-group
   * `POST   /groups/:group/restore` https://gitlab.kitware.com/help/api/groups.md#restore-group-marked-for-deletion-premium
-  * `GET    /groups/:group/runners` https://gitlab.kitware.com/help/api/runners.md#list-groups-runners
   * `GET    /groups/:group/saml_group_links` https://gitlab.kitware.com/help/api/groups.md#list-saml-group-links
   * `GET    /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#get-saml-group-link
   * `DELETE /groups/:group/saml_group_links/:saml_group` https://gitlab.kitware.com/help/api/groups.md#delete-saml-group-link
