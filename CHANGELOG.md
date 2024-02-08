@@ -14,6 +14,8 @@
   * Add `api::runners::Runner` endpoint
   * Add `api::runners::EditRunner` endpoint
   * Add `api::runners::CreateRunner` endpoint
+  * Add `api::runners::DeleteRunner` endpoint
+  * Add `api::runners::DeleteRunnerByToken` endpoint
 
 ## Breaking changes
 

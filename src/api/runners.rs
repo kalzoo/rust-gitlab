@@ -12,6 +12,8 @@
 
 mod all_runners;
 mod create;
+mod delete;
+mod delete_by_token;
 mod edit;
 mod runner;
 mod runners;
@@ -23,6 +25,14 @@ pub use self::all_runners::AllRunnersBuilderError;
 pub use self::create::CreateRunner;
 pub use self::create::CreateRunnerBuilder;
 pub use self::create::CreateRunnerBuilderError;
+
+pub use self::delete::DeleteRunner;
+pub use self::delete::DeleteRunnerBuilder;
+pub use self::delete::DeleteRunnerBuilderError;
+
+pub use self::delete_by_token::DeleteRunnerByToken;
+pub use self::delete_by_token::DeleteRunnerByTokenBuilder;
+pub use self::delete_by_token::DeleteRunnerByTokenBuilderError;
 
 pub use self::edit::EditRunner;
 pub use self::edit::EditRunnerBuilder;

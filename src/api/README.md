@@ -219,9 +219,11 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
   * `GET    /runners` `runners/runners.rs`
   * `POST   /runners` `runners/create.rs`
+  * `DELETE /runners` `runners/delete_by_token.rs`
   * `GET    /runners/all` `runners/all_runners.rs`
   * `GET    /runners/:runner` `runners/runner.rs`
   * `PUT    /runners/:runner` `runners/edit.rs`
+  * `DELETE /runners/:runner` `runners/delete.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
@@ -488,8 +490,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
-  * `DELETE /runners` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner-by-authentication-token
-  * `DELETE /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner
   * `GET    /runners/:runner/jobs` https://gitlab.kitware.com/help/api/runners.md#list-jobs-processed-by-a-runner
   * `POST   /runners/:runner/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-runner-id
   * `POST   /runners/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-current-token
