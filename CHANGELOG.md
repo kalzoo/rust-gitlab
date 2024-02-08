@@ -19,6 +19,7 @@
   * Add `api::runners::ResetRunnerAuthenticationToken` endpoint
   * Add `api::runners::ResetRunnerAuthenticationTokenByToken` endpoint
   * Add `api::runners::VerifyRunner` endpoint
+  * Add `api::runners::RunnerJobs` endpoint
 
 ## Breaking changes
 

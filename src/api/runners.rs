@@ -15,6 +15,7 @@ mod create;
 mod delete;
 mod delete_by_token;
 mod edit;
+mod jobs;
 mod reset_authentication_token;
 mod reset_authentication_token_by_token;
 mod runner;
@@ -41,6 +42,12 @@ pub use self::edit::EditRunner;
 pub use self::edit::EditRunnerBuilder;
 pub use self::edit::EditRunnerBuilderError;
 pub use self::edit::RunnerAccessLevel;
+
+pub use self::jobs::RunnerJobStatus;
+pub use self::jobs::RunnerJobs;
+pub use self::jobs::RunnerJobsBuilder;
+pub use self::jobs::RunnerJobsBuilderError;
+pub use self::jobs::RunnerJobsOrderBy;
 
 pub use self::reset_authentication_token::ResetRunnerAuthenticationToken;
 pub use self::reset_authentication_token::ResetRunnerAuthenticationTokenBuilder;
