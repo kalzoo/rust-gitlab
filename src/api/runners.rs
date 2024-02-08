@@ -11,12 +11,18 @@
 //! These endpoints are used for querying and modifying CI runners and their resources.
 
 mod all_runners;
+mod edit;
 mod runner;
 mod runners;
 
 pub use self::all_runners::AllRunners;
 pub use self::all_runners::AllRunnersBuilder;
 pub use self::all_runners::AllRunnersBuilderError;
+
+pub use self::edit::EditRunner;
+pub use self::edit::EditRunnerBuilder;
+pub use self::edit::EditRunnerBuilderError;
+pub use self::edit::RunnerAccessLevel;
 
 pub use self::runner::Runner;
 pub use self::runner::RunnerBuilder;

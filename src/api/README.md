@@ -220,6 +220,7 @@ These API endpoints have been implemented.
   * `GET    /runners` `runners/runners.rs`
   * `GET    /runners/all` `runners/all_runners.rs`
   * `GET    /runners/:runner` `runners/runner.rs`
+  * `PUT    /runners/:runner` `runners/edit.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
@@ -488,7 +489,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
   * `POST   /runners` https://gitlab.kitware.com/help/api/runners.md#create-an-instance-runner
   * `DELETE /runners` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner-by-authentication-token
-  * `PUT    /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#update-runners-details
   * `DELETE /runners/:runner` https://gitlab.kitware.com/help/api/runners.md#delete-a-runner
   * `GET    /runners/:runner/jobs` https://gitlab.kitware.com/help/api/runners.md#list-jobs-processed-by-a-runner
   * `POST   /runners/:runner/reset_authentication_token` https://gitlab.kitware.com/help/api/runners.md#reset-runners-authentication-token-by-using-the-runner-id

@@ -12,6 +12,7 @@
   * Add `api::projects::runners::DisableProjectRunner` endpoint
   * Add `api::groups::runners::GroupRunners` endpoint
   * Add `api::runners::Runner` endpoint
+  * Add `api::runners::EditRunner` endpoint
 
 ## Breaking changes
 
