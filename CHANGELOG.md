@@ -13,6 +13,7 @@
   * Add `api::groups::runners::GroupRunners` endpoint
   * Add `api::runners::Runner` endpoint
   * Add `api::runners::EditRunner` endpoint
+  * Add `api::runners::CreateRunner` endpoint
 
 ## Breaking changes
 
