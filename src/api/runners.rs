@@ -19,6 +19,7 @@ mod reset_authentication_token;
 mod reset_authentication_token_by_token;
 mod runner;
 mod runners;
+mod verify;
 
 pub use self::all_runners::AllRunners;
 pub use self::all_runners::AllRunnersBuilder;
@@ -58,3 +59,7 @@ pub use self::runners::RunnerType;
 pub use self::runners::Runners;
 pub use self::runners::RunnersBuilder;
 pub use self::runners::RunnersBuilderError;
+
+pub use self::verify::VerifyRunner;
+pub use self::verify::VerifyRunnerBuilder;
+pub use self::verify::VerifyRunnerBuilderError;
