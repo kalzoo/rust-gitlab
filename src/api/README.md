@@ -204,6 +204,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/repository/tags` `projects/repository/tags/create.rs`
   * `GET    /projects/:project/repository/tags/:tag` `projects/repository/tags/tag.rs`
   * `GET    /projects/:project/repository/tree` `projects/repository/tree.rs`
+  * `GET    /projects/:project/runners` `projects/runners/runners.rs`
   * `POST   /projects/:project/share` `projects/share.rs`
   * `DELETE /projects/:project/share/:group` `projects/unshare.rs`
   * `POST   /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
@@ -449,7 +450,6 @@ instead of having to search the page for missing endpoints.
   * `DELETE /projects/:project/repository/tags/:tag` https://gitlab.kitware.com/help/api/tags.md#delete-a-tag
   * `GET    /projects/:project/repository/tags/:tag/signature` https://gitlab.kitware.com/help/api/tags.md#get-x509-signature-of-a-tag
   * `POST   /projects/:project/restore` https://gitlab.kitware.com/help/api/projects.md#restore-project-marked-for-deletion-premium
-  * `GET    /projects/:project/runners` https://gitlab.kitware.com/help/api/runners.md#list-projects-runners
   * `POST   /projects/:project/runners` https://gitlab.kitware.com/help/api/runners.md#enable-a-runner-in-project
   * `DELETE /projects/:project/runners/:runner` https://gitlab.kitware.com/help/api/runners.md#disable-a-runner-from-project
   * `GET    /projects/:project/share_locations` https://gitlab.kitware.com/help/api/projects.md#list-a-projects-shareable-groups

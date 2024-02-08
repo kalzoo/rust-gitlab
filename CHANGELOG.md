@@ -7,6 +7,7 @@
   * `api::paged` now supports `into_iter()` and `into_iter_async()` methods.
   * Add `api::runners::Runners` endpoint
   * Add `api::runners::AllRunners` endpoint
+  * Add `api::projects::runners::ProjectRunners` endpoint
 
 ## Breaking changes
 
