@@ -63,6 +63,31 @@ pub trait Endpoint {
     }
 }
 
+impl<E> Endpoint for &E
+where
+    E: Endpoint,
+{
+    fn method(&self) -> Method {
+        (*self).method()
+    }
+
+    fn endpoint(&self) -> Cow<'static, str> {
+        (*self).endpoint()
+    }
+
+    fn url_base(&self) -> UrlBase {
+        (*self).url_base()
+    }
+
+    fn parameters(&self) -> QueryParams {
+        (*self).parameters()
+    }
+
+    fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
+        (*self).body()
+    }
+}
+
 impl<E, T, C> Query<T, C> for E
 where
     E: Endpoint,

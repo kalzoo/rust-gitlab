@@ -112,6 +112,7 @@ where
         #[from]
         source: PaginationError,
     },
+    /// The client does not understand how to use an endpoint for the given URL base.
     #[error("unsupported URL base: {:?}", url_base)]
     UnsupportedUrlBase {
         /// The URL base that is not supported.

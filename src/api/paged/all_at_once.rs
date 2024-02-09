@@ -34,7 +34,7 @@ impl<E, T, C> Query<Vec<T>, C> for Paged<E>
 where
     E: Endpoint,
     E: Pageable,
-    T: DeserializeOwned,
+    T: DeserializeOwned + 'static,
     C: Client,
 {
     fn query(&self, client: &C) -> Result<Vec<T>, ApiError<C::Error>> {

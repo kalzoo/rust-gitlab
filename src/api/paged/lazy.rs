@@ -27,7 +27,16 @@ where
     E: Pageable,
 {
     /// Create an iterator over the results of paginated results for with a client.
-    pub fn iter<'a, C, T>(&'a self, client: &'a C) -> LazilyPagedIter<'a, E, C, T> {
+    pub fn iter<'a, C, T>(&'a self, client: &'a C) -> LazilyPagedIter<'a, &'a E, C, T> {
+        let borrowed = Paged::<&E> {
+            endpoint: &self.endpoint,
+            pagination: self.pagination,
+        };
+        LazilyPagedIter::new(borrowed, client)
+    }
+
+    /// Create an iterator over the results of paginated results for with a client.
+    pub fn into_iter<C, T>(self, client: &C) -> LazilyPagedIter<E, C, T> {
         LazilyPagedIter::new(self, client)
     }
 }
@@ -42,6 +51,26 @@ where
         client: &'a C,
     ) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a
     where
+        T: DeserializeOwned + 'static,
+        C: AsyncClient + Sync,
+    {
+        let borrowed = Paged::<&E> {
+            endpoint: &self.endpoint,
+            pagination: self.pagination,
+        };
+        let iter = LazilyPagedIter::new(borrowed, client);
+        futures_util::stream::unfold(iter, |mut iter| {
+            async move { iter.next_async().await.map(|item| (item, iter)) }
+        })
+    }
+
+    /// Create a stream over the results of paginated results for with a client.
+    pub fn into_iter_async<'a, C, T>(
+        self,
+        client: &'a C,
+    ) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a
+    where
+        E: 'a,
         T: DeserializeOwned + 'static,
         C: AsyncClient + Sync,
     {
@@ -121,16 +150,16 @@ struct PageState {
     next_page: Page,
 }
 
-struct LazilyPagedState<'a, E> {
-    paged: &'a Paged<E>,
+struct LazilyPagedState<E> {
+    paged: Paged<E>,
     page_state: RwLock<PageState>,
 }
 
-impl<'a, E> LazilyPagedState<'a, E>
+impl<E> LazilyPagedState<E>
 where
     E: Pageable,
 {
-    fn new(paged: &'a Paged<E>) -> Self {
+    fn new(paged: Paged<E>) -> Self {
         let next_page = if paged.endpoint.use_keyset_pagination() {
             Page::Keyset(KeysetPage::First)
         } else {
@@ -149,7 +178,7 @@ where
     }
 }
 
-impl<'a, E> LazilyPagedState<'a, E> {
+impl<E> LazilyPagedState<E> {
     fn next_page(&self, last_page_size: usize, next_url: Option<Url>) {
         let mut page_state = self.page_state.write().expect("poisoned next_page");
         page_state.total_results += last_page_size;
@@ -178,7 +207,7 @@ impl<'a, E> LazilyPagedState<'a, E> {
     }
 }
 
-impl<'a, E> LazilyPagedState<'a, E>
+impl<E> LazilyPagedState<E>
 where
     E: Endpoint,
 {
@@ -270,7 +299,7 @@ where
     }
 }
 
-impl<'a, E, T, C> Query<Vec<T>, C> for LazilyPagedState<'a, E>
+impl<E, T, C> Query<Vec<T>, C> for LazilyPagedState<E>
 where
     E: Endpoint,
     E: Pageable,
@@ -293,7 +322,7 @@ where
 }
 
 #[async_trait]
-impl<'a, E, T, C> AsyncQuery<Vec<T>, C> for LazilyPagedState<'a, E>
+impl<E, T, C> AsyncQuery<Vec<T>, C> for LazilyPagedState<E>
 where
     E: Endpoint + Pageable + Sync,
     T: DeserializeOwned + 'static,
@@ -319,7 +348,7 @@ where
 /// missing items (depending on sorting) if new objects are created or removed while iterating.
 pub struct LazilyPagedIter<'a, E, C, T> {
     client: &'a C,
-    state: LazilyPagedState<'a, E>,
+    state: LazilyPagedState<E>,
     current_page: Vec<T>,
 }
 
@@ -328,7 +357,7 @@ where
     E: Endpoint,
     E: Pageable,
 {
-    fn new(paged: &'a Paged<E>, client: &'a C) -> Self {
+    fn new(paged: Paged<E>, client: &'a C) -> Self {
         let state = LazilyPagedState::new(paged);
 
         Self {
@@ -395,7 +424,10 @@ where
     }
 
     /// Converts a "normal iterator" into an async iterator
-    pub fn into_async(self) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a {
+    pub fn into_async(self) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a
+    where
+        E: 'a,
+    {
         futures_util::stream::unfold(self, |mut iter| {
             async move { iter.next_async().await.map(|item| (item, iter)) }
         })

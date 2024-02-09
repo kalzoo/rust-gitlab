@@ -18,6 +18,15 @@ pub trait Pageable {
     }
 }
 
+impl<E> Pageable for &E
+where
+    E: Pageable,
+{
+    fn use_keyset_pagination(&self) -> bool {
+        (*self).use_keyset_pagination()
+    }
+}
+
 pub use self::link_header::LinkHeaderParseError;
 
 pub use self::pagination::Pagination;
