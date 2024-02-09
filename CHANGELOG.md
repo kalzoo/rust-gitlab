@@ -9,6 +9,8 @@
 
   * `api::paged` now requires that the item type be `'static` (shouldn't break
     anything).
+  * `api::Paged::into_iter` now returns a `LazilyPagedIter` with `&'a E` rather
+    than `E` (shouldn't break anything).
 
 # v0.1608.0
 
