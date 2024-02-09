@@ -1,3 +1,10 @@
+# v0.1608.1 (unreleased)
+
+## Additions
+
+  * `&Endpoint` now has an `impl Endpoint`
+  * `&Pageable` now has an `impl Pageable`
+
 # v0.1608.0
 
 ## Additions
