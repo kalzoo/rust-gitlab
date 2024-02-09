@@ -5,6 +5,11 @@
   * `&Endpoint` now has an `impl Endpoint`
   * `&Pageable` now has an `impl Pageable`
 
+## Breaking changes
+
+  * `api::paged` now requires that the item type be `'static` (shouldn't break
+    anything).
+
 # v0.1608.0
 
 ## Additions
