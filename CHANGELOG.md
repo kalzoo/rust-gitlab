@@ -4,6 +4,7 @@
 
   * `&Endpoint` now has an `impl Endpoint`
   * `&Pageable` now has an `impl Pageable`
+  * `api::paged` now supports `into_iter()` and `into_iter_async()` methods.
 
 ## Breaking changes
 

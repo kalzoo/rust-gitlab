@@ -32,6 +32,11 @@ where
             endpoint: &self.endpoint,
             pagination: self.pagination,
         };
+        LazilyPagedIter::new(borrowed, client)
+    }
+
+    /// Create an iterator over the results of paginated results for with a client.
+    pub fn into_iter<C, T>(self, client: &C) -> LazilyPagedIter<E, C, T> {
         LazilyPagedIter::new(self, client)
     }
 }
@@ -54,6 +59,22 @@ where
             pagination: self.pagination,
         };
         let iter = LazilyPagedIter::new(borrowed, client);
+        futures_util::stream::unfold(iter, |mut iter| {
+            async move { iter.next_async().await.map(|item| (item, iter)) }
+        })
+    }
+
+    /// Create a stream over the results of paginated results for with a client.
+    pub fn into_iter_async<'a, C, T>(
+        self,
+        client: &'a C,
+    ) -> impl Stream<Item = Result<T, ApiError<C::Error>>> + 'a
+    where
+        E: 'a,
+        T: DeserializeOwned + 'static,
+        C: AsyncClient + Sync,
+    {
+        let iter = LazilyPagedIter::new(self, client);
         futures_util::stream::unfold(iter, |mut iter| {
             async move { iter.next_async().await.map(|item| (item, iter)) }
         })
