@@ -34,6 +34,7 @@ These API endpoints have been implemented.
   * `GET    /groups/:group/projects` `groups/projects/projects.rs`
   * `GET    /groups/:group/projects/shared` `groups/projects/shared.rs`
   * `PUT    /groups/:group/push_rule` `groups/push_rule/edit.rs`
+  * `GET    /groups/:group/runners` `groups/runners/runners.rs`
   * `POST   /groups/:group/share` `groups/share.rs`
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
@@ -204,6 +205,9 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/repository/tags` `projects/repository/tags/create.rs`
   * `GET    /projects/:project/repository/tags/:tag` `projects/repository/tags/tag.rs`
   * `GET    /projects/:project/repository/tree` `projects/repository/tree.rs`
+  * `GET    /projects/:project/runners` `projects/runners/runners.rs`
+  * `POST   /projects/:project/runners` `projects/runners/enable.rs`
+  * `DELETE /projects/:project/runners/:runner` `projects/runners/disable.rs`
   * `POST   /projects/:project/share` `projects/share.rs`
   * `DELETE /projects/:project/share/:group` `projects/unshare.rs`
   * `POST   /projects/:project/statuses/:sha` `projects/repository/commits/create_status.rs`
@@ -213,6 +217,17 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/variables` `projects/variables/create.rs`
   * `GET    /projects/:project/variables/:key` `projects/variables/variable.rs`
   * `PUT    /projects/:project/variables/:key` `projects/variables/update.rs`
+  * `GET    /runners` `runners/runners.rs`
+  * `POST   /runners` `runners/create.rs`
+  * `DELETE /runners` `runners/delete_by_token.rs`
+  * `GET    /runners/all` `runners/all_runners.rs`
+  * `GET    /runners/:runner` `runners/runner.rs`
+  * `PUT    /runners/:runner` `runners/edit.rs`
+  * `DELETE /runners/:runner` `runners/delete.rs`
+  * `GET    /runners/:runner/jobs` `runners/jobs.rs`
+  * `POST   /runners/:runner/reset_authentication_token` `runners/reset_authentication_token.rs`
+  * `POST   /runners/reset_authentication_token` `runners/reset_authentication_token_by_token.rs`
+  * `POST   /runners/verify` `runners/verify.rs`
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
@@ -653,7 +668,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/resource_milestone_events.md
   * https://gitlab.kitware.com/help/api/resource_state_events.md
   * https://gitlab.kitware.com/help/api/resource_weight_events.md
-  * https://gitlab.kitware.com/help/api/runners.md
   * https://gitlab.kitware.com/help/api/saml.md
   * https://gitlab.kitware.com/help/api/scim.md
   * https://gitlab.kitware.com/help/api/search.md

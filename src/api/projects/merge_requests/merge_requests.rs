@@ -359,7 +359,7 @@ pub struct MergeRequests<'a> {
     /// Order results by a given key.
     #[builder(default)]
     order_by: Option<MergeRequestOrderBy>,
-    /// The sort order for return results.
+    /// The sort order for returned results.
     #[builder(default)]
     sort: Option<SortOrder>,
 }

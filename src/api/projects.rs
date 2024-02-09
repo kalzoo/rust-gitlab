@@ -35,6 +35,7 @@ pub mod push_rule;
 pub mod registry;
 pub mod releases;
 pub mod repository;
+pub mod runners;
 mod share;
 mod unarchive;
 mod unshare;

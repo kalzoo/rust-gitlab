@@ -5,6 +5,21 @@
   * `&Endpoint` now has an `impl Endpoint`
   * `&Pageable` now has an `impl Pageable`
   * `api::paged` now supports `into_iter()` and `into_iter_async()` methods.
+  * Add `api::runners::Runners` endpoint
+  * Add `api::runners::AllRunners` endpoint
+  * Add `api::projects::runners::ProjectRunners` endpoint
+  * Add `api::projects::runners::EnableProjectRunner` endpoint
+  * Add `api::projects::runners::DisableProjectRunner` endpoint
+  * Add `api::groups::runners::GroupRunners` endpoint
+  * Add `api::runners::Runner` endpoint
+  * Add `api::runners::EditRunner` endpoint
+  * Add `api::runners::CreateRunner` endpoint
+  * Add `api::runners::DeleteRunner` endpoint
+  * Add `api::runners::DeleteRunnerByToken` endpoint
+  * Add `api::runners::ResetRunnerAuthenticationToken` endpoint
+  * Add `api::runners::ResetRunnerAuthenticationTokenByToken` endpoint
+  * Add `api::runners::VerifyRunner` endpoint
+  * Add `api::runners::RunnerJobs` endpoint
 
 ## Breaking changes
 

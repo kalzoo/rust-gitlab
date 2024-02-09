@@ -22,6 +22,7 @@ pub mod milestones;
 pub mod packages;
 pub mod projects;
 pub mod push_rule;
+pub mod runners;
 mod share;
 pub mod subgroups;
 mod unshare;

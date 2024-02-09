@@ -76,6 +76,7 @@ pub mod issues;
 pub mod packages;
 pub mod projects;
 pub mod retry;
+pub mod runners;
 pub mod users;
 
 pub(crate) mod helpers;
