@@ -11,6 +11,8 @@
   * Some `enum` types have been preserved for `webhooks` usage and are now
     exported from its module (though `NoteableId` has changed internal
     definition to avoid `*Id` types).
+  * Hook type structures no longer `impl Serialize` as this crate is intended
+    to parse hooks, not write them.
 
 # v0.1609.2
 

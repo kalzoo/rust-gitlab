@@ -17,15 +17,6 @@ macro_rules! enum_serialize {
         }
 
         #[allow(deprecated)]
-        impl Serialize for $name {
-            fn serialize<S>(&self, serializer: S) -> ::std::result::Result<S::Ok, S::Error>
-                where S: Serializer,
-            {
-                serializer.serialize_str(self.as_str())
-            }
-        }
-
-        #[allow(deprecated)]
         impl<'de> Deserialize<'de> for $name {
             fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
                 where D: Deserializer<'de>,
