@@ -11,6 +11,8 @@
 //! Gitlab does not have consistent structures for its hooks, so they often change from
 //! version to version.
 
+#![allow(deprecated)]
+
 use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};

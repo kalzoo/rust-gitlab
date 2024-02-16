@@ -18,7 +18,6 @@ use serde::de::{Error, Unexpected};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{self, Value};
 
-use crate::types::AccessLevel;
 use crate::webhooks::{CommitHookAttrs, ProjectHookAttrs};
 
 /// Events which occur at the project level.
@@ -111,14 +110,15 @@ pub enum HumanAccessLevel {
     Owner,
 }
 
-impl From<HumanAccessLevel> for AccessLevel {
+#[allow(deprecated)]
+impl From<HumanAccessLevel> for crate::types::AccessLevel {
     fn from(access: HumanAccessLevel) -> Self {
         match access {
-            HumanAccessLevel::Guest => AccessLevel::Guest,
-            HumanAccessLevel::Reporter => AccessLevel::Reporter,
-            HumanAccessLevel::Developer => AccessLevel::Developer,
-            HumanAccessLevel::Maintainer => AccessLevel::Maintainer,
-            HumanAccessLevel::Owner => AccessLevel::Owner,
+            HumanAccessLevel::Guest => crate::types::AccessLevel::Guest,
+            HumanAccessLevel::Reporter => crate::types::AccessLevel::Reporter,
+            HumanAccessLevel::Developer => crate::types::AccessLevel::Developer,
+            HumanAccessLevel::Maintainer => crate::types::AccessLevel::Maintainer,
+            HumanAccessLevel::Owner => crate::types::AccessLevel::Owner,
         }
     }
 }

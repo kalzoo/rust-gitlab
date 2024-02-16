@@ -4,6 +4,11 @@
 
   * `hooks` types no longer use the `types::*Id` types for simple wrappers.
 
+## Deprecations
+
+  * The `types` module and its members have been deprecated. Migrate to
+    defining types in client crates directly.
+
 # v0.1608.1
 
 ## Additions
