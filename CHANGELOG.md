@@ -1,3 +1,9 @@
+# v0.1609.0 (unreleased)
+
+## Breaking changes
+
+  * `hooks` types no longer use the `types::*Id` types for simple wrappers.
+
 # v0.1608.1
 
 ## Additions

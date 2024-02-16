@@ -18,7 +18,7 @@ use serde::de::{Error, Unexpected};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{self, Value};
 
-use crate::types::{AccessLevel, GroupId, ObjectId, ProjectId, SshKeyId, UserId};
+use crate::types::AccessLevel;
 use crate::webhooks::{CommitHookAttrs, ProjectHookAttrs};
 
 /// Events which occur at the project level.
@@ -78,7 +78,7 @@ pub struct ProjectSystemHook {
     /// The namespace and path of the project.
     pub path_with_namespace: String,
     /// The ID of the project.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// The visibility level of the project.
     pub project_visibility: ProjectVisibility,
     /// The old namespace and path of the project for `Rename` and `Transfer` events.
@@ -139,7 +139,7 @@ pub struct ProjectMemberSystemHook {
     /// The namespace and path of the project (used for URLs).
     pub project_path_with_namespace: String,
     /// The ID of the project.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// The username of the user added as a member.
     pub user_username: String,
     /// The name of the user added as a member.
@@ -147,7 +147,7 @@ pub struct ProjectMemberSystemHook {
     /// The email address of the user added as a member.
     pub user_email: String,
     /// The ID of the user.
-    pub user_id: UserId,
+    pub user_id: u64,
     /// The access level granted to the user.
     pub access_level: HumanAccessLevel,
     /// The visibility of the project.
@@ -179,7 +179,7 @@ pub struct UserSystemHook {
     /// The email address of the user.
     pub email: String,
     /// The ID of the user.
-    pub user_id: UserId,
+    pub user_id: u64,
     /// The username of the user.
     pub username: String,
 }
@@ -209,7 +209,7 @@ pub struct KeySystemHook {
     /// The content of the key.
     pub key: String,
     /// The ID of the key.
-    pub id: SshKeyId,
+    pub id: u64,
 }
 
 /// Events which occur for groups.
@@ -237,7 +237,7 @@ pub struct GroupSystemHook {
     /// The path of the group (used for URLs).
     pub path: String,
     /// The ID of the group.
-    pub group_id: GroupId,
+    pub group_id: u64,
     /// The email address of the owner of the group.
     pub owner_email: Option<String>,
     /// The name of the owner of the group.
@@ -269,7 +269,7 @@ pub struct GroupMemberSystemHook {
     /// The path of the group (used for URLs).
     pub group_path: String,
     /// The ID of the group.
-    pub group_id: GroupId,
+    pub group_id: u64,
     /// The username of the user.
     pub user_username: String,
     /// The name of the user.
@@ -277,7 +277,7 @@ pub struct GroupMemberSystemHook {
     /// The email address of the user.
     pub user_email: String,
     /// The ID of the user.
-    pub user_id: UserId,
+    pub user_id: u64,
     /// The access level of the user.
     pub group_access: HumanAccessLevel,
 }
@@ -305,18 +305,18 @@ pub struct PushSystemHook {
     /// When the push
     pub updated_at: DateTime<Utc>,
     /// The old object ID of the ref that was pushed.
-    pub before: ObjectId,
+    pub before: String,
     /// The new object ID of the ref that was pushed.
-    pub after: ObjectId,
+    pub after: String,
     #[serde(rename = "ref")]
     /// The name of the reference that was pushed.
     pub ref_: String,
     /// The new object ID of the ref that was pushed.
-    pub checkout_sha: ObjectId,
+    pub checkout_sha: String,
     /// The message for the push (used for annotated tags).
     pub message: Option<String>,
     /// The ID of the user who pushed.
-    pub user_id: UserId,
+    pub user_id: u64,
     /// The name of the user who pushed.
     pub user_name: String,
     /// The email address of the user who pushed.
@@ -324,7 +324,7 @@ pub struct PushSystemHook {
     /// The URL of the user's avatar.
     pub user_avatar: String,
     /// The ID of the project pushed to.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// Attributes of the project.
     pub project: ProjectHookAttrs,
     /// The commits pushed to the repository.
