@@ -1,3 +1,9 @@
+# v0.1610.0 (unreleased)
+
+## Additions
+
+  * `api::runners::EditRunner` can now edit `maintenance_note`
+
 # v0.1609.2
 
 ## Additions

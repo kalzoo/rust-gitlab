@@ -84,8 +84,6 @@ impl<'a> CreateRunner<'a> {
     }
 }
 
-const MAX_MAINTENANCE_NOTE_LENGTH: usize = 1024;
-
 impl<'a> CreateRunnerBuilder<'a> {
     /// Add a tag to the runner.
     pub fn tag<T>(&mut self, tag: T) -> &mut Self
@@ -114,10 +112,10 @@ impl<'a> CreateRunnerBuilder<'a> {
 
     fn validate(&self) -> Result<(), CreateRunnerBuilderError> {
         if let Some(Some(maintenance_note)) = self.maintenance_note.as_ref() {
-            if maintenance_note.len() > MAX_MAINTENANCE_NOTE_LENGTH {
+            if maintenance_note.len() > super::MAX_MAINTENANCE_NOTE_LENGTH {
                 return Err(format!(
                     "`maintenance_note` may be at most {} bytes",
-                    MAX_MAINTENANCE_NOTE_LENGTH,
+                    super::MAX_MAINTENANCE_NOTE_LENGTH,
                 )
                 .into());
             }
@@ -179,7 +177,7 @@ mod tests {
 
     #[test]
     fn maintenance_note_length() {
-        use super::MAX_MAINTENANCE_NOTE_LENGTH;
+        use crate::api::runners::MAX_MAINTENANCE_NOTE_LENGTH;
 
         let too_long = format!("{:width$}", "note", width = MAX_MAINTENANCE_NOTE_LENGTH + 1);
         let err = CreateRunner::builder()
