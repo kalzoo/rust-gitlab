@@ -11,15 +11,11 @@
 //! Gitlab does not have consistent structures for its hooks, so they often change from
 //! version to version.
 
-#![allow(deprecated)]
-
 use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{self, Value};
-
-use crate::types::{IssueState, MergeRequestState, MergeStatus, NoteType, NoteableId, StatusState};
 
 /// A wrapper struct for dates in web hooks.
 ///
@@ -206,6 +202,20 @@ pub enum IssueAction {
     Reopen,
 }
 
+/// The states an issue may be in.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IssueState {
+    /// The issue is open.
+    #[serde(rename = "opened")]
+    Opened,
+    /// The issue has been closed.
+    #[serde(rename = "closed")]
+    Closed,
+    /// The issue has been opened after being closed.
+    #[serde(rename = "reopened")]
+    Reopened,
+}
+
 /// Issue information exposed in hooks.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IssueHookAttrs {
@@ -335,6 +345,52 @@ impl MergeRequestParams {
                 }
             })
     }
+}
+
+/// The states a merge request may be in.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MergeRequestState {
+    /// The merge request is open.
+    #[serde(rename = "opened")]
+    Opened,
+    /// The merge request has been closed before merging.
+    #[serde(rename = "closed")]
+    Closed,
+    /// The merge request has been opened after closing.
+    #[serde(rename = "reopened")]
+    Reopened,
+    /// The merge request has been merged.
+    #[serde(rename = "merged")]
+    Merged,
+    /// The merge request is locked from further discussion or updates.
+    #[serde(rename = "locked")]
+    Locked,
+}
+
+/// The status of the possible merge for a merge request.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MergeStatus {
+    /// The merge request has just been created.
+    #[serde(rename = "preparing")]
+    Preparing,
+    /// The merge request has not been checked yet.
+    #[serde(rename = "unchecked")]
+    Unchecked,
+    /// The merge request is currently being checked.
+    #[serde(rename = "checking")]
+    Checking,
+    /// The merge request may be merged.
+    #[serde(rename = "can_be_merged")]
+    CanBeMerged,
+    /// The merge request may not be merged yet.
+    #[serde(rename = "cannot_be_merged")]
+    CannotBeMerged,
+    /// The merge request has not been checked but previously could not be merged.
+    #[serde(rename = "cannot_be_merged_recheck")]
+    CannotBeMergedRecheck,
+    /// The merge request could not be merged previously, but is being rechecked.
+    #[serde(rename = "cannot_be_merged_rechecking")]
+    CannotBeMergedRechecking,
 }
 
 /// Merge request information exposed in hooks.
@@ -551,6 +607,32 @@ pub struct PositionHookAttrs {
     pub new_path: String,
 }
 
+/// The entities a note may be added to.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NoteType {
+    /// A note on a commit.
+    Commit,
+    /// A note on an issue.
+    Issue,
+    /// A note on a merge request.
+    MergeRequest,
+    /// A note on a snippet.
+    Snippet,
+}
+
+/// The ID of an entity a note is attached to.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum NoteableId {
+    /// The ID of the commit for a commit note.
+    Commit(String),
+    /// The ID of the issue for an issue note.
+    Issue(u64),
+    /// The ID of the merge request for a merge request note.
+    MergeRequest(u64),
+    /// The ID of the snippet for a snippet note.
+    Snippet(u64),
+}
+
 /// Note (comment) information exposed in hooks.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NoteHookAttrs {
@@ -605,23 +687,11 @@ impl NoteHookAttrs {
             NoteType::Commit => {
                 self.noteable_id
                     .as_str()
-                    .map(|id| NoteableId::Commit(crate::types::ObjectId::new(id)))
+                    .map(|id| NoteableId::Commit(id.into()))
             },
-            NoteType::Issue => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::Issue(crate::types::IssueId::new(id)))
-            },
-            NoteType::MergeRequest => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::MergeRequest(crate::types::MergeRequestId::new(id)))
-            },
-            NoteType::Snippet => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::Snippet(crate::types::SnippetId::new(id)))
-            },
+            NoteType::Issue => self.noteable_id.as_u64().map(NoteableId::Issue),
+            NoteType::MergeRequest => self.noteable_id.as_u64().map(NoteableId::MergeRequest),
+            NoteType::Snippet => self.noteable_id.as_u64().map(NoteableId::Snippet),
         }
     }
 }
@@ -738,6 +808,44 @@ pub struct PipelineVariable {
     pub key: String,
     /// Environment variable value
     pub value: String,
+}
+
+/// States for commit statuses.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StatusState {
+    /// The check was created.
+    #[serde(rename = "created")]
+    Created,
+    /// The check is waiting for some other resource.
+    #[serde(rename = "waiting_for_resource")]
+    WaitingForResource,
+    /// The check is currently being prepared.
+    #[serde(rename = "preparing")]
+    Preparing,
+    /// The check is queued.
+    #[serde(rename = "pending")]
+    Pending,
+    /// The check is currently running.
+    #[serde(rename = "running")]
+    Running,
+    /// The check succeeded.
+    #[serde(rename = "success")]
+    Success,
+    /// The check failed.
+    #[serde(rename = "failed")]
+    Failed,
+    /// The check was canceled.
+    #[serde(rename = "canceled")]
+    Canceled,
+    /// The check was skipped.
+    #[serde(rename = "skipped")]
+    Skipped,
+    /// The check is waiting for manual action.
+    #[serde(rename = "manual")]
+    Manual,
+    /// The check is scheduled to run at some point in time.
+    #[serde(rename = "scheduled")]
+    Scheduled,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

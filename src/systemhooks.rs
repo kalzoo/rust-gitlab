@@ -110,19 +110,6 @@ pub enum HumanAccessLevel {
     Owner,
 }
 
-#[allow(deprecated)]
-impl From<HumanAccessLevel> for crate::types::AccessLevel {
-    fn from(access: HumanAccessLevel) -> Self {
-        match access {
-            HumanAccessLevel::Guest => crate::types::AccessLevel::Guest,
-            HumanAccessLevel::Reporter => crate::types::AccessLevel::Reporter,
-            HumanAccessLevel::Developer => crate::types::AccessLevel::Developer,
-            HumanAccessLevel::Maintainer => crate::types::AccessLevel::Maintainer,
-            HumanAccessLevel::Owner => crate::types::AccessLevel::Owner,
-        }
-    }
-}
-
 /// A project membership hook.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ProjectMemberSystemHook {
