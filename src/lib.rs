@@ -21,6 +21,10 @@ pub mod hooks;
 #[cfg(not(feature = "_nohooks"))]
 pub mod systemhooks;
 #[cfg(not(feature = "_nohooks"))]
+#[deprecated(
+    since = "0.1609.0",
+    note = "define deserialization types in client code"
+)]
 pub mod types;
 #[cfg(not(feature = "_nohooks"))]
 pub mod webhooks;
@@ -37,6 +41,11 @@ pub use crate::gitlab::{
     AsyncGitlab, Gitlab, GitlabBuilder, GitlabError, ImpersonationClient, RestError,
 };
 #[cfg(not(feature = "_nohooks"))]
+#[allow(deprecated)]
+#[deprecated(
+    since = "0.1609.0",
+    note = "define deserialization types in client code"
+)]
 pub use crate::types::*;
 
 #[cfg(test)]

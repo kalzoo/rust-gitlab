@@ -11,17 +11,15 @@
 //! Gitlab does not have consistent structures for its hooks, so they often change from
 //! version to version.
 
+#![allow(deprecated)]
+
 use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{self, Value};
 
-use crate::types::{
-    IssueId, IssueInternalId, IssueState, JobId, MergeRequestId, MergeRequestInternalId,
-    MergeRequestState, MergeStatus, MilestoneId, NoteId, NoteType, NoteableId, ObjectId,
-    PipelineId, ProjectId, RunnerId, SnippetId, StatusState, UserId,
-};
+use crate::types::{IssueState, MergeRequestState, MergeStatus, NoteType, NoteableId, StatusState};
 
 /// A wrapper struct for dates in web hooks.
 ///
@@ -137,7 +135,7 @@ pub struct HookCommitIdentity {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CommitHookAttrs {
     /// The commit's ID.
-    pub id: ObjectId,
+    pub id: String,
     /// The commit message.
     pub message: String,
     pub timestamp: DateTime<Utc>,
@@ -158,18 +156,18 @@ pub struct PushHook {
     /// XXX(gitlab): Bug in Gitlab; it should not send this.
     event_name: String,
     /// The old object ID of the ref before the push.
-    pub before: ObjectId,
+    pub before: String,
     /// The new object ID of the ref after the push.
-    pub after: ObjectId,
+    pub after: String,
     #[serde(rename = "ref")]
     /// The name of the reference which has been pushed.
     pub ref_: String,
     /// The new object ID of the ref after the push.
-    pub checkout_sha: Option<ObjectId>,
+    pub checkout_sha: Option<String>,
     /// The message for the push (used for annotated tags).
     pub message: Option<String>,
     /// The ID of the user who pushed.
-    pub user_id: UserId,
+    pub user_id: u64,
     /// The name of the user who pushed.
     pub user_name: String,
     /// The username of the user who pushed.
@@ -179,7 +177,7 @@ pub struct PushHook {
     /// The URL of the user's avatar.
     pub user_avatar: Option<String>,
     /// The ID of the project pushed to.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// Attributes of the project.
     pub project: ProjectHookAttrs,
     /// The commits pushed to the repository.
@@ -212,15 +210,15 @@ pub enum IssueAction {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct IssueHookAttrs {
     /// The ID of the issue.
-    pub id: IssueId,
+    pub id: u64,
     /// The title of the issue.
     pub title: String,
     /// The ID of the assignee of the issue.
-    pub assignee_id: Option<UserId>,
+    pub assignee_id: Option<u64>,
     /// The ID of the author of the issue.
-    pub author_id: UserId,
+    pub author_id: u64,
     /// The ID of the project.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// When the issue was created.
     pub created_at: HookDate,
     /// When the issue was last updated.
@@ -232,18 +230,18 @@ pub struct IssueHookAttrs {
     /// When the issue is due.
     pub due_date: Option<NaiveDate>,
     /// The ID of the user which last updated the issue.
-    pub updated_by_id: Option<UserId>,
+    pub updated_by_id: Option<u64>,
     pub moved_to_id: Option<Value>, // ???
     /// The branch name for the issue.
     pub branch_name: Option<String>,
     /// The description of the issue.
     pub description: Option<String>,
     /// The ID of the milestone of the issue.
-    pub milestone_id: Option<MilestoneId>,
+    pub milestone_id: Option<u64>,
     /// The state of the issue.
     pub state: IssueState,
     /// The user-visible ID of the issue.
-    pub iid: IssueInternalId,
+    pub iid: u64,
     /// Whether the issue is confidential or not.
     pub confidential: bool,
     /// The time estimate, in seconds.
@@ -355,22 +353,22 @@ pub struct MergeRequestHookAttrs {
     #[deprecated(since = "0.1601.0", note = "Use the 'draft' member instead.")]
     pub work_in_progress: bool,
     /// The object ID of the merge commit which is currently being handled.
-    pub in_progress_merge_commit_sha: Option<ObjectId>,
+    pub in_progress_merge_commit_sha: Option<String>,
 
     /// The ID of the merge request.
-    pub id: MergeRequestId,
+    pub id: u64,
     /// The target branch of the merge request.
     pub target_branch: String,
     /// The ID of the target project.
-    pub target_project_id: ProjectId,
+    pub target_project_id: u64,
     /// The source branch of the merge request.
     pub source_branch: String,
     /// The ID of the source project.
-    pub source_project_id: Option<ProjectId>,
+    pub source_project_id: Option<u64>,
     /// The ID of the author of the merge request.
-    pub author_id: UserId,
+    pub author_id: u64,
     /// The ID of the assignee of the merge request.
-    pub assignee_id: Option<UserId>,
+    pub assignee_id: Option<u64>,
     /// The title of the merge request.
     pub title: String,
     /// When the merge request was created.
@@ -382,32 +380,32 @@ pub struct MergeRequestHookAttrs {
     /// When the merge request was locked.
     pub locked_at: Option<HookDate>,
     /// The ID of the user which last updated the merge request.
-    pub updated_by_id: Option<UserId>,
+    pub updated_by_id: Option<u64>,
     /// The object ID of the commit which merged the merge request.
-    pub merge_commit_sha: Option<ObjectId>,
+    pub merge_commit_sha: Option<String>,
     pub merge_error: Option<Value>, // String?
     /// The parameters for merging the merge request.
     pub merge_params: MergeRequestParams,
     /// The user which merged the merge request.
-    pub merge_user_id: Option<UserId>,
+    pub merge_user_id: Option<u64>,
     /// Whether the merge request will be merged once all builds succeed or not.
     pub merge_when_pipeline_succeeds: bool,
     // st_commits
     // st_diffs
     /// The milestone of the merge request.
-    pub milestone_id: Option<MilestoneId>,
-    pub oldrev: Option<ObjectId>,
+    pub milestone_id: Option<u64>,
+    pub oldrev: Option<String>,
     /// The state of the merge request.
     pub state: MergeRequestState,
     /// The merge status of the merge request.
     pub merge_status: MergeStatus,
     /// The user-visible ID of the merge request.
-    pub iid: MergeRequestInternalId,
+    pub iid: u64,
     /// The description of the merge request.
     pub description: Option<String>,
 
     /// The newest pipeline, if any
-    pub head_pipeline_id: Option<PipelineId>,
+    pub head_pipeline_id: Option<u64>,
 
     // It seems that notes miss these properties?
     /// The URL of the merge request.
@@ -471,9 +469,9 @@ pub struct SnippetHookAttrs {
     /// The content of the snippet.
     pub content: String,
     /// The author of the snippet.
-    pub author_id: UserId,
+    pub author_id: u64,
     /// The project the snippet belongs to.
-    pub project_id: Option<ProjectId>,
+    pub project_id: Option<u64>,
     /// When the snippet was created.
     pub created_at: HookDate,
     /// When the snippet was last updated.
@@ -542,9 +540,9 @@ pub struct DiffHookAttrs {
 // FIXME(gitlab#21467): This can apparently be a string sometimes.
 // https://gitlab.com/gitlab-org/gitlab-ce/issues/21467
 pub struct PositionHookAttrs {
-    pub base_sha: ObjectId,
-    pub head_sha: ObjectId,
-    pub start_sha: ObjectId,
+    pub base_sha: String,
+    pub head_sha: String,
+    pub start_sha: String,
     pub old_line: Option<u64>,
     /// The path on the old side of the diff.
     pub old_path: String,
@@ -557,7 +555,7 @@ pub struct PositionHookAttrs {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NoteHookAttrs {
     /// The ID of the note.
-    pub id: NoteId,
+    pub id: u64,
     /// The content of the note.
     pub note: String,
     /// The type of entity the note is attached to.
@@ -567,25 +565,25 @@ pub struct NoteHookAttrs {
     // pub position: Option<PositionHookAttrs>,
     position: Value,
     /// The author of the note.
-    pub author_id: UserId,
+    pub author_id: u64,
     /// When the note was created.
     pub created_at: HookDate,
     /// When the note was last updated.
     pub updated_at: HookDate,
     /// The ID of the user who last updated the note.
-    pub updated_by_id: Option<UserId>,
+    pub updated_by_id: Option<u64>,
     /// When the note was marked as resolved.
     pub resolved_at: Option<HookDate>,
     /// The ID of the user who marked the note as resolved.
-    pub resolved_by_id: Option<UserId>,
+    pub resolved_by_id: Option<u64>,
     /// The ID of the project.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// The URL of an attachment to the note.
     pub attachment: Option<String>,
     pub line_code: Option<String>, // XXX: This is some internal format.
-    pub commit_id: Option<ObjectId>, // XXX(8.11): apparently can be an empty string?
-    pub discussion_id: ObjectId,
-    pub original_discussion_id: Option<ObjectId>,
+    pub commit_id: Option<String>, // XXX(8.11): apparently can be an empty string?
+    pub discussion_id: String,
+    pub original_discussion_id: Option<String>,
     noteable_id: Value, // Keep as JSON because its type depends on what `noteable_type` is.
     /// Whether the note was created by a user or in response to an external action.
     pub system: bool,
@@ -607,22 +605,22 @@ impl NoteHookAttrs {
             NoteType::Commit => {
                 self.noteable_id
                     .as_str()
-                    .map(|id| NoteableId::Commit(ObjectId::new(id)))
+                    .map(|id| NoteableId::Commit(crate::types::ObjectId::new(id)))
             },
             NoteType::Issue => {
                 self.noteable_id
                     .as_u64()
-                    .map(|id| NoteableId::Issue(IssueId::new(id)))
+                    .map(|id| NoteableId::Issue(crate::types::IssueId::new(id)))
             },
             NoteType::MergeRequest => {
                 self.noteable_id
                     .as_u64()
-                    .map(|id| NoteableId::MergeRequest(MergeRequestId::new(id)))
+                    .map(|id| NoteableId::MergeRequest(crate::types::MergeRequestId::new(id)))
             },
             NoteType::Snippet => {
                 self.noteable_id
                     .as_u64()
-                    .map(|id| NoteableId::Snippet(SnippetId::new(id)))
+                    .map(|id| NoteableId::Snippet(crate::types::SnippetId::new(id)))
             },
         }
     }
@@ -636,7 +634,7 @@ pub struct NoteHook {
     /// The user who triggered the hook.
     pub user: UserHookAttrs,
     /// The ID of the project the note belongs to.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// The project the note belongs to.
     pub project: ProjectHookAttrs,
     /// The attributes on the note itself.
@@ -656,7 +654,7 @@ pub struct NoteHook {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BuildUserHookAttrs {
     /// The ID of the user.
-    pub id: Option<UserId>,
+    pub id: Option<u64>,
     /// The user's name.
     pub name: Option<String>,
     /// The user's email address.
@@ -668,7 +666,7 @@ pub struct BuildUserHookAttrs {
 pub struct BuildCommitHookAttrs {
     pub id: String,
     /// The object ID of the commit.
-    pub sha: ObjectId,
+    pub sha: String,
     /// The full commit message.
     pub message: String,
     /// The commit's author's name.
@@ -713,7 +711,7 @@ pub struct BuildHook {
     /// The object ID that was built.
     pub sha: String,
     /// The ID of the build.
-    pub build_id: JobId,
+    pub build_id: u64,
     /// The name of the build.
     pub build_name: String,
     pub build_stage: String,
@@ -725,7 +723,7 @@ pub struct BuildHook {
     /// Whether the build is allowed to fail.
     pub build_allow_failure: bool,
     /// The ID of the project.
-    pub project_id: ProjectId,
+    pub project_id: u64,
     /// The user which owns the build.
     pub user: BuildUserHookAttrs,
     /// The commit which was built.
@@ -744,9 +742,9 @@ pub struct PipelineVariable {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PipelineHookAttrs {
-    pub id: PipelineId,
+    pub id: u64,
     /// The object ID that was tested.
-    pub sha: ObjectId,
+    pub sha: String,
     #[serde(rename = "ref")]
     /// The name of the reference that was tested.
     pub ref_: Option<String>,
@@ -772,7 +770,7 @@ pub struct PipelineHookAttrs {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PipelineBuildRunner {
     /// The runner id.
-    pub id: RunnerId,
+    pub id: u64,
     /// The runner description
     pub description: String,
     /// Whether the runner is active.
@@ -783,18 +781,18 @@ pub struct PipelineBuildRunner {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PipelineMergeRequestAttrs {
-    pub id: MergeRequestId,
-    pub iid: MergeRequestInternalId,
+    pub id: u64,
+    pub iid: u64,
     /// The title of the merge request.
     pub title: String,
     /// The target branch of the merge request.
     pub target_branch: String,
     /// The ID of the target project.
-    pub target_project_id: ProjectId,
+    pub target_project_id: u64,
     /// The source branch of the merge request.
     pub source_branch: String,
     /// The ID of the source project.
-    pub source_project_id: Option<ProjectId>,
+    pub source_project_id: Option<u64>,
     pub state: MergeRequestState,
     pub merge_status: MergeStatus,
     pub url: String,
@@ -802,7 +800,7 @@ pub struct PipelineMergeRequestAttrs {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PipelineProjectAttrs {
-    pub id: ProjectId,
+    pub id: u64,
     /// The display name of the project.
     pub name: String,
     /// The description of the project.

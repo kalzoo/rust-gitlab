@@ -24,7 +24,7 @@ Eventually, the API should adhere to semver, but it is hard to give a timeline.
 
 Older releases of this crate tried to define endpoints as methods and define
 the response types. This did not scale well. As such, the `types` module is
-likely to see deprecation and removal in a future release of the crate.
+deprecated as of `0.1609.0`.
 
 The `hooks`, `systemhooks`, and `webhooks` are hard to provide semver
 guarantees and may be migrated to their own crate in the future.
