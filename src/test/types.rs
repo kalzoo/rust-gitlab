@@ -21,7 +21,7 @@ fn check_user_brad_king(user: &UserBasic) {
     assert_eq!(user.state, UserState::Active);
     assert_eq!(
         user.avatar_url.as_ref().unwrap(),
-        "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
+        "https://secure.gravatar.com/avatar/d5d8c8ebcc988db4cc11a15cb72e93c854a59a04613a05472f7dfb5c827cc52a?s=80&d=identicon",
     );
     assert_eq!(user.id, UserId::new(10));
 }
@@ -33,7 +33,7 @@ fn check_user_ben_boeckel(user: &UserBasic) {
     assert_eq!(user.state, UserState::Active);
     assert_eq!(
         user.avatar_url.as_ref().unwrap(),
-        "https://secure.gravatar.com/avatar/2f5f7e99190174edb5a2f66b8653b0b2?s=80&d=identicon",
+        "https://secure.gravatar.com/avatar/50e155d60eb53ac9c33dd97caefb75ebfb3656ed92b001218f77e24cb8c4d848?s=80&d=identicon",
     );
     assert_eq!(user.id, UserId::new(13));
 }
@@ -263,7 +263,7 @@ fn test_read_member() {
     assert_eq!(member.state, UserState::Active);
     assert_eq!(
         member.avatar_url.as_ref().unwrap(),
-        "https://secure.gravatar.com/avatar/0617392a2f9fd505720d0c42cefc1a10?s=80&d=identicon",
+        "https://secure.gravatar.com/avatar/d5d8c8ebcc988db4cc11a15cb72e93c854a59a04613a05472f7dfb5c827cc52a?s=80&d=identicon",
     );
     assert_eq!(member.web_url, "https://gitlab.kitware.com/brad.king");
     assert_eq!(member.access_level, 50);
