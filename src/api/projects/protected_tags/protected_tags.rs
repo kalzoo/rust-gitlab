@@ -38,6 +38,8 @@ impl<'a> Endpoint for ProtectedTags<'a> {
     }
 }
 
+impl<'a> Pageable for ProtectedTags<'a> {}
+
 #[cfg(test)]
 mod tests {
     use crate::api::projects::protected_tags::{ProtectedTags, ProtectedTagsBuilderError};
