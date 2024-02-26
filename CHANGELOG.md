@@ -1,3 +1,9 @@
+# v0.1609.1 (unreleased)
+
+## Fixes
+
+  * The `ProtectedTags` endpoint now `impl Pageable`.
+
 # v0.1609.0
 
 ## Breaking changes
