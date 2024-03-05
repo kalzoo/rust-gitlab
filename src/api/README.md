@@ -312,7 +312,7 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
   * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
-  * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests
+  * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
