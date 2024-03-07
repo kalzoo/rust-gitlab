@@ -44,6 +44,13 @@ where
         /// The client error.
         source: E,
     },
+    /// Authentication failed.
+    #[error("failed to authenticate: {}", source)]
+    Auth {
+        /// The source of the error.
+        #[from]
+        source: crate::AuthError,
+    },
     /// The URL failed to parse.
     #[error("failed to parse url: {}", source)]
     UrlParse {
@@ -145,6 +152,13 @@ where
                 source,
             } => {
                 ApiError::UrlParse {
+                    source,
+                }
+            },
+            Self::Auth {
+                source,
+            } => {
+                ApiError::Auth {
                     source,
                 }
             },
