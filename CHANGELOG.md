@@ -1,3 +1,8 @@
+# v0.1609.2 (unreleased)
+
+## Additions
+  * Add `api::job::Job` endpoint
+
 # v0.1609.1
 
 ## Fixes

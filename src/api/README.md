@@ -38,6 +38,7 @@ These API endpoints have been implemented.
   * `POST   /groups/:group/share` `groups/share.rs`
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
+  * `GET    /job` `job/job.rs`
   * `GET    /projects` `projects/projects.rs`
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
@@ -310,7 +311,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /groups/:group/transfer` https://gitlab.kitware.com/help/api/groups.md#transfer-a-group-to-a-new-parent-group-turn-a-subgroup-to-a-top-level-group
   * `GET    /groups/:group/transfer_locations` https://gitlab.kitware.com/help/api/groups.md#get-groups-to-which-a-user-can-transfer-a-group
   * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
-  * `GET    /job` https://gitlab.kitware.com/help/api/jobs.md#get-job-tokens-job
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
