@@ -6,9 +6,9 @@
 
 use http::{HeaderMap, HeaderValue};
 use log::error;
-use serde::Deserialize;
 use thiserror::Error;
 
+use crate::api::job::Job;
 use crate::api::users::CurrentUser;
 use crate::api::{self, AsyncQuery, Query};
 
@@ -20,13 +20,6 @@ pub enum AuthError {
         #[from]
         source: http::header::InvalidHeaderValue,
     },
-}
-
-#[derive(Deserialize, Debug)]
-struct UserPublic {
-    /// The username.
-    #[serde(rename = "username")]
-    _username: String,
 }
 
 type AuthResult<T> = Result<T, AuthError>;
@@ -85,11 +78,17 @@ impl Auth {
     where
         C: api::Client,
     {
-        if let Self::None = self {
-            // There does not seem to be an unparameterized endpoint that can be used to reliably
-            // detect whether the connection will work or not.
-        } else {
-            let _: UserPublic = CurrentUser::builder().build().unwrap().query(api)?;
+        match self {
+            Self::None => {
+                // There does not seem to be an unparameterized endpoint that can be used to reliably
+                // detect whether the connection will work or not.
+            },
+            Self::JobToken(_) => {
+                api::ignore(Job::builder().build().unwrap()).query(api)?;
+            },
+            Self::Token(_) | Self::OAuth2(_) => {
+                api::ignore(CurrentUser::builder().build().unwrap()).query(api)?;
+            },
         }
 
         Ok(())
@@ -99,15 +98,21 @@ impl Auth {
     where
         C: api::AsyncClient + Sync,
     {
-        if let Self::None = self {
-            // There does not seem to be an unparameterized endpoint that can be used to reliably
-            // detect whether the connection will work or not.
-        } else {
-            let _: UserPublic = CurrentUser::builder()
-                .build()
-                .unwrap()
-                .query_async(api)
-                .await?;
+        match self {
+            Self::None => {
+                // There does not seem to be an unparameterized endpoint that can be used to reliably
+                // detect whether the connection will work or not.
+            },
+            Self::JobToken(_) => {
+                api::ignore(Job::builder().build().unwrap())
+                    .query_async(api)
+                    .await?;
+            },
+            Self::Token(_) | Self::OAuth2(_) => {
+                api::ignore(CurrentUser::builder().build().unwrap())
+                    .query_async(api)
+                    .await?;
+            },
         }
 
         Ok(())
