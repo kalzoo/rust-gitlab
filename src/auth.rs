@@ -6,7 +6,6 @@
 
 use http::{HeaderMap, HeaderValue};
 use log::error;
-use serde::Deserialize;
 use thiserror::Error;
 
 use crate::api::job::Job;
@@ -21,13 +20,6 @@ pub enum AuthError {
         #[from]
         source: http::header::InvalidHeaderValue,
     },
-}
-
-#[derive(Deserialize, Debug)]
-struct UserPublic {
-    /// The username.
-    #[serde(rename = "username")]
-    _username: String,
 }
 
 type AuthResult<T> = Result<T, AuthError>;
@@ -95,7 +87,7 @@ impl Auth {
                 api::ignore(Job::builder().build().unwrap()).query(api)?;
             },
             Self::Token(_) | Self::OAuth2(_) => {
-                let _: UserPublic = CurrentUser::builder().build().unwrap().query(api)?;
+                api::ignore(CurrentUser::builder().build().unwrap()).query(api)?;
             },
         }
 
@@ -117,9 +109,7 @@ impl Auth {
                     .await?;
             },
             Self::Token(_) | Self::OAuth2(_) => {
-                let _: UserPublic = CurrentUser::builder()
-                    .build()
-                    .unwrap()
+                api::ignore(CurrentUser::builder().build().unwrap())
                     .query_async(api)
                     .await?;
             },
