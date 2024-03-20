@@ -22,6 +22,8 @@ mod runner;
 mod runners;
 mod verify;
 
+const MAX_MAINTENANCE_NOTE_LENGTH: usize = 1024;
+
 pub use self::all_runners::AllRunners;
 pub use self::all_runners::AllRunnersBuilder;
 pub use self::all_runners::AllRunnersBuilderError;

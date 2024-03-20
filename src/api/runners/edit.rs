@@ -38,7 +38,7 @@ impl ParamValue<'static> for RunnerAccessLevel {
 
 /// Edit the details of a runner.
 #[derive(Debug, Builder, Clone)]
-#[builder(setter(strip_option))]
+#[builder(setter(strip_option), build_fn(validate = "Self::validate"))]
 pub struct EditRunner<'a> {
     /// The ID of the runner.
     runner: u64,
@@ -64,6 +64,11 @@ pub struct EditRunner<'a> {
     /// The maximum timeout allowed on the runner (in seconds).
     #[builder(default)]
     maximum_timeout: Option<u64>,
+    /// Maintenance note for the runner.
+    ///
+    /// Maximum size is 1024.
+    #[builder(setter(into), default)]
+    maintenance_note: Option<Cow<'a, str>>,
 }
 
 impl<'a> EditRunner<'a> {
@@ -98,6 +103,20 @@ impl<'a> EditRunnerBuilder<'a> {
             .extend(iter.map(|t| t.into()));
         self
     }
+
+    fn validate(&self) -> Result<(), EditRunnerBuilderError> {
+        if let Some(Some(maintenance_note)) = self.maintenance_note.as_ref() {
+            if maintenance_note.len() > super::MAX_MAINTENANCE_NOTE_LENGTH {
+                return Err(format!(
+                    "`maintenance_note` may be at most {} bytes",
+                    super::MAX_MAINTENANCE_NOTE_LENGTH,
+                )
+                .into());
+            }
+        }
+
+        Ok(())
+    }
 }
 
 impl<'a> Endpoint for EditRunner<'a> {
@@ -119,7 +138,8 @@ impl<'a> Endpoint for EditRunner<'a> {
             .push_opt("run_untagged", self.run_untagged)
             .push_opt("locked", self.locked)
             .push_opt("access_level", self.access_level)
-            .push_opt("maximum_timeout", self.maximum_timeout);
+            .push_opt("maximum_timeout", self.maximum_timeout)
+            .push_opt("maintenance_note", self.maintenance_note.as_ref());
 
         params.into_body()
     }
@@ -154,6 +174,29 @@ mod tests {
     #[test]
     fn runner_is_sufficient() {
         EditRunner::builder().runner(1).build().unwrap();
+    }
+
+    #[test]
+    fn maintenance_note_length() {
+        use crate::api::runners::MAX_MAINTENANCE_NOTE_LENGTH;
+
+        let too_long = format!("{:width$}", "note", width = MAX_MAINTENANCE_NOTE_LENGTH + 1);
+        let err = EditRunner::builder()
+            .runner(1)
+            .maintenance_note(too_long)
+            .build()
+            .unwrap_err();
+        if let EditRunnerBuilderError::ValidationError(message) = err {
+            assert_eq!(
+                message,
+                format!(
+                    "`maintenance_note` may be at most {} bytes",
+                    MAX_MAINTENANCE_NOTE_LENGTH,
+                )
+            );
+        } else {
+            panic!("unexpected error: {:?}", err);
+        }
     }
 
     #[test]
@@ -299,6 +342,25 @@ mod tests {
         let endpoint = EditRunner::builder()
             .runner(1)
             .maximum_timeout(3600)
+            .build()
+            .unwrap();
+        api::ignore(endpoint).query(&client).unwrap();
+    }
+
+    #[test]
+    fn endpoint_maintenance_note() {
+        let endpoint = ExpectedUrl::builder()
+            .method(Method::PUT)
+            .endpoint("runners/1")
+            .content_type("application/x-www-form-urlencoded")
+            .body_str("maintenance_note=note")
+            .build()
+            .unwrap();
+        let client = SingleTestClient::new_raw(endpoint, "");
+
+        let endpoint = EditRunner::builder()
+            .runner(1)
+            .maintenance_note("note")
             .build()
             .unwrap();
         api::ignore(endpoint).query(&client).unwrap();
