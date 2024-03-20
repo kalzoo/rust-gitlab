@@ -8,8 +8,6 @@
 pub mod client;
 
 #[cfg(not(feature = "_nohooks"))]
-mod types;
-#[cfg(not(feature = "_nohooks"))]
 mod webhooks;
 
 #[cfg(feature = "client_api")]

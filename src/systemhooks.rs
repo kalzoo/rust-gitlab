@@ -15,13 +15,13 @@
 use chrono::{DateTime, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer};
 use serde_json::{self, Value};
 
 use crate::webhooks::{CommitHookAttrs, ProjectHookAttrs};
 
 /// Events which occur at the project level.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProjectEvent {
     /// A project was created.
     #[serde(rename = "project_create")]
@@ -57,7 +57,7 @@ enum_serialize!(ProjectVisibility -> "project visibility",
 );
 
 /// A hook for a project.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ProjectSystemHook {
     /// The event which occurred.
     pub event_name: ProjectEvent,
@@ -85,7 +85,7 @@ pub struct ProjectSystemHook {
 }
 
 /// Events which occur when users are added and removed from projects.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProjectMemberEvent {
     /// A user was added to a project.
     #[serde(rename = "user_add_to_team")]
@@ -96,7 +96,7 @@ pub enum ProjectMemberEvent {
 }
 
 /// Access levels for groups and projects.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum HumanAccessLevel {
     /// Guest access (can see the project).
     Guest,
@@ -110,21 +110,8 @@ pub enum HumanAccessLevel {
     Owner,
 }
 
-#[allow(deprecated)]
-impl From<HumanAccessLevel> for crate::types::AccessLevel {
-    fn from(access: HumanAccessLevel) -> Self {
-        match access {
-            HumanAccessLevel::Guest => crate::types::AccessLevel::Guest,
-            HumanAccessLevel::Reporter => crate::types::AccessLevel::Reporter,
-            HumanAccessLevel::Developer => crate::types::AccessLevel::Developer,
-            HumanAccessLevel::Maintainer => crate::types::AccessLevel::Maintainer,
-            HumanAccessLevel::Owner => crate::types::AccessLevel::Owner,
-        }
-    }
-}
-
 /// A project membership hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ProjectMemberSystemHook {
     /// The event which occurred.
     pub event_name: ProjectMemberEvent,
@@ -155,7 +142,7 @@ pub struct ProjectMemberSystemHook {
 }
 
 /// Events which occur for user accounts.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum UserEvent {
     /// The user account was created.
     #[serde(rename = "user_create")]
@@ -166,7 +153,7 @@ pub enum UserEvent {
 }
 
 /// A user hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct UserSystemHook {
     /// The event which occurred.
     pub event_name: UserEvent,
@@ -185,7 +172,7 @@ pub struct UserSystemHook {
 }
 
 /// Events which occur for SSH keys.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum KeyEvent {
     /// An SSH key was uploaded.
     #[serde(rename = "key_create")]
@@ -196,7 +183,7 @@ pub enum KeyEvent {
 }
 
 /// An SSH key hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct KeySystemHook {
     /// The event which occurred.
     pub event_name: KeyEvent,
@@ -213,7 +200,7 @@ pub struct KeySystemHook {
 }
 
 /// Events which occur for groups.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GroupEvent {
     /// The group was created.
     #[serde(rename = "group_create")]
@@ -224,7 +211,7 @@ pub enum GroupEvent {
 }
 
 /// A group hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct GroupSystemHook {
     /// The event which occurred.
     pub event_name: GroupEvent,
@@ -245,7 +232,7 @@ pub struct GroupSystemHook {
 }
 
 /// Events which occur for group memberships.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GroupMemberEvent {
     /// A user was added to the group.
     #[serde(rename = "user_add_to_group")]
@@ -256,7 +243,7 @@ pub enum GroupMemberEvent {
 }
 
 /// A group membership hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct GroupMemberSystemHook {
     /// The event which occurred.
     pub event_name: GroupMemberEvent,
@@ -283,7 +270,7 @@ pub struct GroupMemberSystemHook {
 }
 
 /// Events which occur when a push happens.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PushEvent {
     /// A non-tag push occurred.
     #[serde(rename = "push")]
@@ -294,12 +281,10 @@ pub enum PushEvent {
 }
 
 /// A push hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PushSystemHook {
     /// The event which occurred.
     pub event_name: PushEvent,
-    /// XXX(gitlab): Bug in Gitlab; it should not send this.
-    object_kind: String,
     /// When the push occurred.
     pub created_at: DateTime<Utc>,
     /// When the push
@@ -333,7 +318,6 @@ pub struct PushSystemHook {
     pub commits: Vec<CommitHookAttrs>,
     /// The total number of commits pushed.
     pub total_commits_count: u64,
-    repository: Value,
 }
 
 /// A deserializable structure for all Gitlab system hooks.

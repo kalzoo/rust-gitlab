@@ -11,37 +11,76 @@
 //!
 //! # Example
 //! ```rust,no_run
-//! use serde::{Serialize, Deserialize};
-//! use gitlab::*;
-//! use gitlab::api::Query;
+//! use serde::Deserialize;
+//! use gitlab::Gitlab;
+//! use gitlab::api::{self, Query};
 //! use chrono::{DateTime, Utc};
 //!
-//! /// A merge request with approvals.
-//! #[derive(Serialize, Deserialize, Debug, Clone)]
+//! #[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+//! pub enum MergeRequestState {
+//!     #[serde(rename = "opened")]
+//!     Opened,
+//!     #[serde(rename = "closed")]
+//!     Closed,
+//!     #[serde(rename = "reopened")]
+//!     Reopened,
+//!     #[serde(rename = "merged")]
+//!     Merged,
+//!     #[serde(rename = "locked")]
+//!     Locked,
+//! }
+//!
+//! #[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+//! pub enum MergeStatus {
+//!     #[serde(rename = "preparing")]
+//!     Preparing,
+//!     #[serde(rename = "unchecked")]
+//!     Unchecked,
+//!     #[serde(rename = "checking")]
+//!     Checking,
+//!     #[serde(rename = "can_be_merged")]
+//!     CanBeMerged,
+//!     #[serde(rename = "cannot_be_merged")]
+//!     CannotBeMerged,
+//!     #[serde(rename = "cannot_be_merged_recheck")]
+//!     CannotBeMergedRecheck,
+//!     #[serde(rename = "cannot_be_merged_rechecking")]
+//!     CannotBeMergedRechecking,
+//! }
+//!
+//! #[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+//! pub enum UserState {
+//!     #[serde(rename = "active")]
+//!     Active,
+//!     #[serde(rename = "blocked")]
+//!     Blocked,
+//!     #[serde(rename = "ldap_blocked")]
+//!     LdapBlocked,
+//!     #[serde(rename = "deactivated")]
+//!     Deactivated,
+//! }
+//!
+//! #[derive(Deserialize, Debug, Clone)]
+//! pub struct UserBasic {
+//!     pub username: String,
+//!     pub name: String,
+//!     pub id: u64,
+//!     pub state: UserState,
+//! }
+//!
+//! #[derive(Deserialize, Debug, Clone)]
 //! pub struct MergeRequestApprovals {
-//!     /// The ID of the merge request.
-//!     pub id: MergeRequestId,
-//!     /// The user-visible ID of the merge request.
-//!     pub iid: MergeRequestInternalId,
-//!     /// The ID of the project.
-//!     pub project_id: ProjectId,
-//!     /// The title of the merge request.
+//!     pub id: u64,
+//!     pub iid: u64,
+//!     pub project_id: u64,
 //!     pub title: String,
-//!     /// The description of the merge request.
 //!     pub description: Option<String>,
-//!     /// The state of the merge request.
 //!     pub state: MergeRequestState,
-//!     /// When the merge request was created.
 //!     pub created_at: DateTime<Utc>,
-//!     /// When the merge request was last updated.
 //!     pub updated_at: DateTime<Utc>,
-//!     /// The status of the merge request.
 //!     pub merge_status: MergeStatus,
-//!     /// The total number of approvals required before the merge request can be merged.
 //!     pub approvals_required: u64,
-//!     /// The number of remaining approvals required before the merge request can be merged.
 //!     pub approvals_left: u64,
-//!     /// The users that approved the merge request.
 //!     pub approved_by: Vec<UserBasic>,
 //! }
 //! // Create the client.

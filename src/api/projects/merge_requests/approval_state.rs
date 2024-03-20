@@ -15,7 +15,26 @@
 //! use gitlab::Gitlab;
 //! use gitlab::api::{self, Query};
 //! use gitlab::api::projects::merge_requests::approval_state::MergeRequestApprovalState;
-//! use gitlab::types::UserBasic;
+//!
+//! #[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+//! enum UserState {
+//!     #[serde(rename = "active")]
+//!     Active,
+//!     #[serde(rename = "blocked")]
+//!     Blocked,
+//!     #[serde(rename = "ldap_blocked")]
+//!     LdapBlocked,
+//!     #[serde(rename = "deactivated")]
+//!     Deactivated,
+//! }
+//!
+//! #[derive(Deserialize, Debug, Clone)]
+//! struct UserBasic {
+//!     username: String,
+//!     name: String,
+//!     id: u64,
+//!     state: UserState,
+//! }
 //!
 //! // This enum describes approval rule types.
 //! #[derive(Debug, Deserialize, Clone, Copy, PartialEq, Eq)]

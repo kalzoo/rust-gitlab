@@ -4,34 +4,6 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-macro_rules! impl_id {
-    ( $name:ident, $doc:expr$(,)? ) => {
-        #[derive(
-            Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash,
-        )]
-        #[doc = $doc]
-        pub struct $name(u64);
-
-        impl $name {
-            /// Create a new id.
-            pub const fn new(id: u64) -> Self {
-                $name(id)
-            }
-
-            /// The value of the id.
-            pub const fn value(&self) -> u64 {
-                self.0
-            }
-        }
-
-        impl Display for $name {
-            fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-                write!(f, "{}", self.0)
-            }
-        }
-    };
-}
-
 macro_rules! enum_serialize {
     ( $name:ident -> $desc:expr, $( $value:ident => $str:expr $( ; $opt:expr )*, )+ ) => {
         #[allow(deprecated)]
@@ -41,15 +13,6 @@ macro_rules! enum_serialize {
                 match *self {
                     $( $name::$value => $str, )*
                 }
-            }
-        }
-
-        #[allow(deprecated)]
-        impl Serialize for $name {
-            fn serialize<S>(&self, serializer: S) -> ::std::result::Result<S::Ok, S::Error>
-                where S: Serializer,
-            {
-                serializer.serialize_str(self.as_str())
             }
         }
 

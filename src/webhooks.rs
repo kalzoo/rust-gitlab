@@ -11,15 +11,11 @@
 //! Gitlab does not have consistent structures for its hooks, so they often change from
 //! version to version.
 
-#![allow(deprecated)]
-
 use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeZone, Utc};
 use log::error;
 use serde::de::{Error, Unexpected};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer};
 use serde_json::{self, Value};
-
-use crate::types::{IssueState, MergeRequestState, MergeStatus, NoteType, NoteableId, StatusState};
 
 /// A wrapper struct for dates in web hooks.
 ///
@@ -27,12 +23,6 @@ use crate::types::{IssueState, MergeRequestState, MergeStatus, NoteType, Noteabl
 /// deserializing the formats that have been observed.
 #[derive(Debug, Clone, Copy)]
 pub struct HookDate(DateTime<Utc>);
-
-impl Serialize for HookDate {
-    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        self.0.serialize(serializer)
-    }
-}
 
 impl<'de> Deserialize<'de> for HookDate {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
@@ -66,7 +56,7 @@ impl AsRef<DateTime<Utc>> for HookDate {
 }
 
 /// Project information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ProjectHookAttrs {
     /// The display name of the project.
     pub name: String,
@@ -88,14 +78,10 @@ pub struct ProjectHookAttrs {
     pub path_with_namespace: String,
     /// The default branch for the project.
     pub default_branch: Option<String>,
-    homepage: String,
-    http_url: String,
-    ssh_url: String,
-    url: String,
 }
 
 /// Wiki project information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ProjectWikiHookAttrs {
     /// The URL for the project's homepage.
     pub web_url: String,
@@ -110,7 +96,7 @@ pub struct ProjectWikiHookAttrs {
 }
 
 /// User information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct UserHookAttrs {
     /// The name of the user.
     pub name: String,
@@ -123,7 +109,7 @@ pub struct UserHookAttrs {
 }
 
 /// The identity of a user exposed through a hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct HookCommitIdentity {
     /// The name of the author or committer.
     pub name: String,
@@ -132,7 +118,7 @@ pub struct HookCommitIdentity {
 }
 
 /// Commit information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct CommitHookAttrs {
     /// The commit's ID.
     pub id: String,
@@ -149,12 +135,10 @@ pub struct CommitHookAttrs {
 }
 
 /// A push hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PushHook {
     /// The event which occurred.
     pub object_kind: String,
-    /// XXX(gitlab): Bug in Gitlab; it should not send this.
-    event_name: String,
     /// The old object ID of the ref before the push.
     pub before: String,
     /// The new object ID of the ref after the push.
@@ -186,11 +170,10 @@ pub struct PushHook {
     pub commits: Vec<CommitHookAttrs>, // limited to 20 commits
     /// The total number of commits pushed.
     pub total_commits_count: u64,
-    repository: Value,
 }
 
 /// Actions which may occur on an issue.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IssueAction {
     /// The issue was updated.
     #[serde(rename = "update")]
@@ -206,8 +189,22 @@ pub enum IssueAction {
     Reopen,
 }
 
+/// The states an issue may be in.
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IssueState {
+    /// The issue is open.
+    #[serde(rename = "opened")]
+    Opened,
+    /// The issue has been closed.
+    #[serde(rename = "closed")]
+    Closed,
+    /// The issue has been opened after being closed.
+    #[serde(rename = "reopened")]
+    Reopened,
+}
+
 /// Issue information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct IssueHookAttrs {
     /// The ID of the issue.
     pub id: u64,
@@ -261,7 +258,7 @@ pub struct IssueHookAttrs {
 }
 
 /// An issue hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct IssueHook {
     /// The event which occurred.
     pub object_kind: String,
@@ -276,7 +273,7 @@ pub struct IssueHook {
 }
 
 /// Actions which may occur on a merge request.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MergeRequestAction {
     /// The merge request was updated.
     #[serde(rename = "update")]
@@ -308,7 +305,7 @@ pub enum MergeRequestAction {
 }
 
 /// Merge parameters for a merge request.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MergeRequestParams {
     force_remove_source_branch: Option<Value>, // sigh
 }
@@ -337,8 +334,54 @@ impl MergeRequestParams {
     }
 }
 
+/// The states a merge request may be in.
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MergeRequestState {
+    /// The merge request is open.
+    #[serde(rename = "opened")]
+    Opened,
+    /// The merge request has been closed before merging.
+    #[serde(rename = "closed")]
+    Closed,
+    /// The merge request has been opened after closing.
+    #[serde(rename = "reopened")]
+    Reopened,
+    /// The merge request has been merged.
+    #[serde(rename = "merged")]
+    Merged,
+    /// The merge request is locked from further discussion or updates.
+    #[serde(rename = "locked")]
+    Locked,
+}
+
+/// The status of the possible merge for a merge request.
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MergeStatus {
+    /// The merge request has just been created.
+    #[serde(rename = "preparing")]
+    Preparing,
+    /// The merge request has not been checked yet.
+    #[serde(rename = "unchecked")]
+    Unchecked,
+    /// The merge request is currently being checked.
+    #[serde(rename = "checking")]
+    Checking,
+    /// The merge request may be merged.
+    #[serde(rename = "can_be_merged")]
+    CanBeMerged,
+    /// The merge request may not be merged yet.
+    #[serde(rename = "cannot_be_merged")]
+    CannotBeMerged,
+    /// The merge request has not been checked but previously could not be merged.
+    #[serde(rename = "cannot_be_merged_recheck")]
+    CannotBeMergedRecheck,
+    /// The merge request could not be merged previously, but is being rechecked.
+    #[serde(rename = "cannot_be_merged_rechecking")]
+    CannotBeMergedRechecking,
+}
+
 /// Merge request information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MergeRequestHookAttrs {
     /// The source project of the merge request.
     ///
@@ -413,11 +456,10 @@ pub struct MergeRequestHookAttrs {
     /// The type of action which caused the hook.
     pub action: Option<MergeRequestAction>,
     pub time_estimate: u64,
-    lock_version: Option<u64>,
 }
 
 /// A merge request hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MergeRequestHook {
     /// The event which occurred.
     pub object_kind: String,
@@ -429,14 +471,13 @@ pub struct MergeRequestHook {
     pub object_attributes: MergeRequestHookAttrs,
     /// The assignee of the merge request.
     pub assignee: Option<UserHookAttrs>,
-    repository: Value,
 
     /// Details about the changes on the MR
     pub changes: Option<MergeRequestChanges>,
 }
 
 /// MR Changes
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MergeRequestChanges {
     pub title: Option<MergeRequestChange<String>>,
     pub updated_at: Option<MergeRequestChange<String>>,
@@ -444,14 +485,14 @@ pub struct MergeRequestChanges {
     pub merge_commit_sha: Option<MergeRequestChange<Option<String>>>,
 }
 /// A MR change
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MergeRequestChange<T> {
     pub previous: T,
     pub current: T,
 }
 
 /// The type of a snippet.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SnippetType {
     /// A project-owned snippet.
     #[serde(rename = "ProjectSnippet")]
@@ -462,7 +503,7 @@ pub enum SnippetType {
 }
 
 /// Snippet information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct SnippetHookAttrs {
     /// The title of the snippet.
     pub title: String,
@@ -486,7 +527,7 @@ pub struct SnippetHookAttrs {
 }
 
 /// Actions which may occur on a wiki page.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WikiPageAction {
     /// A wiki page was created.
     #[serde(rename = "create")]
@@ -497,7 +538,7 @@ pub enum WikiPageAction {
 }
 
 /// Wiki information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct WikiPageHookAttrs {
     /// The title of the wiki page.
     pub title: String,
@@ -515,7 +556,7 @@ pub struct WikiPageHookAttrs {
 }
 
 /// Diff information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct DiffHookAttrs {
     pub diff: String,
     /// The path on the new side of the diff.
@@ -536,7 +577,7 @@ pub struct DiffHookAttrs {
     pub too_large: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 // FIXME(gitlab#21467): This can apparently be a string sometimes.
 // https://gitlab.com/gitlab-org/gitlab-ce/issues/21467
 pub struct PositionHookAttrs {
@@ -551,8 +592,34 @@ pub struct PositionHookAttrs {
     pub new_path: String,
 }
 
+/// The entities a note may be added to.
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NoteType {
+    /// A note on a commit.
+    Commit,
+    /// A note on an issue.
+    Issue,
+    /// A note on a merge request.
+    MergeRequest,
+    /// A note on a snippet.
+    Snippet,
+}
+
+/// The ID of an entity a note is attached to.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum NoteableId {
+    /// The ID of the commit for a commit note.
+    Commit(String),
+    /// The ID of the issue for an issue note.
+    Issue(u64),
+    /// The ID of the merge request for a merge request note.
+    MergeRequest(u64),
+    /// The ID of the snippet for a snippet note.
+    Snippet(u64),
+}
+
 /// Note (comment) information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct NoteHookAttrs {
     /// The ID of the note.
     pub id: u64,
@@ -561,9 +628,7 @@ pub struct NoteHookAttrs {
     /// The type of entity the note is attached to.
     pub noteable_type: NoteType,
     // pub original_position: Option<PositionHookAttrs>,
-    original_position: Value,
     // pub position: Option<PositionHookAttrs>,
-    position: Value,
     /// The author of the note.
     pub author_id: u64,
     /// When the note was created.
@@ -605,29 +670,17 @@ impl NoteHookAttrs {
             NoteType::Commit => {
                 self.noteable_id
                     .as_str()
-                    .map(|id| NoteableId::Commit(crate::types::ObjectId::new(id)))
+                    .map(|id| NoteableId::Commit(id.into()))
             },
-            NoteType::Issue => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::Issue(crate::types::IssueId::new(id)))
-            },
-            NoteType::MergeRequest => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::MergeRequest(crate::types::MergeRequestId::new(id)))
-            },
-            NoteType::Snippet => {
-                self.noteable_id
-                    .as_u64()
-                    .map(|id| NoteableId::Snippet(crate::types::SnippetId::new(id)))
-            },
+            NoteType::Issue => self.noteable_id.as_u64().map(NoteableId::Issue),
+            NoteType::MergeRequest => self.noteable_id.as_u64().map(NoteableId::MergeRequest),
+            NoteType::Snippet => self.noteable_id.as_u64().map(NoteableId::Snippet),
         }
     }
 }
 
 /// A note hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct NoteHook {
     /// The event which occurred.
     pub object_kind: String,
@@ -647,11 +700,10 @@ pub struct NoteHook {
     pub merge_request: Option<MergeRequestHookAttrs>,
     /// The snippet the note is associated with (for snippet notes).
     pub snippet: Option<SnippetHookAttrs>,
-    repository: Value,
 }
 
 /// Build user information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct BuildUserHookAttrs {
     /// The ID of the user.
     pub id: Option<u64>,
@@ -662,7 +714,7 @@ pub struct BuildUserHookAttrs {
 }
 
 /// Build commit information exposed in hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct BuildCommitHookAttrs {
     pub id: String,
     /// The object ID of the commit.
@@ -682,7 +734,7 @@ pub struct BuildCommitHookAttrs {
 }
 
 /// Project information exposed in build hooks.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct BuildProjectHookAttrs {
     /// The display name of the project.
     pub name: String,
@@ -699,7 +751,7 @@ pub struct BuildProjectHookAttrs {
 }
 
 /// A build hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct BuildHook {
     /// The event which occurred.
     pub object_kind: String,
@@ -732,7 +784,7 @@ pub struct BuildHook {
     pub repository: BuildProjectHookAttrs,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineVariable {
     /// Environment variable key
     pub key: String,
@@ -740,7 +792,45 @@ pub struct PipelineVariable {
     pub value: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+/// States for commit statuses.
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StatusState {
+    /// The check was created.
+    #[serde(rename = "created")]
+    Created,
+    /// The check is waiting for some other resource.
+    #[serde(rename = "waiting_for_resource")]
+    WaitingForResource,
+    /// The check is currently being prepared.
+    #[serde(rename = "preparing")]
+    Preparing,
+    /// The check is queued.
+    #[serde(rename = "pending")]
+    Pending,
+    /// The check is currently running.
+    #[serde(rename = "running")]
+    Running,
+    /// The check succeeded.
+    #[serde(rename = "success")]
+    Success,
+    /// The check failed.
+    #[serde(rename = "failed")]
+    Failed,
+    /// The check was canceled.
+    #[serde(rename = "canceled")]
+    Canceled,
+    /// The check was skipped.
+    #[serde(rename = "skipped")]
+    Skipped,
+    /// The check is waiting for manual action.
+    #[serde(rename = "manual")]
+    Manual,
+    /// The check is scheduled to run at some point in time.
+    #[serde(rename = "scheduled")]
+    Scheduled,
+}
+
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineHookAttrs {
     pub id: u64,
     /// The object ID that was tested.
@@ -767,7 +857,7 @@ pub struct PipelineHookAttrs {
     pub variables: Vec<PipelineVariable>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineBuildRunner {
     /// The runner id.
     pub id: u64,
@@ -779,7 +869,7 @@ pub struct PipelineBuildRunner {
     pub is_shared: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineMergeRequestAttrs {
     pub id: u64,
     pub iid: u64,
@@ -798,7 +888,7 @@ pub struct PipelineMergeRequestAttrs {
     pub url: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineProjectAttrs {
     pub id: u64,
     /// The display name of the project.
@@ -825,7 +915,7 @@ pub struct PipelineProjectAttrs {
     pub ci_config_path: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct PipelineHook {
     /// The event which occured.
     pub object_kind: String,
@@ -842,7 +932,7 @@ pub struct PipelineHook {
 }
 
 /// A wiki page hook.
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct WikiPageHook {
     /// The event which occurred.
     pub object_kind: String,
