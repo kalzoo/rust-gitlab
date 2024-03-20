@@ -1,4 +1,4 @@
-# v0.1609.2 (unreleased)
+# v0.1609.2
 
 ## Additions
 
