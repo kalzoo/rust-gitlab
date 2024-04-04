@@ -64,8 +64,8 @@ void = { version = "^1.0.1", optional = true }
 openssl = { version = "~0.10.60", optional = true }
 # Required to avoid `remove_dir_all` dependency.
 tempfile = { version = "^3.4.0", optional = true }
-# Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0003
-h2 = { version = "0.3.24", optional = true }
+# Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0332
+h2 = { version = "0.3.26", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0045
 memoffset = { version = "0.6.2", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0019
