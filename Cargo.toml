@@ -37,7 +37,7 @@ _nohooks = []
 base64 = "~0.13"
 cron = { version = "~0.12", optional = true }
 derive_builder = "~0.11.2"
-itertools = { version = "~0.10", optional = true }
+itertools = { version = "~0.12", optional = true }
 log = "~0.4.6"
 percent-encoding = { version = "^2.0", optional = true }
 reqwest = { version = "~0.11.19", features = ["blocking", "json"], default-features = false, optional = true }
@@ -76,5 +76,5 @@ rustls-webpki = { version = "0.101.4", optional = true }
 rustls = { version = "0.21.11", optional = true }
 
 [dev-dependencies]
-itertools = { version = "~0.10" }
+itertools = { version = "~0.12" }
 tokio = { version = "1.18.5", features = ["macros", "rt-multi-thread"] }
