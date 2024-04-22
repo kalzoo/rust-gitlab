@@ -1,3 +1,9 @@
+# v0.1610.1 (unreleased)
+
+## Breaking changes
+
+  * GraphQL support has been updated to use `graphql_client` 0.14.
+
 # v0.1610.0
 
 ## Additions
