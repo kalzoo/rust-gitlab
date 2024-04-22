@@ -34,7 +34,7 @@ minimal_versions = ["void", "openssl", "tempfile", "h2", "memoffset", "mio", "ru
 _nohooks = []
 
 [dependencies]
-base64 = "~0.13"
+base64 = "~0.22"
 cron = { version = "~0.12", optional = true }
 derive_builder = "~0.11.2"
 itertools = { version = "~0.12", optional = true }

@@ -6,6 +6,7 @@
 
 use std::str;
 
+use base64::Engine;
 use derive_builder::Builder;
 use log::warn;
 
@@ -52,7 +53,10 @@ impl Encoding {
                     panic!("attempting to encode non-utf8 content using text!");
                 }
             },
-            Encoding::Base64 => base64::encode(content).into(),
+            Encoding::Base64 => {
+                let engine = base64::engine::general_purpose::STANDARD;
+                engine.encode(content).into()
+            },
         }
     }
 
