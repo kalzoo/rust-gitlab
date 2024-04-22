@@ -36,7 +36,7 @@ _nohooks = []
 [dependencies]
 base64 = "~0.22"
 cron = { version = "~0.12", optional = true }
-derive_builder = "~0.11.2"
+derive_builder = "~0.20"
 itertools = { version = "~0.12", optional = true }
 log = "~0.4.6"
 percent-encoding = { version = "^2.0", optional = true }
