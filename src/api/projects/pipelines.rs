@@ -15,6 +15,7 @@ mod jobs;
 mod pipeline;
 mod pipelines;
 mod retry;
+mod test_report;
 mod variables;
 
 pub use self::cancel::CancelPipeline;
