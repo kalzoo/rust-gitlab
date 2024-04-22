@@ -28,7 +28,7 @@ client_api = [
 ]
 client_der = ["reqwest/native-tls", "client_api"]
 client_pem = ["reqwest/rustls-tls", "client_api"]
-minimal_versions = ["void", "openssl", "tempfile", "h2", "mio", "rustls", "bumpalo", "combine"]
+minimal_versions = ["void", "openssl", "tempfile", "mio", "rustls", "bumpalo", "combine"]
 # This feature is here to aid with `semver-checks` by hiding the known-unstable
 # parts of the crate.
 _nohooks = []
@@ -40,7 +40,7 @@ derive_builder = "~0.20"
 itertools = { version = "~0.12", optional = true }
 log = "~0.4.6"
 percent-encoding = { version = "^2.0", optional = true }
-reqwest = { version = "~0.11.19", features = ["blocking", "json"], default-features = false, optional = true }
+reqwest = { version = "~0.12", features = ["blocking", "json"], default-features = false, optional = true }
 thiserror = { version = "^1.0.2", optional = true }
 async-trait = { version = "~0.1.9", optional = true }
 futures-util = { version = "0.3.14", default-features = false, optional = true }
@@ -48,7 +48,7 @@ futures-util = { version = "0.3.14", default-features = false, optional = true }
 bytes = "^1.0"
 chrono = { version = "~0.4.23", default-features = false, features = ["clock", "serde"] }
 graphql_client = { version = "~0.14", optional = true }
-http = "~0.2.5"
+http = "^1"
 serde = { version = "~1.0.103", features = ["derive"] }
 serde_json = "^1.0.70"
 serde_urlencoded = "~0.7"
@@ -64,12 +64,10 @@ void = { version = "^1.0.1", optional = true }
 openssl = { version = "~0.10.60", optional = true }
 # Required to avoid `remove_dir_all` dependency.
 tempfile = { version = "^3.4.0", optional = true }
-# Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0332
-h2 = { version = "0.3.26", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0019
 mio = { version = "0.8.11", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2024-0336
-rustls = { version = "0.21.11", optional = true }
+rustls = { version = "0.22.4", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2022-0078
 bumpalo = { version = "3.11.1", optional = true }
 # Required to avoid https://rustsec.org/advisories/RUSTSEC-2023-0015
