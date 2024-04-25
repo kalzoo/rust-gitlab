@@ -5,6 +5,9 @@
   * GraphQL support has been updated to use `graphql_client` 0.14.
   * The `http` crate has been updated to 1.x.
 
+## Additions
+  * Add `api::projects::repository::commits::refs` endpoint
+
 # v0.1610.0
 
 ## Additions

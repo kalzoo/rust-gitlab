@@ -192,6 +192,7 @@ These API endpoints have been implemented.
   * `GET    /projects/:project/repository/commits` `projects/repository/commits/commits.rs`
   * `POST   /projects/:project/repository/commits` `projects/repository/commits/create.rs`
   * `GET    /projects/:project/repository/commits/:sha` `projects/repository/commits/commit.rs`
+  * `GET    /projects/:project/repository/commits/:sha/refs` `projects/repository/commits/refs.rs`
   * `GET    /projects/:project/repository/commits/:sha/comments` `projects/repository/commits/comments.rs`
   * `POST   /projects/:project/repository/commits/:sha/comments` `projects/repository/commits/comment.rs`
   * `GET    /projects/:project/repository/commits/:sha/merge_requests` `projects/repository/commits/merge_requests.rs`
@@ -449,7 +450,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/repository/commits/:sha/cherry_pick` https://gitlab.kitware.com/help/api/commits.md#cherry-pick-a-commit
   * `GET    /projects/:project/repository/commits/:sha/diff` https://gitlab.kitware.com/help/api/commits.md#get-the-diff-of-a-commit
   * `GET    /projects/:project/repository/commits/:sha/discussions` https://gitlab.kitware.com/help/api/commits.md#get-the-discussions-of-a-commit
-  * `GET    /projects/:project/repository/commits/:sha/refs` https://gitlab.kitware.com/help/api/commits.md#get-references-a-commit-is-pushed-to
   * `POST   /projects/:project/repository/commits/:sha/revert` https://gitlab.kitware.com/help/api/commits.md#revert-a-commit
   * `GET    /projects/:project/repository/compare` https://gitlab.kitware.com/help/api/repositories.md#compare-branches-tags-or-commits
   * `GET    /projects/:project/repository/contributors` https://gitlab.kitware.com/help/api/repositories.md#contributors
