@@ -15,6 +15,7 @@ mod commits;
 mod create;
 mod create_status;
 mod merge_requests;
+mod refs;
 mod signature;
 mod statuses;
 
@@ -48,6 +49,11 @@ pub use self::create_status::CommitStatusState;
 pub use self::create_status::CreateCommitStatus;
 pub use self::create_status::CreateCommitStatusBuilder;
 pub use self::create_status::CreateCommitStatusBuilderError;
+
+pub use self::refs::CommitReferences;
+pub use self::refs::CommitReferencesBuilder;
+pub use self::refs::CommitReferencesBuilderError;
+pub use self::refs::CommitRefsType;
 
 pub use self::statuses::CommitStatuses;
 pub use self::statuses::CommitStatusesBuilder;
