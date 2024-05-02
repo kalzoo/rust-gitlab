@@ -24,13 +24,6 @@ stages:
     extends: .rust_minimum_mindeps
     image: "rust:1.64"
 
-.rust_minimum:
-    image: "rust:1.63"
-
-    variables:
-        CARGO_UPDATE_POLICY: newest
-        GIT_CLONE_PATH: $CI_BUILDS_DIR/rust
-
 .rust_stable:
     image: "rust:latest"
 
@@ -148,32 +141,6 @@ audit-newest:build:
     needs:
         - cache-newest:prep
 
-minimum:build:
-    extends:
-        - .rust_minimum
-        - .cargo_no_features
-        - .cargo_build_job
-        - .cargo_build_tags
-        - .cargo_build_artifacts
-        - .run_automatically
-    dependencies:
-        - cache-newest:prep
-    needs:
-        - cache-newest:prep
-
-minimum:test:
-    extends:
-        - .rust_minimum
-        - .cargo_no_features
-        - .cargo_test_job
-        - .cargo_build_tags
-        - .cargo_test_artifacts
-        - .run_automatically
-    dependencies:
-        - minimum:build
-    needs:
-        - minimum:build
-
 stable:build:
     extends:
         - .rust_stable
@@ -251,32 +218,6 @@ mindeps:test:
         - mindeps:build
     needs:
         - mindeps:build
-
-minimum-features:build:
-    extends:
-        - .rust_minimum
-        - .cargo_all_features
-        - .cargo_build_job
-        - .cargo_build_tags
-        - .cargo_build_artifacts
-        - .run_automatically
-    dependencies:
-        - cache-newest:prep
-    needs:
-        - cache-newest:prep
-
-minimum-features:test:
-    extends:
-        - .rust_minimum
-        - .cargo_all_features
-        - .cargo_test_job
-        - .cargo_build_tags
-        - .cargo_test_artifacts
-        - .run_automatically
-    dependencies:
-        - minimum-features:build
-    needs:
-        - minimum-features:build
 
 stable-features:build:
     extends:
@@ -395,8 +336,6 @@ publish:
         - clippy-features:build
         - mindeps:test
         - mindeps-features:test
-        - minimum:test
-        - minimum-features:test
         - nightly:test
         - nightly-features:test
         - stable:test
