@@ -7,6 +7,7 @@
 
 ## Additions
   * Add `api::projects::repository::commits::refs` endpoint
+  * Add `api::pipelines::PipelineTestReport` endpoint
 
 # v0.1610.0
 
