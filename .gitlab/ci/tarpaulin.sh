@@ -2,8 +2,8 @@
 
 set -e
 
-readonly version="0.25.0"
-readonly sha256sum="e6ae2d11e684ee20f3860b1833de6fcb6ac44db5fc49a82a179bb969924870f3"
+readonly version="0.29.1"
+readonly sha256sum="be2be986abde1f7b9544f217acce4d1699a04bc3b09e17c05b3fbd239d52456a"
 readonly filename="cargo-tarpaulin-x86_64-unknown-linux-musl"
 readonly tarball="$filename.tar.gz"
 
