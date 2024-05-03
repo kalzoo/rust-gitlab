@@ -2,8 +2,8 @@
 
 set -e
 
-readonly version="0.16.0"
-readonly sha256sum="c8abe5afdba8fc206dcd1d18a6b3ba68378e07172ecbfe66576672d247eeb794"
+readonly version="0.20.0"
+readonly sha256sum="c8bb83967f74734a5a4b23b0136c26db3fcc81570eb389cffda4d67ea6d8ad9a"
 readonly basename="cargo-audit-x86_64-unknown-linux-musl-v$version"
 readonly filename="$basename.tgz"
 

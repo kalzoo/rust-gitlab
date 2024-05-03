@@ -2,8 +2,8 @@
 
 set -e
 
-readonly version="0.30.0"
-readonly sha256sum="cf85eb70bd07db1650a4d2938db4aeac4273c30f255bf42797353515d7643414"
+readonly version="0.31.0"
+readonly sha256sum="4b40df7c8877451b3c31d33399f54bc1d988cad3a2712764ce632a7425cc57df"
 readonly filename="cargo-semver-checks-x86_64-unknown-linux-musl.tar.gz"
 
 cd .gitlab
