@@ -2,8 +2,8 @@
 
 set -e
 
-readonly version="0.9.53"
-readonly sha256sum="b07def6a5e5521481eb5853e5f17650be406ce8c57ce917a90d2866c788e5967"
+readonly version="0.9.70"
+readonly sha256sum="c2d76b2608ce7c92d95aa016889498f273ecacbb3fcffb83db3385f643aa1a9a"
 readonly filename="x86_64-unknown-linux-gnu.tar.gz"
 
 cd .gitlab
