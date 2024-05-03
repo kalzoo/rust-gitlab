@@ -124,12 +124,6 @@ mod tests {
         }
     }
 
-    #[derive(Debug)]
-    struct DummyResult {
-        #[allow(dead_code)]
-        value: u8,
-    }
-
     #[test]
     fn test_gitlab_non_json_response() {
         let endpoint = ExpectedUrl::builder().endpoint("dummy").build().unwrap();
