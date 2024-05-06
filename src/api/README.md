@@ -161,6 +161,7 @@ These API endpoints have been implemented.
   * `POST   /projects/:project/pipelines/:pipeline/retry` `projects/pipelines/retry.rs`
   * `GET    /projects/:project/pipelines/:pipeline/variables` `projects/pipelines/variables.rs`
   * `GET    /projects/:project/pipelines/:pipeline/test_report` `projects/pipelines/test_report.rs`
+  * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` `projects/pipelines/test_report_summary.rs`
   * `GET    /projects/:project/pipeline_schedules` `projects/pipeline_schedules/schedules.rs`
   * `POST   /projects/:project/pipeline_schedules` `projects/pipeline_schedules/create.rs`
   * `GET    /projects/:project/pipeline_schedules/:id` `projects/pipeline_schedules/schedule.rs`
@@ -442,7 +443,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /projects/:project/pipeline/latest` https://gitlab.kitware.com/help/api/pipelines.md#get-the-latest-pipeline
   * `GET    /projects/:project/pipelines/:pipeline/bridges` https://gitlab.kitware.com/help/api/pipelines.md#list-pipeline-bridges
   * `PUT    /projects/:project/pipelines/:pipeline/metadata` https://gitlab.kitware.com/help/api/pipelines.md#update-pipeline-metadata
-  * `GET    /projects/:project/pipelines/:pipeline/test_report_summary` https://gitlab.kitware.com/help/api/pipelines.md#get-a-pipelines-test-report-summary
   * `GET    /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#get-project-push-rules
   * `POST   /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#add-project-push-rule
   * `DELETE /projects/:project/push_rule` https://gitlab.kitware.com/help/api/projects.md#delete-project-push-rule
