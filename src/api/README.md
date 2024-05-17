@@ -39,6 +39,13 @@ These API endpoints have been implemented.
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
   * `GET    /job` `job/job.rs`
+  * `GET    /personal_access_tokens` `personal_access_tokens/personal_access_tokens.rs`
+  * `GET    /personal_access_tokens/:token` `personal_access_tokens/personal_access_token.rs`
+  * `DELETE /personal_access_tokens/:token` `personal_access_tokens/revoke.rs`
+  * `POST   /personal_access_tokens/:token/rotate` `personal_access_tokens/rotate.rs`
+  * `GET    /personal_access_tokens/self` `personal_access_tokens/personal_access_token_self.rs`
+  * `DELETE /personal_access_tokens/self` `personal_access_tokens/revoke_self.rs`
+  * `POST   /personal_access_tokens/self/rotate` `personal_access_tokens/rotate_self.rs`
   * `GET    /projects` `projects/projects.rs`
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
@@ -234,11 +241,13 @@ These API endpoints have been implemented.
   * `GET    /user` `users/current_user.rs`
   * `GET    /users` `users/users.rs`
   * `POST   /users` `users/create.rs`
+  * `POST   /users/personal_access_tokens` `users/personal_access_tokens/create.rs`
   * `GET    /users/:user` `users/user.rs`
   * `GET    /users/:user/impersonation_tokens` `users/impersonation_tokens/impersonation_tokens.rs`
   * `POST   /users/:user/impersonation_tokens` `users/impersonation_tokens/create.rs`
   * `GET    /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/impersonation_token.rs`
   * `DELETE /users/:user/impersonation_tokens/:impersonation_token` `users/impersonation_tokens/delete.rs`
+  * `POST   /users/:user/personal_access_tokens` `users/personal_access_tokens/create_for_user.rs`
   * `GET    /users/:user/projects` `users/projects/projects.rs`
 
 # Todo
@@ -541,7 +550,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /users/:user/keys` https://gitlab.kitware.com/help/api/users.md#add-ssh-key-for-user
   * `DELETE /users/:user/keys/:key` https://gitlab.kitware.com/help/api/users.md#delete-ssh-key-for-given-user
   * `GET    /users/:user/memberships` https://gitlab.kitware.com/help/api/users.md#user-memberships-admin-only
-  * `POST   /users/:user/personal_access_tokens` https://gitlab.kitware.com/help/api/users.md#create-a-personal-access-token
   * `GET    /users/:user/project_deploy_keys` https://gitlab.kitware.com/help/api/deploy_keys.md#list-project-deploy-keys-for-user
   * `POST   /users/:user/reject` https://gitlab.kitware.com/help/api/users.md#reject-user
   * `GET    /users/:user/starred_projects` https://gitlab.kitware.com/help/api/projects.md#list-projects-starred-by-a-user
@@ -644,7 +652,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/packages/debian.md
   * https://gitlab.kitware.com/help/api/pages.md
   * https://gitlab.kitware.com/help/api/pages_domains.md
-  * https://gitlab.kitware.com/help/api/personal_access_tokens.md
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
   * https://gitlab.kitware.com/help/api/product_analytics.md

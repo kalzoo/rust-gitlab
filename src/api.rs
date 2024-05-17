@@ -75,6 +75,7 @@ pub mod groups;
 pub mod issues;
 pub mod job;
 pub mod packages;
+pub mod personal_access_tokens;
 pub mod projects;
 pub mod retry;
 pub mod runners;
