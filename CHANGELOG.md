@@ -1,3 +1,10 @@
+# v0.1611.1 (unreleased)
+
+## Additions
+
+  * Add `api::users::CreatePersonalAccessToken` endpoint
+  * Add `api::users::CreatePersonalAccessTokenForUser` endpoint
+
 # v0.1611.0
 
 ## Breaking changes

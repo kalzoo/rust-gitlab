@@ -13,6 +13,7 @@
 mod create;
 mod current_user;
 pub mod impersonation_tokens;
+pub mod personal_access_tokens;
 mod projects;
 mod user;
 mod users;
