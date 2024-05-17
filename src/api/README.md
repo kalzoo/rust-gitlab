@@ -315,6 +315,13 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
+  * `GET    /personal_access_tokens` https://gitlab.kitware.com/help/api/personal_access_tokens.md#list-personal-access-tokens
+  * `GET    /personal_access_tokens/:token` https://gitlab.kitware.com/help/api/personal_access_tokens.md#get-single-personal-access-token
+  * `DELETE /personal_access_tokens/:token` https://gitlab.kitware.com/help/api/personal_access_tokens.md#revoke-a-personal-access-token
+  * `POST   /personal_access_tokens/:token/rotate` https://gitlab.kitware.com/help/api/personal_access_tokens.md#rotate-a-personal-access-token
+  * `GET    /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#get-single-personal-access-token
+  * `DELETE /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#revoke-a-personal-access-token
+  * `POST   /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#rotate-a-personal-access-token
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
@@ -644,7 +651,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/packages/debian.md
   * https://gitlab.kitware.com/help/api/pages.md
   * https://gitlab.kitware.com/help/api/pages_domains.md
-  * https://gitlab.kitware.com/help/api/personal_access_tokens.md
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
   * https://gitlab.kitware.com/help/api/product_analytics.md
