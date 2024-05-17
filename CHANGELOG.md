@@ -4,6 +4,13 @@
 
   * Add `api::users::CreatePersonalAccessToken` endpoint
   * Add `api::users::CreatePersonalAccessTokenForUser` endpoint
+  * Add `api::personal_access_tokens::PersonalAccessToken` endpoint
+  * Add `api::personal_access_tokens::PersonalAccessTokenSelf` endpoint
+  * Add `api::personal_access_tokens::PersonalAccessTokens` endpoint
+  * Add `api::personal_access_tokens::RevokePersonalAccessToken` endpoint
+  * Add `api::personal_access_tokens::RevokePersonalAccessTokenSelf` endpoint
+  * Add `api::personal_access_tokens::RotatePersonalAccessToken` endpoint
+  * Add `api::personal_access_tokens::RotatePersonalAccessTokenSelf` endpoint
 
 # v0.1611.0
 

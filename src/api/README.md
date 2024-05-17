@@ -39,6 +39,13 @@ These API endpoints have been implemented.
   * `DELETE /groups/:group/share/:group2` `groups/unshare.rs`
   * `GET    /groups/:group/subgroups` `groups/subgroups/subgroups.rs`
   * `GET    /job` `job/job.rs`
+  * `GET    /personal_access_tokens` `personal_access_tokens/personal_access_tokens.rs`
+  * `GET    /personal_access_tokens/:token` `personal_access_tokens/personal_access_token.rs`
+  * `DELETE /personal_access_tokens/:token` `personal_access_tokens/revoke.rs`
+  * `POST   /personal_access_tokens/:token/rotate` `personal_access_tokens/rotate.rs`
+  * `GET    /personal_access_tokens/self` `personal_access_tokens/personal_access_token_self.rs`
+  * `DELETE /personal_access_tokens/self` `personal_access_tokens/revoke_self.rs`
+  * `POST   /personal_access_tokens/self/rotate` `personal_access_tokens/rotate_self.rs`
   * `GET    /projects` `projects/projects.rs`
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
@@ -317,13 +324,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
-  * `GET    /personal_access_tokens` https://gitlab.kitware.com/help/api/personal_access_tokens.md#list-personal-access-tokens
-  * `GET    /personal_access_tokens/:token` https://gitlab.kitware.com/help/api/personal_access_tokens.md#get-single-personal-access-token
-  * `DELETE /personal_access_tokens/:token` https://gitlab.kitware.com/help/api/personal_access_tokens.md#revoke-a-personal-access-token
-  * `POST   /personal_access_tokens/:token/rotate` https://gitlab.kitware.com/help/api/personal_access_tokens.md#rotate-a-personal-access-token
-  * `GET    /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#get-single-personal-access-token
-  * `DELETE /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#revoke-a-personal-access-token
-  * `POST   /personal_access_tokens/self` https://gitlab.kitware.com/help/api/personal_access_tokens.md#rotate-a-personal-access-token
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
