@@ -13,7 +13,7 @@ use crate::api::endpoint_prelude::*;
 pub struct ImpersonationToken {
     /// The user to create an impersonation token for.
     user: u64,
-    /// The name of the impersonation token.
+    /// The ID of the impersonation token.
     token_id: u64,
 }
 

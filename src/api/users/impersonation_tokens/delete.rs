@@ -8,7 +8,7 @@ use derive_builder::Builder;
 
 use crate::api::endpoint_prelude::*;
 
-/// Delete an impersonation_token.
+/// Delete an impersonation token.
 #[derive(Debug, Builder, Clone)]
 pub struct DeleteImpersonationToken {
     /// The user to delete an impersonation token of.
