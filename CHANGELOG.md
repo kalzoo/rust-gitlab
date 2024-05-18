@@ -1,3 +1,10 @@
+# v0.1611.2 (unreleased)
+
+## Additions
+
+  * Actually build the
+    `/project/:project/issues/:issue_iid/related_merge_requests` endpoint.
+
 # v0.1611.1
 
 ## Additions
