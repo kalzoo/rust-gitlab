@@ -5,6 +5,12 @@
   * Actually build the
     `/project/:project/issues/:issue_iid/related_merge_requests` endpoint.
 
+## Breaking changes
+
+  * `api::users::CreatePersonalAccessToken` now uses
+    `PersonalAccessTokenCreateScope` as this endpoint is actually quite limited
+    compared to the `CreatePersonalAccessTokenForUser` endpoint.
+
 # v0.1611.1
 
 ## Additions
