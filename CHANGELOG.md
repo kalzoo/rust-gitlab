@@ -4,6 +4,7 @@
 
   * Actually build the
     `/project/:project/issues/:issue_iid/related_merge_requests` endpoint.
+  * Add `api::pipelines::PipelineTestReportSummary` endpoint
 
 ## Breaking changes
 

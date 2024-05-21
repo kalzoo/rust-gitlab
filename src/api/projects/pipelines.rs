@@ -16,6 +16,7 @@ mod pipeline;
 mod pipelines;
 mod retry;
 mod test_report;
+mod test_report_summary;
 mod variables;
 
 pub use self::cancel::CancelPipeline;
@@ -61,3 +62,7 @@ pub use self::variables::PipelineVariablesBuilderError;
 pub use self::test_report::PipelineTestReport;
 pub use self::test_report::PipelineTestReportBuilder;
 pub use self::test_report::PipelineTestReportBuilderError;
+
+pub use self::test_report_summary::PipelineTestReportSummary;
+pub use self::test_report_summary::PipelineTestReportSummaryBuilder;
+pub use self::test_report_summary::PipelineTestReportSummaryBuilderError;
