@@ -15,6 +15,7 @@ mod issue;
 mod issues;
 mod merge_requests_closing;
 pub mod notes;
+mod related_merge_requests;
 mod resource_label_events;
 
 pub use self::create::CreateIssue;
@@ -44,6 +45,10 @@ pub use self::issues::IssuesBuilderError;
 pub use self::merge_requests_closing::MergeRequestsClosing;
 pub use self::merge_requests_closing::MergeRequestsClosingBuilder;
 pub use self::merge_requests_closing::MergeRequestsClosingBuilderError;
+
+pub use self::related_merge_requests::RelatedMergeRequests;
+pub use self::related_merge_requests::RelatedMergeRequestsBuilder;
+pub use self::related_merge_requests::RelatedMergeRequestsBuilderError;
 
 pub use self::resource_label_events::IssueResourceLabelEvents;
 pub use self::resource_label_events::IssueResourceLabelEventsBuilder;
