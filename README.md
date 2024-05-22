@@ -36,6 +36,7 @@ to a given version).
 Since this crate follows Gitlab upstream, semantic versioning may not be
 possible. Instead, the crate uses the following versioning scheme:
 
+  * Gitlab 17.0 support → 0.1700.x
   * Gitlab 16.11 support → 0.1611.x
   * Gitlab 16.10 support → 0.1610.x
   * Gitlab 16.9 support → 0.1609.x
@@ -130,7 +131,7 @@ coverage. It is recommended to depend on the full version of the crate since
 types may change in patch-level updates in order to match Gitlab's interface:
 
 ```toml
-gitlab = "=0.1611.2"
+gitlab = "=0.1700.1"
 ```
 
 # API bugs
