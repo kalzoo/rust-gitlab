@@ -1,3 +1,13 @@
+# v0.1611.3 (unreleased)
+
+## Additions
+
+  * Add `api::projects::access_tokens::CreateProjectAccessToken` endpoint
+  * Add `api::projects::access_tokens::ProjectAccessToken` endpoint
+  * Add `api::projects::access_tokens::ProjectAccessTokens` endpoint
+  * Add `api::projects::access_tokens::RevokeProjectAccessToken` endpoint
+  * Add `api::projects::access_tokens::RotateProjectAccessToken` endpoint
+
 # v0.1611.2
 
 ## Additions
