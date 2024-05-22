@@ -50,6 +50,11 @@ These API endpoints have been implemented.
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
   * `PUT    /projects/:project` `projects/edit.rs`
+  * `GET    /projects/:project/access_tokens` `projects/access_tokens/access_tokens.rs`
+  * `POST   /projects/:project/access_tokens` `projects/access_tokens/create.rs`
+  * `GET    /projects/:project/access_tokens/:token` `projects/access_tokens/access_token.rs`
+  * `DELETE /projects/:project/access_tokens/:token` `projects/access_tokens/revoke.rs`
+  * `POST   /prgjects/:project/access_tokens/rotate` `projects/access_tokens/rotate.rs`
   * `GET    /projects/:project/access_requests` `projects/access_requests/access_requests.rs`
   * `POST   /projects/:project/access_requests` `projects/access_requests/request.rs`
     This should be a `POST` action `POST /projects/:project/access_requests/:user_id/approve`.
@@ -326,11 +331,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
-  * `GET    /projects/:project/access_tokens` https://gitlab.kitware.com/help/api/project_access_tokens.md#list-project-access-tokens
-  * `POST   /projects/:project/access_tokens` https://gitlab.kitware.com/help/api/project_access_tokens.md#create-a-project-access-token
-  * `GET    /projects/:project/access_tokens/:token` https://gitlab.kitware.com/help/api/project_access_tokens.md#get-a-project-access-token
-  * `DELETE /projects/:project/access_tokens/:token` https://gitlab.kitware.com/help/api/project_access_tokens.md#revoke-a-project-access-token
-  * `POST   /projects/:project/access_tokens/rotate` https://gitlab.kitware.com/help/api/project_access_tokens.md#rotate-a-project-access-token
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
   * `GET    /projects/:project/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-project-level-rules

@@ -11,6 +11,7 @@
 //! These endpoints are used for querying and modifying projects and their resources.
 
 pub mod access_requests;
+pub mod access_tokens;
 mod archive;
 mod create;
 pub mod deploy_keys;
