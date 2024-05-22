@@ -326,6 +326,11 @@ instead of having to search the page for missing endpoints.
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
   * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
+  * `GET    /projects/:project/access_tokens` https://gitlab.kitware.com/help/api/project_access_tokens.md#list-project-access-tokens
+  * `POST   /projects/:project/access_tokens` https://gitlab.kitware.com/help/api/project_access_tokens.md#create-a-project-access-token
+  * `GET    /projects/:project/access_tokens/:token` https://gitlab.kitware.com/help/api/project_access_tokens.md#get-a-project-access-token
+  * `DELETE /projects/:project/access_tokens/:token` https://gitlab.kitware.com/help/api/project_access_tokens.md#revoke-a-project-access-token
+  * `POST   /projects/:project/access_tokens/rotate` https://gitlab.kitware.com/help/api/project_access_tokens.md#rotate-a-project-access-token
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
   * `GET    /projects/:project/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-project-level-rules
@@ -655,7 +660,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/pipeline_triggers.md
   * https://gitlab.kitware.com/help/api/plan_limits.md
   * https://gitlab.kitware.com/help/api/product_analytics.md
-  * https://gitlab.kitware.com/help/api/project_access_tokens.md
   * https://gitlab.kitware.com/help/api/project_aliases.md
   * https://gitlab.kitware.com/help/api/project_badges.md
   * https://gitlab.kitware.com/help/api/project_clusters.md
