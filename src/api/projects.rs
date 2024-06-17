@@ -14,6 +14,7 @@ pub mod access_requests;
 pub mod access_tokens;
 mod archive;
 mod create;
+mod delete;
 pub mod deploy_keys;
 mod edit;
 pub mod environments;
@@ -61,6 +62,10 @@ pub use self::create::FeatureAccessLevel;
 pub use self::create::FeatureAccessLevelPublic;
 pub use self::create::MergeMethod;
 pub use self::create::SquashOption;
+
+pub use self::delete::DeleteProject;
+pub use self::delete::DeleteProjectBuilder;
+pub use self::delete::DeleteProjectBuilderError;
 
 pub use self::edit::EditProject;
 pub use self::edit::EditProjectBuilder;
