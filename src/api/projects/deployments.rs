@@ -9,7 +9,13 @@
 //! These endpoints are used for querying deployments.
 
 mod delete;
+mod edit;
 
 pub use self::delete::DeleteDeployment;
 pub use self::delete::DeleteDeploymentBuilder;
 pub use self::delete::DeleteDeploymentBuilderError;
+
+pub use self::edit::DeploymentStatus;
+pub use self::edit::EditDeployment;
+pub use self::edit::EditDeploymentBuilder;
+pub use self::edit::EditDeploymentBuilderError;
