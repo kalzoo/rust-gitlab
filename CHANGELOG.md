@@ -3,6 +3,7 @@
 ## Additions
 
   * Add `api::projects::DeleteProject` endpoint
+  * Add `api::projects::deployments::DeleteDeployment` endpoint
 
 # v0.1700.1
 
