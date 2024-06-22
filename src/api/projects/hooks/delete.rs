@@ -9,13 +9,13 @@ use derive_builder::Builder;
 use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
-/// Edit an existing webhook for a project.
+/// Delete a webhook for a project.
 #[derive(Debug, Builder, Clone)]
 pub struct DeleteHook<'a> {
-    /// The project to edit a webhook within.
+    /// The project to delete a webhook from.
     #[builder(setter(into))]
     project: NameOrId<'a>,
-    /// The ID of the hook to edit.
+    /// The ID of the hook to delete.
     hook_id: u64,
 }
 
