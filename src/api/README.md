@@ -504,8 +504,8 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/unstar` https://gitlab.kitware.com/help/api/projects.md#unstar-a-project
   * `POST   /projects/:project/uploads` https://gitlab.kitware.com/help/api/projects.md#upload-a-file
   * `GET    /projects/:project/users` https://gitlab.kitware.com/help/api/projects.md#get-project-users
-  * `GET    /projects/:project/variables` `https://gitlab.kitware.com/help/api/project_level_variables.md#list-project-variables`
-  * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
+  * `GET    /projects/:project/variables` https://gitlab.kitware.com/help/api/project_level_variables.md#list-project-variables
+  * `DELETE /projects/:project/variables/:key` https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
   * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
