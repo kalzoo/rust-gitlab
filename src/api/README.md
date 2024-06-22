@@ -69,6 +69,7 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/edit.rs`
   * `DELETE /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/delete.rs`
   * `POST   /projects/:project/deploy_keys/:deploy_key/enable` `projects/deploy_keys/enable.rs`
+  * `GET    /projects/:project/deployments` `projects/deployments/deployments.rs`
   * `POST   /projects/:project/deployments` `projects/deployments/create.rs`
   * `GET    /projects/:project/deployments/:deployment` `projects/deployments/deployment.rs`
   * `PUT    /projects/:project/deployments/:deployment` `projects/deployments/edit.rs`
@@ -351,7 +352,6 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/commits/:sha/discussions/:discussion/notes` https://gitlab.kitware.com/help/api/discussions.md#add-note-to-existing-commit-thread
   * `PUT    /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#modify-an-existing-commit-thread-note
   * `DELETE /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-a-commit-thread-note
-  * `GET    /projects/:project/deployments` https://gitlab.kitware.com/help/api/deployments.md#list-project-deployments
   * `GET    /projects/:project/deployments/:deployment/merge_requests` https://gitlab.kitware.com/help/api/deployments.md#list-of-merge-requests-associated-with-a-deployment
   * `POST   /projects/:project/deployments/:deployment/approval` https://gitlab.kitware.com/help/api/deployments.md#approve-or-reject-a-blocked-deployment
   * `POST   /projects/:project/environments` https://gitlab.kitware.com/help/api/environments.md#create-a-new-environment
