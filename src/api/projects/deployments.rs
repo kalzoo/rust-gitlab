@@ -8,9 +8,14 @@
 //!
 //! These endpoints are used for querying deployments.
 
+mod create;
 mod delete;
 mod deployment;
 mod edit;
+
+pub use self::create::CreateDeployment;
+pub use self::create::CreateDeploymentBuilder;
+pub use self::create::CreateDeploymentBuilderError;
 
 pub use self::delete::DeleteDeployment;
 pub use self::delete::DeleteDeploymentBuilder;
