@@ -347,6 +347,13 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/commits/:sha/discussions/:discussion/notes` https://gitlab.kitware.com/help/api/discussions.md#add-note-to-existing-commit-thread
   * `PUT    /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#modify-an-existing-commit-thread-note
   * `DELETE /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-a-commit-thread-note
+  * `GET    /projects/:project/deployments` https://gitlab.kitware.com/help/api/deployments.md#list-project-deployments
+  * `POST   /projects/:project/deployments` https://gitlab.kitware.com/help/api/deployments.md#create-a-deployment
+  * `GET    /projects/:project/deployments/:deployment` https://gitlab.kitware.com/help/api/deployments.md#get-a-specific-deployment
+  * `PUT    /projects/:project/deployments/:deployment` https://gitlab.kitware.com/help/api/deployments.md#update-a-deployment
+  * `DELETE /projects/:project/deployments/:deployment` https://gitlab.kitware.com/help/api/deployments.md#delete-a-specific-deployment
+  * `GET    /projects/:project/deployments/:deployment/merge_requests` https://gitlab.kitware.com/help/api/deployments.md#list-of-merge-requests-associated-with-a-deployment
+  * `POST   /projects/:project/deployments/:deployment/approval` https://gitlab.kitware.com/help/api/deployments.md#approve-or-reject-a-blocked-deployment
   * `POST   /projects/:project/environments` https://gitlab.kitware.com/help/api/environments.md#create-a-new-environment
   * `DELETE /projects/:project/environments/review_apps` https://gitlab.kitware.com/help/api/environments.md#delete-multiple-stopped-review-apps
   * `PUT    /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
@@ -596,7 +603,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/dependency_list_export.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
   * https://gitlab.kitware.com/help/api/deploy_tokens.md
-  * https://gitlab.kitware.com/help/api/deployments.md
   * https://gitlab.kitware.com/help/api/dora/metrics.md
   * https://gitlab.kitware.com/help/api/draft_notes.md
   * https://gitlab.kitware.com/help/api/epic_issues.md
