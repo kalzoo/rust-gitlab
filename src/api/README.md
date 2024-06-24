@@ -69,6 +69,11 @@ These API endpoints have been implemented.
   * `PUT    /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/edit.rs`
   * `DELETE /projects/:project/deploy_keys/:deploy_key` `projects/deploy_keys/delete.rs`
   * `POST   /projects/:project/deploy_keys/:deploy_key/enable` `projects/deploy_keys/enable.rs`
+  * `GET    /projects/:project/deployments` `projects/deployments/deployments.rs`
+  * `POST   /projects/:project/deployments` `projects/deployments/create.rs`
+  * `GET    /projects/:project/deployments/:deployment` `projects/deployments/deployment.rs`
+  * `PUT    /projects/:project/deployments/:deployment` `projects/deployments/edit.rs`
+  * `DELETE /projects/:project/deployments/:deployment` `projects/deployments/delete.rs`
   * `GET    /projects/:project/environments` `projects/environments/environments.rs`
   * `GET    /projects/:project/environments/:environment` `projects/environments/environment.rs`
   * `GET    /projects/:project/hooks` `projects/hooks/hooks.rs`
@@ -347,6 +352,8 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/commits/:sha/discussions/:discussion/notes` https://gitlab.kitware.com/help/api/discussions.md#add-note-to-existing-commit-thread
   * `PUT    /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#modify-an-existing-commit-thread-note
   * `DELETE /projects/:project/commits/:sha/discussions/:discussion/notes/:note` https://gitlab.kitware.com/help/api/discussions.md#delete-a-commit-thread-note
+  * `GET    /projects/:project/deployments/:deployment/merge_requests` https://gitlab.kitware.com/help/api/deployments.md#list-of-merge-requests-associated-with-a-deployment
+  * `POST   /projects/:project/deployments/:deployment/approval` https://gitlab.kitware.com/help/api/deployments.md#approve-or-reject-a-blocked-deployment
   * `POST   /projects/:project/environments` https://gitlab.kitware.com/help/api/environments.md#create-a-new-environment
   * `DELETE /projects/:project/environments/review_apps` https://gitlab.kitware.com/help/api/environments.md#delete-multiple-stopped-review-apps
   * `PUT    /projects/:project/environments/:environment` https://gitlab.kitware.com/help/api/environments.md#edit-an-existing-environment
@@ -504,8 +511,8 @@ instead of having to search the page for missing endpoints.
   * `POST   /projects/:project/unstar` https://gitlab.kitware.com/help/api/projects.md#unstar-a-project
   * `POST   /projects/:project/uploads` https://gitlab.kitware.com/help/api/projects.md#upload-a-file
   * `GET    /projects/:project/users` https://gitlab.kitware.com/help/api/projects.md#get-project-users
-  * `GET    /projects/:project/variables` `https://gitlab.kitware.com/help/api/project_level_variables.md#list-project-variables`
-  * `DELETE /projects/:project/variables/:key` `https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
+  * `GET    /projects/:project/variables` https://gitlab.kitware.com/help/api/project_level_variables.md#list-project-variables
+  * `DELETE /projects/:project/variables/:key` https://gitlab.kitware.com/help/api/project_level_variables.md#remove-variable
   * `POST   /projects/user/:user` https://gitlab.kitware.com/help/api/projects.md#create-project-for-user
   * `GET    /registry/repositories/:id` https://gitlab.kitware.com/help/api/container_registry.md#get-details-of-a-single-repository
   * `POST   /service_accounts` https://gitlab.kitware.com/help/api/users.md#create-service-account-user
@@ -596,7 +603,6 @@ These pages document other endpoints not mentioned above:
   * https://gitlab.kitware.com/help/api/dependency_list_export.md
   * https://gitlab.kitware.com/help/api/dependency_proxy.md
   * https://gitlab.kitware.com/help/api/deploy_tokens.md
-  * https://gitlab.kitware.com/help/api/deployments.md
   * https://gitlab.kitware.com/help/api/dora/metrics.md
   * https://gitlab.kitware.com/help/api/draft_notes.md
   * https://gitlab.kitware.com/help/api/epic_issues.md

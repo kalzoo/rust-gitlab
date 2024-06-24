@@ -16,6 +16,7 @@ mod archive;
 mod create;
 mod delete;
 pub mod deploy_keys;
+pub mod deployments;
 mod edit;
 pub mod environments;
 pub mod hooks;
