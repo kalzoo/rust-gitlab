@@ -50,6 +50,7 @@ These API endpoints have been implemented.
   * `POST   /projects` `projects/create.rs`
   * `GET    /projects/:project` `projects/project.rs`
   * `PUT    /projects/:project` `projects/edit.rs`
+  * `DELETE /projects/:project` `projects/delete.rs`
   * `GET    /projects/:project/access_tokens` `projects/access_tokens/access_tokens.rs`
   * `POST   /projects/:project/access_tokens` `projects/access_tokens/create.rs`
   * `GET    /projects/:project/access_tokens/:token` `projects/access_tokens/access_token.rs`
@@ -330,7 +331,6 @@ instead of having to search the page for missing endpoints.
   * `GET    /groups/:group/users` https://gitlab.kitware.com/help/api/groups.md#list-group-users (EXPERIMENTAL)
   * `GET    /job/allowed_agents` https://gitlab.kitware.com/help/api/jobs.md#get-gitlab-agent-by-ci_job_token
   * `GET    /merge_requests` https://gitlab.kitware.com/help/api/merge_requests.md#list-merge-requests (#102)
-  * `DELETE /projects/:project` https://gitlab.kitware.com/help/api/projects.md#delete-project
   * `GET    /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-configuration
   * `POST   /projects/:project/approvals` https://gitlab.kitware.com/help/api/merge_request_approvals.md#change-configuration
   * `GET    /projects/:project/approval_rules` https://gitlab.kitware.com/help/api/merge_request_approvals.md#get-project-level-rules

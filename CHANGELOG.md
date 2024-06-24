@@ -1,3 +1,9 @@
+# v0.1700.2 (unreleased)
+
+## Additions
+
+  * Add `api::projects::DeleteProject` endpoint
+
 # v0.1700.1
 
 ## Additions
